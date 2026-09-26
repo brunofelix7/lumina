@@ -2,7 +2,7 @@
 <resources>
     <style name="Theme.App.Starting" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">@color/space_deep</item>
-        <item name="windowSplashScreenAnimatedIcon">@drawable/lumina_logo</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/lumina_app_icon</item>
         <item name="postSplashScreenTheme">@style/Theme.Lumina</item>
     </style>
 </resources>
