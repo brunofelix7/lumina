@@ -17,7 +17,7 @@ class MainActivity : ComponentActivity() {
         
         setContent {
             LuminaTheme {
-                // Main app content goes here
+                NavigationGraph()
             }
         }
     }

@@ -1,0 +1,32 @@
+package dev.lumina.core.designsystem.components
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import dev.lumina.core.designsystem.theme.SpaceDeep
+import dev.lumina.core.designsystem.theme.SpaceVoid
+
+val AppGradient = listOf(SpaceDeep, SpaceVoid)
+
+@Composable
+fun LuminaGradientBackground(
+    modifier: Modifier = Modifier,
+    colors: List<Color> = AppGradient,
+    content: @Composable () -> Unit
+) {
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .background(
+                brush = Brush.linearGradient(
+                    colors = colors
+                )
+            )
+    ) {
+        content()
+    }
+}

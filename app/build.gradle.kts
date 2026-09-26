@@ -47,7 +47,7 @@ dependencies {
     implementation(project(":core:presentation"))
     implementation(project(":core:domain"))
     implementation(project(":core:data"))
-    implementation(project(":feature:splash"))
+    implementation(project(":feature:auth"))
 
     // Jetpack Compose
     val composeBom = platform(libs.androidx.compose.bom)
