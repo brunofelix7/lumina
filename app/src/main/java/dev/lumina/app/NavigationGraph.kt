@@ -5,6 +5,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import dev.lumina.core.presentation.navigation.Route
 import dev.lumina.feature.auth.navigation.authGraph
+import dev.lumina.feature.splash.navigation.splashGraph
 
 @Composable
 fun NavigationGraph() {
@@ -12,8 +13,15 @@ fun NavigationGraph() {
 
     NavHost(
         navController = navController,
-        startDestination = Route.SignIn
+        startDestination = Route.Splash
     ) {
+        splashGraph(
+            onSplashFinished = {
+                navController.navigate(Route.SignIn) {
+                    popUpTo(Route.Splash) { inclusive = true }
+                }
+            }
+        )
         authGraph(
             onNavigateToSignUp = {
                 navController.navigate(Route.SignUp) {
