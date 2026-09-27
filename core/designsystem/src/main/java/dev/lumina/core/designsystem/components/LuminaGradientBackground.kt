@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import dev.lumina.core.designsystem.theme.SpaceDeep
 import dev.lumina.core.designsystem.theme.SpaceVoid
 
@@ -22,11 +23,17 @@ fun LuminaGradientBackground(
         modifier = modifier
             .fillMaxSize()
             .background(
-                brush = Brush.linearGradient(
+                brush = Brush.verticalGradient(
                     colors = colors
                 )
             )
     ) {
         content()
     }
+}
+
+@Preview(widthDp = 390, heightDp = 848)
+@Composable
+private fun LuminaGradientBackgroundPreview() {
+    LuminaGradientBackground {}
 }
