@@ -1,6 +1,8 @@
 package dev.lumina.feature.auth.presentation
 
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsEnabled
+import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
@@ -12,12 +14,14 @@ import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 
-class AuthScreensTest {
+class SignInScreenTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()
 
     private val capturedActions = mutableListOf<SignInUiAction>()
+
+    private val filledState = SignInState(email = "nova@lumina.dev", password = "supernova")
 
     private fun setSignInContent(state: SignInState = SignInState()) {
         composeTestRule.setContent {
@@ -91,10 +95,26 @@ class AuthScreensTest {
     }
 
     @Test
-    fun signInScreen_loginClick_emitsLoginAction() {
+    fun signInScreen_loginIsDisabledWhenFieldsAreEmpty() {
         setSignInContent()
 
-        composeTestRule.onNodeWithText("Login").performClick()
+        composeTestRule.onNodeWithText("Login").assertIsNotEnabled().performClick()
+
+        assertEquals(emptyList<SignInUiAction>(), capturedActions)
+    }
+
+    @Test
+    fun signInScreen_loginIsDisabledWhenOnlyEmailIsFilled() {
+        setSignInContent(SignInState(email = "nova@lumina.dev"))
+
+        composeTestRule.onNodeWithText("Login").assertIsNotEnabled()
+    }
+
+    @Test
+    fun signInScreen_loginClickWhenFilled_emitsLoginAction() {
+        setSignInContent(filledState)
+
+        composeTestRule.onNodeWithText("Login").assertIsEnabled().performClick()
 
         assertEquals(listOf(SignInUiAction.OnLoginClick), capturedActions)
     }
@@ -135,18 +155,20 @@ class AuthScreensTest {
     }
 
     @Test
-    fun signUpScreen_showsNameEmailAndPasswordInputs() {
-        val viewModel = SignUpViewModel()
+    fun signInRoute_fillingFields_enablesLogin() {
         composeTestRule.setContent {
-            SignUpScreen(
-                viewModel = viewModel,
-                onNavigateToSignIn = {}
-            )
+            LuminaTheme {
+                SignInRoute(
+                    viewModel = SignInViewModel(),
+                    onNavigateToSignUp = {}
+                )
+            }
         }
 
-        composeTestRule.onNodeWithText("Name").assertExists()
-        composeTestRule.onNodeWithText("Email").assertExists()
-        composeTestRule.onNodeWithText("Password").assertExists()
-        composeTestRule.onNodeWithText("Sign Up").assertExists()
+        composeTestRule.onNodeWithText("Login").assertIsNotEnabled()
+        composeTestRule.onNodeWithText("Email address").performTextInput("nova@lumina.dev")
+        composeTestRule.onNodeWithText("Login").assertIsNotEnabled()
+        composeTestRule.onNodeWithText("Password").performTextInput("supernova")
+        composeTestRule.onNodeWithText("Login").assertIsEnabled()
     }
 }

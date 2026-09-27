@@ -49,4 +49,40 @@ class SignInViewModelTest {
 
         assertEquals(stateBefore, viewModel.state.value)
     }
+
+    @Test
+    fun login_isDisabledByDefault() {
+        val viewModel = SignInViewModel()
+        assertEquals(false, viewModel.state.value.isLoginEnabled)
+    }
+
+    @Test
+    fun login_isDisabledWhenOnlyEmailIsFilled() {
+        val viewModel = SignInViewModel()
+        viewModel.onAction(SignInUiAction.OnEmailChange("test@example.com"))
+        assertEquals(false, viewModel.state.value.isLoginEnabled)
+    }
+
+    @Test
+    fun login_isDisabledWhenOnlyPasswordIsFilled() {
+        val viewModel = SignInViewModel()
+        viewModel.onAction(SignInUiAction.OnPasswordChange("password123"))
+        assertEquals(false, viewModel.state.value.isLoginEnabled)
+    }
+
+    @Test
+    fun login_isDisabledWhenFieldsAreBlank() {
+        val viewModel = SignInViewModel()
+        viewModel.onAction(SignInUiAction.OnEmailChange("   "))
+        viewModel.onAction(SignInUiAction.OnPasswordChange("   "))
+        assertEquals(false, viewModel.state.value.isLoginEnabled)
+    }
+
+    @Test
+    fun login_isEnabledWhenEmailAndPasswordAreFilled() {
+        val viewModel = SignInViewModel()
+        viewModel.onAction(SignInUiAction.OnEmailChange("test@example.com"))
+        viewModel.onAction(SignInUiAction.OnPasswordChange("password123"))
+        assertEquals(true, viewModel.state.value.isLoginEnabled)
+    }
 }
