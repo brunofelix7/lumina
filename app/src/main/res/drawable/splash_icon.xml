@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Measured on device: this inset makes the system splash draw the logo at the 224dp used by SplashScreen. -->
+<inset xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/lumina_logo_mark"
+    android:inset="8.2%" />
