@@ -48,3 +48,11 @@ When a user asks you to "Create a new X feature":
 2. Generate the Data layer (DTOs, Entities, Mappers, Data Sources, Repositories). -> **Generate Mapper, DataSource, and Repository Unit Tests.**
 3. Generate the Presentation layer (ViewModels, Screens, Components). -> **Generate ViewModel Unit Tests and Screen/Component UI Tests.**
 4. Never consider a task "Done" unless the corresponding tests have been successfully written.
+
+## 6. Git Workflow
+- **No Automatic Commits**: You MUST NEVER automatically create or execute "git commit" commands to save changes. 
+- Only stage or commit files if the user explicitly instructs you to do so (e.g., "commit these changes").
+
+## 7. Jetpack Compose Previews
+- **Mandatory Previews**: Whenever you create or modify a Jetpack Compose UI Component or Screen, you MUST generate at least one @Preview composable for it.
+- The preview should supply dummy data and mock states to accurately represent the component's visual state.
