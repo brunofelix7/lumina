@@ -41,6 +41,7 @@ fun Modifier.glowShadow(
     }
 
     onDrawBehind {
+        if (color.alpha == 0f) return@onDrawBehind
         clipPath(shapePath, ClipOp.Difference) {
             drawIntoCanvas { canvas -> canvas.drawPath(shapePath, paint) }
         }
