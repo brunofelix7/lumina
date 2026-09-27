@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.Lumina" parent="android:Theme.Material.Light.NoActionBar">
+    <!-- The splash exit listener re-applies these bar attributes, so they must stay transparent for edge-to-edge. -->
+    <style name="Theme.Lumina" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@drawable/lumina_window_background</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">false</item>
     </style>
 </resources>

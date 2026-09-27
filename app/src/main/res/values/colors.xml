@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="space_deep">#00152D</color>
+    <color name="space_void">#000000</color>
 </resources>
