@@ -43,7 +43,7 @@ fun SignInForm(
         LuminaGlassTextField(
             value = state.email,
             onValueChange = { onAction(SignInUiAction.OnEmailChange(it)) },
-            placeholder = stringResource(R.string.sign_in_email_placeholder),
+            placeholder = stringResource(R.string.auth_email_placeholder),
             leadingIcon = painterResource(DesignSystemR.drawable.ic_mail),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Email,

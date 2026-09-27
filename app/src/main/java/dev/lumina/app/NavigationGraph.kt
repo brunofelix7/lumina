@@ -16,12 +16,12 @@ fun NavigationGraph() {
     ) {
         authGraph(
             onNavigateToSignUp = {
-                navController.navigate(Route.SignUp)
-            },
-            onNavigateToSignIn = {
-                navController.navigate(Route.SignIn) {
-                    popUpTo(Route.SignIn) { inclusive = true }
+                navController.navigate(Route.SignUp) {
+                    launchSingleTop = true
                 }
+            },
+            onNavigateBack = {
+                navController.navigateUp()
             }
         )
     }

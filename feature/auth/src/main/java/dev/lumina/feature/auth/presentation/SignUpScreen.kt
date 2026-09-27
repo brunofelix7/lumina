@@ -1,64 +1,118 @@
 package dev.lumina.feature.auth.presentation
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import dev.lumina.core.designsystem.components.LuminaButton
+import androidx.compose.ui.tooling.preview.Preview
 import dev.lumina.core.designsystem.components.LuminaGradientBackground
-import dev.lumina.core.designsystem.components.LuminaTextInput
+import dev.lumina.core.designsystem.theme.LuminaTheme
+import dev.lumina.core.designsystem.theme.size384
+import dev.lumina.core.designsystem.theme.spacing16
+import dev.lumina.core.designsystem.theme.spacing24
+import dev.lumina.feature.auth.presentation.components.SignUpForm
+import dev.lumina.feature.auth.presentation.components.SignUpHeader
 
 @Composable
-fun SignUpScreen(
+fun SignUpRoute(
     viewModel: SignUpViewModel,
-    onNavigateToSignIn: () -> Unit
+    onNavigateBack: () -> Unit
 ) {
     val state by viewModel.state.collectAsState()
 
-    LuminaGradientBackground {
+    SignUpScreen(
+        state = state,
+        onAction = { action ->
+            when (action) {
+                SignUpUiAction.OnBackClick -> onNavigateBack()
+                else -> viewModel.onAction(action)
+            }
+        }
+    )
+}
+
+@Composable
+fun SignUpScreen(
+    state: SignUpState,
+    onAction: (SignUpUiAction) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    LuminaGradientBackground(modifier = modifier) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+                .windowInsetsPadding(WindowInsets.safeDrawing)
+                .verticalScroll(rememberScrollState()),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            LuminaTextInput(
-                value = state.name,
-                onValueChange = viewModel::onNameChange,
-                label = "Name"
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            LuminaTextInput(
-                value = state.email,
-                onValueChange = viewModel::onEmailChange,
-                label = "Email"
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            LuminaTextInput(
-                value = state.password,
-                onValueChange = viewModel::onPasswordChange,
-                label = "Password"
-            )
-            Spacer(modifier = Modifier.height(24.dp))
-            LuminaButton(
-                text = "Sign Up",
-                onClick = { /* Basic UI only */ }
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            TextButton(onClick = onNavigateToSignIn) {
-                Text("Already have an account? Sign In")
+            Column(
+                modifier = Modifier
+                    .padding(horizontal = spacing24, vertical = spacing16)
+                    .widthIn(max = size384)
+                    .fillMaxWidth()
+            ) {
+                SignUpHeader(onBackClick = { onAction(SignUpUiAction.OnBackClick) })
+                SignUpForm(
+                    state = state,
+                    onAction = onAction
+                )
             }
         }
+    }
+}
+
+@Preview(name = "Sign Up - Empty", widthDp = 390, heightDp = 848)
+@Composable
+private fun SignUpScreenEmptyPreview() {
+    LuminaTheme {
+        SignUpScreen(
+            state = SignUpState(),
+            onAction = {}
+        )
+    }
+}
+
+@Preview(name = "Sign Up - Filled", widthDp = 390, heightDp = 848)
+@Composable
+private fun SignUpScreenFilledPreview() {
+    LuminaTheme {
+        SignUpScreen(
+            state = SignUpState(
+                name = "Nova Star",
+                email = "nova@lumina.dev",
+                password = "supernova",
+                confirmPassword = "supernova"
+            ),
+            onAction = {}
+        )
+    }
+}
+
+@Preview(name = "Sign Up - Passwords visible", widthDp = 390, heightDp = 848)
+@Composable
+private fun SignUpScreenPasswordsVisiblePreview() {
+    LuminaTheme {
+        SignUpScreen(
+            state = SignUpState(
+                name = "Nova Star",
+                email = "nova@lumina.dev",
+                password = "supernova",
+                confirmPassword = "supernova",
+                isPasswordVisible = true,
+                isConfirmPasswordVisible = true
+            ),
+            onAction = {}
+        )
     }
 }
