@@ -141,3 +141,8 @@ val Typography = Typography(
 )
 
 val LabelSmallWide = Typography.labelSmall.copy(letterSpacing = 0.05.em)
+
+val TitleLargeBold = Typography.titleLarge.copy(
+    fontWeight = FontWeight.Bold,
+    letterSpacing = (-0.025).em
+)
