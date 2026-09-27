@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sign_in_logo_content_description">Lumina Logo</string>
+    <string name="sign_in_email_placeholder">Email address</string>
+    <string name="sign_in_password_placeholder">Password</string>
+    <string name="sign_in_show_password">Show password</string>
+    <string name="sign_in_hide_password">Hide password</string>
+    <string name="sign_in_forgot_password">Forgot password?</string>
+    <string name="sign_in_login">Login</string>
+    <string name="sign_in_or_continue_with">Or continue with</string>
+    <string name="sign_in_with_google">Sign in with Google</string>
+    <string name="sign_in_no_account">Don\'t have an account?</string>
+    <string name="sign_in_sign_up">Sign up</string>
+</resources>

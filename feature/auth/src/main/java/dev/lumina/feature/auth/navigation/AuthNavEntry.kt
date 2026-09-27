@@ -5,7 +5,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import dev.lumina.core.presentation.navigation.Route
-import dev.lumina.feature.auth.presentation.SignInScreen
+import dev.lumina.feature.auth.presentation.SignInRoute
 import dev.lumina.feature.auth.presentation.SignInViewModel
 import dev.lumina.feature.auth.presentation.SignUpScreen
 import dev.lumina.feature.auth.presentation.SignUpViewModel
@@ -16,7 +16,7 @@ fun NavGraphBuilder.authGraph(
 ) {
     composable<Route.SignIn> {
         val viewModel: SignInViewModel = viewModel()
-        SignInScreen(
+        SignInRoute(
             viewModel = viewModel,
             onNavigateToSignUp = onNavigateToSignUp
         )
