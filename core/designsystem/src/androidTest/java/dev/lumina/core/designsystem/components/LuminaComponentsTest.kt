@@ -3,6 +3,8 @@ package dev.lumina.core.designsystem.components
 import androidx.compose.material3.Text
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsEnabled
+import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -17,32 +19,6 @@ class LuminaComponentsTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()
-
-    @Test
-    fun luminaButton_clicksCorrectly() {
-        var clicked = false
-        composeTestRule.setContent {
-            LuminaButton(text = "Click Me", onClick = { clicked = true })
-        }
-
-        composeTestRule.onNodeWithText("Click Me").performClick()
-        assertEquals(true, clicked)
-    }
-
-    @Test
-    fun luminaTextInput_updatesValueCorrectly() {
-        var textValue = ""
-        composeTestRule.setContent {
-            LuminaTextInput(
-                value = textValue,
-                onValueChange = { textValue = it },
-                label = "Username"
-            )
-        }
-
-        composeTestRule.onNodeWithText("Username").performTextInput("LuminaUser")
-        assertEquals("LuminaUser", textValue)
-    }
 
     @Test
     fun luminaGlassTextField_showsPlaceholderWhenEmpty() {
@@ -96,6 +72,25 @@ class LuminaComponentsTest {
     }
 
     @Test
+    fun luminaGlassTextField_hazeStyle_updatesValueCorrectly() {
+        var textValue = ""
+        composeTestRule.setContent {
+            LuminaTheme {
+                LuminaGlassTextField(
+                    value = textValue,
+                    onValueChange = { textValue = it },
+                    placeholder = "Full Name",
+                    leadingIcon = painterResource(R.drawable.ic_person_semibold),
+                    style = LuminaGlassTextFieldStyle.Haze
+                )
+            }
+        }
+
+        composeTestRule.onNodeWithText("Full Name").performTextInput("Nova Star")
+        assertEquals("Nova Star", textValue)
+    }
+
+    @Test
     fun luminaGlassButton_primary_clicksCorrectly() {
         var clicked = false
         composeTestRule.setContent {
@@ -106,8 +101,23 @@ class LuminaComponentsTest {
             }
         }
 
-        composeTestRule.onNodeWithText("Login").performClick()
+        composeTestRule.onNodeWithText("Login").assertIsEnabled().performClick()
         assertEquals(true, clicked)
+    }
+
+    @Test
+    fun luminaGlassButton_disabled_ignoresClicks() {
+        var clicked = false
+        composeTestRule.setContent {
+            LuminaTheme {
+                LuminaGlassButton(onClick = { clicked = true }, enabled = false) {
+                    Text(text = "Login")
+                }
+            }
+        }
+
+        composeTestRule.onNodeWithText("Login").assertIsNotEnabled().performClick()
+        assertEquals(false, clicked)
     }
 
     @Test
