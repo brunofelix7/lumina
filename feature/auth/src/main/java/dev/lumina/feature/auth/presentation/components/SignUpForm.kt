@@ -3,7 +3,6 @@ package dev.lumina.feature.auth.presentation.components
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
@@ -22,7 +21,6 @@ import dev.lumina.core.designsystem.components.LuminaGlassTextField
 import dev.lumina.core.designsystem.components.LuminaGlassTextFieldStyle
 import dev.lumina.core.designsystem.theme.LuminaTheme
 import dev.lumina.core.designsystem.theme.size20
-import dev.lumina.core.designsystem.theme.size56
 import dev.lumina.core.designsystem.theme.spacing14
 import dev.lumina.core.designsystem.theme.spacing24
 import dev.lumina.core.designsystem.theme.spacing8
@@ -85,9 +83,7 @@ fun SignUpForm(
         )
         LuminaGlassButton(
             onClick = { onAction(SignUpUiAction.OnCreateAccountClick) },
-            modifier = Modifier
-                .padding(top = spacing8)
-                .height(size56),
+            modifier = Modifier.padding(top = spacing8),
             enabled = state.isCreateAccountEnabled,
             contentSpacing = spacing8
         ) {
