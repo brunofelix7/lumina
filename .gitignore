@@ -20,3 +20,4 @@ core/designsystem/build/
 core/domain/build/
 core/presentation/build/
 feature/splash/build/
+feature/auth/build/

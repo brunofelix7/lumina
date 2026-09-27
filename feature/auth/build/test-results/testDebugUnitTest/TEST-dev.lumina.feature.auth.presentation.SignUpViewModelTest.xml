@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="dev.lumina.feature.auth.presentation.SignUpViewModelTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-09-26T22:36:29.018Z" hostname="BK-PC-GAMER" time="0.002">
-  <properties/>
-  <testcase name="onNameChange_updatesState" classname="dev.lumina.feature.auth.presentation.SignUpViewModelTest" time="0.001"/>
-  <testcase name="onEmailChange_updatesState" classname="dev.lumina.feature.auth.presentation.SignUpViewModelTest" time="0.001"/>
-  <testcase name="onPasswordChange_updatesState" classname="dev.lumina.feature.auth.presentation.SignUpViewModelTest" time="0.0"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>
