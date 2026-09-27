@@ -10,7 +10,10 @@ data class SignInState(
     val email: String = "",
     val password: String = "",
     val isPasswordVisible: Boolean = false
-)
+) {
+    val isLoginEnabled: Boolean
+        get() = email.isNotBlank() && password.isNotBlank()
+}
 
 sealed interface SignInUiAction {
     data class OnEmailChange(val email: String) : SignInUiAction

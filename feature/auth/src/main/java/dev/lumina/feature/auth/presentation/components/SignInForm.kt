@@ -74,6 +74,7 @@ fun SignInForm(
         LuminaGlassButton(
             onClick = { onAction(SignInUiAction.OnLoginClick) },
             modifier = Modifier.padding(top = spacing4),
+            enabled = state.isLoginEnabled,
             contentSpacing = spacing4
         ) {
             Text(text = stringResource(R.string.sign_in_login))
