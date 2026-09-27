@@ -21,6 +21,7 @@ val size48 = 48.dp
 val size50 = 50.dp
 val size56 = 56.dp
 val size204 = 204.dp
+val size224 = 224.dp
 val size384 = 384.dp
 
 val radius16 = 16.dp
