@@ -4,12 +4,12 @@ This file defines the strict rules and workflows that any AI agent must follow w
 These rules work in conjunction with the project's global skills (`android-architecture`, `android-data-layer`, `android-domain-layer`, `android-presentation-layer`, `android-unit-tests`, `android-ui-tests`).
 
 ## 1. Source of Truth for UI (CRITICAL)
-Before generating or modifying any Jetpack Compose code, you MUST strictly analyze the corresponding HTML files located in the `.system_design/` root directory. 
-- Use the Tailwind CSS classes, inline styles, and DOM structure found in these HTML files as your absolute source of truth. 
+Before generating or modifying any Jetpack Compose code, you MUST strictly analyze the corresponding screen in the **Lumina App** project in Google Stitch (project ID `12697452454607839578`), fetched via the Stitch MCP (`list_screens` / `get_screen`), including its HTML code and screenshot.
+- Use the Tailwind CSS classes, inline styles, and DOM structure found in the screen's HTML as your absolute source of truth. 
 - Translate the exact hex colors, paddings, corner radii, and typography scales directly into Jetpack Compose Modifiers and Material 3.
 
 ## 2. Design System
-Always refer to `DESIGN.md` for the core design tokens. 
+Always refer to the root `DESIGN.md` for the core design tokens. 
 - The app uses a strict dark "Atmospheric Canvas" gradient.
 - Typography must strictly use the **Inter** font family for all text styles.
 - Surfaces use Glassmorphism (translucent dark layers with backdrop blur and hairline borders).
