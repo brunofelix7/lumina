@@ -1,4 +1,4 @@
-package dev.lumina.feature.splash.presentation
+package dev.brunofelix.lumina.feature.splash.presentation
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
@@ -13,17 +13,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import dev.lumina.core.designsystem.components.LuminaGradientBackground
-import dev.lumina.core.designsystem.theme.LuminaTheme
-import dev.lumina.core.designsystem.theme.size224
-import dev.lumina.feature.splash.R
+import dev.brunofelix.lumina.core.designsystem.components.LuminaGradientBackground
+import dev.brunofelix.lumina.core.designsystem.theme.LuminaTheme
+import dev.brunofelix.lumina.core.designsystem.theme.size224
+import dev.brunofelix.lumina.feature.splash.R
 import kotlinx.coroutines.delay
-import dev.lumina.core.designsystem.R as DesignSystemR
+import dev.brunofelix.lumina.core.designsystem.R as DesignSystemR
 
-const val SPLASH_DURATION_MILLIS = 1_500L
+internal const val SPLASH_DURATION_MILLIS = 1_500L
 
 @Composable
-fun SplashRoute(
+internal fun SplashRoute(
     onSplashFinished: () -> Unit,
     durationMillis: Long = SPLASH_DURATION_MILLIS
 ) {
@@ -38,7 +38,7 @@ fun SplashRoute(
 }
 
 @Composable
-fun SplashScreen(modifier: Modifier = Modifier) {
+internal fun SplashScreen(modifier: Modifier = Modifier) {
     LuminaGradientBackground(modifier = modifier) {
         // Centered on the whole window (not the safe area) so the logo lines up with the system splash icon.
         Box(
