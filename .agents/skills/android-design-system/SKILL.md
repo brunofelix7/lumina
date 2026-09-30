@@ -1,11 +1,13 @@
 ---
 name: android-design-system
-description: Architecture rules for translating Figma designs to Jetpack Compose. Enforces the usage of design tokens (spacing, typography, colors) in the :core:designsystem module and prohibits hardcoded values.
+description: Architecture rules for translating designs (Figma, Google Stitch, or a DESIGN.md) to Jetpack Compose. Enforces the usage of design tokens (spacing, typography, colors) in the :core:designsystem module and prohibits hardcoded values.
 ---
 
 # Android Design System Architecture
 
-This project uses a dedicated `:core:designsystem` module to manage all visual tokens and foundational UI elements. When implementing designs from Figma or creating new UI components, you must strictly follow these rules to maintain a pixel-perfect and scalable interface.
+This project uses a dedicated `:core:designsystem` module to manage all visual tokens and foundational UI elements. When implementing screens from the project's design source or creating new UI components, you must strictly follow these rules to maintain a pixel-perfect and scalable interface.
+
+Project-specific values (design source, theme composable, theme mode, font family token, foundational components, brand tokens) are defined in the **Project Profile** of `CLAUDE.md`. The examples below use generic names such as `AppTheme`, `AppFontFamily`, and `AppButton`; always use the project's real names.
 
 ## Core Principles
 
@@ -43,33 +45,39 @@ Modifier.padding(16.dp)
 
 ## 2. Colors (Color.kt & Theme.kt)
 
-All colors from Figma must be translated into the Material 3 `ColorScheme`.
-**Rule**: Add the raw color to `Color.kt`, then map it to the light/dark `ColorScheme` in `Theme.kt`.
+Every color from the design source is first declared in `Color.kt`.
+**Rule**: Colors with a Material 3 role are mapped into the app's `ColorScheme` in `Theme.kt` (light, dark, or both, per the theme mode in `CLAUDE.md`) and consumed via `MaterialTheme.colorScheme.*`.
+**Rule**: Brand colors without a Material role (gradients, translucent fills, borders, glows) are consumed through their named tokens in `Color.kt`.
+**Rule**: Never write a `Color(0x...)` literal outside `Color.kt`.
 
 ```kotlin
 // In Color.kt
-val Purple80 = Color(0xFFD0BCFF)
-val Purple40 = Color(0xFF6650a4)
+val Blue80 = Color(0xFFA3C9FF)
+val SurfaceOverlay = Color(0x8C201F1F) // brand token without a Material role
 
 // In Theme.kt
-private val LightColorScheme = lightColorScheme(
-    primary = Purple40
+private val DarkColorScheme = darkColorScheme(
+    primary = Blue80
 )
+
+// Usage in Composable
+Text(text = "Hello", color = MaterialTheme.colorScheme.primary)
+Box(modifier = Modifier.background(SurfaceOverlay))
 ```
-When consuming colors in composables, always use `MaterialTheme.colorScheme.*`.
 
-## 3. Typography (Typography.kt)
+## 3. Typography (Type.kt)
 
-Translate Figma text properties (font family, weight, size, line height, tracking) into Material 3 `TextStyle` definitions.
+Translate the design source's text properties (font family, weight, size, line height, tracking) into Material 3 `TextStyle` definitions.
 
-**Rule**: Do not use `.fontSize(14.sp)` ou `.fontWeight(FontWeight.Bold)` directly on a `Text` composable.
-**Rule**: Assign the style in `Typography.kt` and consume it via `MaterialTheme.typography.*`.
+**Rule**: Do not use `.fontSize(14.sp)` or `.fontWeight(FontWeight.Bold)` directly on a `Text` composable.
+**Rule**: Assign the style in the theme's typography file (`Type.kt`) and consume it via `MaterialTheme.typography.*`.
+**Rule**: Every `TextStyle` uses the project's font family token (see `CLAUDE.md`).
 
 ```kotlin
-// Example: Typography.kt
+// Example: Type.kt
 val Typography = Typography(
     titleLarge = TextStyle(
-        fontFamily = FontFamily.Default,
+        fontFamily = AppFontFamily,
         fontWeight = FontWeight.Bold,
         fontSize = 22.sp,
         lineHeight = 28.sp,
@@ -87,8 +95,15 @@ Text(
 ## 4. Icons and Assets
 
 - **Material Icons**: Prefer using the standard `androidx.compose.material.icons` library (e.g., `Icons.Rounded.Home`) whenever possible.
-- **Custom SVG/Figma Icons**: Export as XML Vector Drawables into `core/designsystem/src/main/res/drawable/` and load them using `painterResource(id = R.drawable.ic_custom_name)`.
+- **Custom SVG Icons (from the design source)**: Export as XML Vector Drawables into `core/designsystem/src/main/res/drawable/` and load them using `painterResource(id = R.drawable.ic_custom_name)`.
 
-## 5. Accessibility
+## 5. Foundational Components (`components/`)
+
+`:core:designsystem/.../components/` holds feature-agnostic visual primitives (buttons, text fields, backgrounds, visual modifiers). The project's current list is in `CLAUDE.md`.
+**Rule**: Reuse or extend these before creating a new primitive in a feature.
+**Rule**: Primitives only take primitive parameters (`String`, lambdas, `Painter`, `Modifier`, slot `content`) and style enums declared next to them (e.g., `AppButtonStyle`). Never domain models, `UiState`, or ViewModels.
+**Rule**: A component that needs a domain model belongs in `:core:presentation/components/` (shared) or `:feature:<name>/.../presentation/components/` (feature-specific).
+
+## 6. Accessibility
 
 - **Content Descriptions**: Every `Icon`, `Image`, or interactive element must have a meaningful `contentDescription` for screen readers. Use `stringResource` when possible. If it's purely decorative, explicitly set `contentDescription = null`.

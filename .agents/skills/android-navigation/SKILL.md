@@ -45,7 +45,7 @@ It exposes simple state manipulation methods:
 - `navigateTo(route: Route)`
 - `popBackStack()`
 
-*(Do not recreate this ViewModel if it already exists, just use it).*
+*(If it already exists, use it. Otherwise copy it, together with `Route.kt`, from `android-base-components`.)*
 
 ## 3. Creating Feature NavEntries (`*NavEntry.kt`)
 

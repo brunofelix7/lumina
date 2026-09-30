@@ -1,5 +1,5 @@
 ---
-name: generate-release-notes
+alwaysApply: false
 description: Generates Google Play Console release notes in English based on the recent git commits for the current release. Use whenever the user asks to generate release notes.
 ---
 

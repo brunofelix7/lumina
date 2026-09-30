@@ -12,6 +12,7 @@ This project uses standard **JUnit 4**, **Compose Test Rule**, and **Kotest Matc
 1. **Framework**: Use standard `@RunWith(AndroidJUnit4::class)` and `@Test` (JUnit 4). Do not use Kotest Spec styles for UI tests.
 2. **Test Stateless Screens**: Always test the stateless `<Feature>Screen` composable (the one receiving `uiState` and `onAction`), NEVER the `<Feature>Route` that depends on ViewModel or Hilt.
 3. **Assertions**: Use Compose's `assertIsDisplayed()` for nodes, but use Kotest's `shouldBe` when verifying captured actions.
+4. **Theme**: Wrap every `setContent` in the project's theme composable (see `CLAUDE.md`). The examples below call it `AppTheme`.
 
 ---
 

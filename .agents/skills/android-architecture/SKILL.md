@@ -18,9 +18,9 @@ description: Module layout, dependency rules, and architectural guidelines for A
 ```text
 :app                            ← Application entry point, wires everything together
 :core:domain                    ← Pure Kotlin. Shared domain models, repository interfaces, use case interfaces, custom exceptions.
-:core:data                      ← Repository & Use Case implementations, Hilt DI modules, Room DB (entities, DAOs), Retrofit (DTOs, APIs), ExoPlayer.
-:core:presentation              ← Shared UI utilities, shared components (e.g., SongItem, AppButton), base ViewModels, shared state/events.
-:core:designsystem              ← Pure UI configurations (Colors, Theme, Typography, Dimensions). No complex components.
+:core:data                      ← Repository & Use Case implementations, Hilt DI modules, Room DB (entities, DAOs), Retrofit (DTOs, APIs), external SDK clients (see `CLAUDE.md`).
+:core:presentation              ← Shared UI utilities, shared components that render domain models (e.g., UserItem), base ViewModels, shared state/events, navigation.
+:core:designsystem              ← Design tokens (Colors, Theme, Typography, Dimensions) + feature-agnostic UI primitives (e.g., AppButton). No domain models, no ViewModels.
 :feature:<name>                 ← ONLY Presentation layer for a feature (ViewModel, Screen Composables, NavEntry, UiState, UiAction).
 ```
 
@@ -36,8 +36,8 @@ A feature module (e.g., `:feature:album`) is a single module that contains **onl
 Dependencies and build scripts must be meticulously organized to prevent bloat.
 
 1. **Strict Dependency Scoping**: Modules should ONLY declare dependencies they actually use.
-   - `:feature:<name>` only gets Compose, Navigation, ViewModel, and Hilt. Never add Room, Retrofit, or Media3 here.
-   - `:core:data` gets Room, Retrofit, Kotlinx Serialization, and ExoPlayer.
+   - `:feature:<name>` only gets Compose, Navigation, ViewModel, and Hilt. Never add Room, Retrofit, or other data/SDK clients here.
+   - `:core:data` gets Room, Retrofit, Kotlinx Serialization, and any external SDK clients.
    - `:core:domain` is pure Kotlin and gets standard Kotlin libraries (e.g., Coroutines), no Android framework dependencies.
 2. **Version Catalogs**: ALWAYS use Version Catalogs (`libs.*`). Never hardcode dependency strings or versions in `build.gradle.kts`.
 3. **Organized Blocks**: Group dependencies using comment headers in the `dependencies { ... }` block to keep things tidy. Standard groups include:
@@ -49,7 +49,7 @@ Dependencies and build scripts must be meticulously organized to prevent bloat.
    - `// Hilt`
    - `// Unit tests`
    - `// Instrumentation tests`
-4. **Build Logic**: Keep the `android { ... }` block directly inside each module's `build.gradle.kts` (no heavy `build-logic` convention plugins). Set appropriate namespaces (e.g., `namespace = "dev.brunofelix.moiseschallenge.feature.album"`).
+4. **Build Logic**: Keep the `android { ... }` block directly inside each module's `build.gradle.kts` (no heavy `build-logic` convention plugins). Set appropriate namespaces following `<basePackage>.<core|feature>.<name>` (e.g., `namespace = "<basePackage>.feature.auth"`; `<basePackage>` is defined in `CLAUDE.md`).
 
 ---
 
@@ -73,13 +73,12 @@ Dependencies and build scripts must be meticulously organized to prevent bloat.
 - **UI**: Jetpack Compose
 - **DI**: Dagger Hilt
 - **Networking**: Retrofit + OkHttp + Kotlinx Serialization
-- **AI**: Gemini API (google-generativeai)
 - **Local DB**: Room
-- **Media**: Media3 (ExoPlayer)
-- **Navigation**: Compose Navigation
+- **Navigation**: Navigation3 (`androidx.navigation3`)
 - **Async**: Coroutines + Flow
 - **Image Loading**: Coil
 - **Testing**: JUnit, Truth, MockK, Kotest, Robolectric, Turbine
+- **Project-specific additions** (e.g., AI SDKs, analytics): listed in `CLAUDE.md`.
 
 ---
 

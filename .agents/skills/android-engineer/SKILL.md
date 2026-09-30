@@ -46,7 +46,7 @@ You must discard legacy Android paradigms. This project is fully modern.
 - **NO ViewBinding or DataBinding**: See above.
 - **NO LiveData**: We use Kotlin `StateFlow` and `SharedFlow`/`Channel` exclusively.
 - **NO RxJava**: We use Kotlin Coroutines (`suspend`) and `Flow`.
-- **NO Multiple Activities**: Single `MainActivity` architecture using Compose Navigation.
+- **NO Multiple Activities**: Single `MainActivity` architecture using Navigation3 (`androidx.navigation3`).
 
 ### Clean Architecture & Modules
 - Respect strict module boundaries:

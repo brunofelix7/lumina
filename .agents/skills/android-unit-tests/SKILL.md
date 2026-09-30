@@ -12,6 +12,15 @@ This project uses **Kotest** and **MockK** for all unit tests. We strictly follo
 1. **Framework**: Use `io.kotest.core.spec.style.DescribeSpec`. Do NOT use standard JUnit `@Test` annotations for unit tests.
 2. **Mocking**: Use `io.mockk.mockk` and `coEvery` / `coVerify`. Do NOT use Mockito.
 3. **Assertions**: Use Kotest matchers like `shouldBe`, `shouldNotBe`, `shouldBeInstanceOf`.
+4. **Gradle setup**: Kotest specs only run on the JUnit Platform. Every module with Kotest tests must enable it, otherwise `./gradlew testDebugUnitTest` silently skips them. If the module still has JUnit 4 tests, also add `junit-vintage-engine` (or migrate them to `DescribeSpec`).
+
+```kotlin
+android {
+    testOptions {
+        unitTests.all { it.useJUnitPlatform() }
+    }
+}
+```
 
 ---
 

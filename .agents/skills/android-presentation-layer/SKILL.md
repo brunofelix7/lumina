@@ -12,7 +12,7 @@ This project strictly follows an **MVI (Model-View-Intent)** architecture for th
 1. **Unidirectional Data Flow**: UI emits `UiAction`s to the ViewModel. ViewModel exposes a `StateFlow` of `UiState` for the UI to observe, and a `Channel` of `UiEvent` for one-time side effects (like navigation or toasts).
 2. **Stateless Screens**: The main `@Composable fun <Feature>Screen` must be completely stateless. It receives the `UiState` and a single `onAction: (UiAction) -> Unit` lambda.
 3. **Route Composables**: A separate `@Composable fun <Feature>Route` acts as the glue. It instantiates the `ViewModel`, collects state, handles `BackHandler`, collects `UiEvent`s via `ObserveAsEvents`, and calls the stateless `<Feature>Screen`.
-4. **Componentization**: Do not write monolithic screens. Break down the UI into smaller, reusable composable pieces (e.g., `AlbumHeader`, `SongItem`). Place feature-specific components inside `:feature:<name>/.../presentation/components/`. If a component is global or shared across features, place it in `:core:presentation/components/`. Keep `:core:designsystem` exclusively for Theme, Colors, and Typography.
+4. **Componentization**: Do not write monolithic screens. Break down the UI into smaller, reusable composable pieces (e.g., `AlbumHeader`, `SongItem`). Place feature-specific components inside `:feature:<name>/.../presentation/components/`. If a shared component renders domain models or presentation state, place it in `:core:presentation/components/`. Feature-agnostic visual primitives (buttons, text fields, backgrounds, visual modifiers) live in `:core:designsystem/components/` (see `android-design-system`).
 5. **Previews**: EVERY composable function (whether a full Screen or a small component) MUST have `@Preview` functions demonstrating its states. For the stateless `<Feature>Screen`, you MUST create previews for every possible `UiState` (Loading, Success, Empty, Error).
 
 ---
@@ -22,15 +22,7 @@ This project strictly follows an **MVI (Model-View-Intent)** architecture for th
 For every new screen, define the following components (usually in separate files or at the top of the file):
 
 ### UiState
-Use the global `UiState<T>` (Initial, Loading, Empty, Success, Error) if the screen just loads a single data type. Otherwise, create a specific data class.
-```kotlin
-// dev.brunofelix.moiseschallenge.util.UiState
-sealed interface UiState<out T> {
-    data object Initial : UiState<Nothing>
-    data object Loading : UiState<Nothing>
-    // ... Success, Empty, Error
-}
-```
+Use the global `UiState<T>` (`Initial`, `Loading`, `Empty`, `Success(data)`, `Error(uiText: UiText)`) if the screen just loads a single data type. Otherwise, create a specific data class. `UiState`, `UiText`, `ObserveAsEvents`, and `Throwable.toUiText()` come from `android-base-components`: if the project doesn't have them yet, copy the templates.
 
 ### UiAction (Intent)
 ```kotlin
@@ -109,33 +101,18 @@ internal fun AlbumScreen(
 
 When implementing pagination on a screen, **DO NOT use LocalPagingSource** (as was done in older implementations).
 
-Instead, you MUST use the generic `BasePagingSource` pattern, which expects a `fetch` lambda returning `Resource<List<T>>`.
+### When to use `BasePagingSource`
+Use `BasePagingSource` **only** when the endpoint paginates by page number (e.g., `?page=1`, `?page=2&per_page=20`). It expects a `fetch` lambda returning `Resource<List<T>>`, starts at page 1, and treats a page with fewer than `pageSize` items as the last one.
+- If the endpoint's pages start at 0 (`?page=0`), still use it and convert in the remote data source (`page - 1`).
+- If the endpoint paginates any other way (cursor/token such as `?cursor=abc` or `next_page_token`, `?offset=&limit=`, `Link` headers), or the API docs/DTOs don't make the format clear, **stop and ask the user** how to paginate. Do not force `BasePagingSource`, and do not create a new paging source without approval.
 
-1. **Create BasePagingSource** (in `:core:presentation/util/` or `:core:data/util/` if not exists):
+### Implementation
+1. **Get BasePagingSource**: use `:core:presentation/.../util/BasePagingSource.kt`. If it doesn't exist, copy it (and `PagingExt.kt` / `PagingPreviewExt.kt`) from `android-base-components`.
+2. **Keep the page size in sync**: send `PAGE_SIZE` to the endpoint (`per_page`, `limit`, `size`, ...) and pass the same value to `PagingConfig` and `BasePagingSource`. If the endpoint doesn't accept a page size, use its fixed page size. A mismatch stops paging after the first page.
+3. **Expose Pager from ViewModel**:
 ```kotlin
-class BasePagingSource<T : Any>(
-    private val pageSize: Int = 20,
-    private val fetch: suspend (Int) -> Resource<List<T>>
-) : PagingSource<Int, T>() {
-    override fun getRefreshKey(state: PagingState<Int, T>): Int? { 
-        return state.anchorPosition?.let { position ->
-            val anchorPage = state.closestPageToPosition(position)
-            anchorPage?.prevKey?.plus(1) ?: anchorPage?.nextKey?.minus(1)
-        }
-    }
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, T> {
-        val page = params.key ?: 1
-        return fetch(page).fold(
-            onSuccess = { data -> LoadResult.Page(data, if(page==1) null else page-1, if(data.size<pageSize) null else page+1) },
-            onFailure = { LoadResult.Error(it) }
-        )
-    }
-}
+val pagedData: Flow<PagingData<Item>> = PagingConfig(pageSize = PAGE_SIZE)
+    .asPagerFlow { BasePagingSource(pageSize = PAGE_SIZE) { page -> getItemsUseCase(page) } } // UseCase returns Resource<List<Item>>
+    .cachedIn(viewModelScope)
 ```
-2. **Expose Pager from ViewModel**:
-```kotlin
-val pagedData: Flow<PagingData<Item>> = Pager(PagingConfig(pageSize = 20)) {
-    BasePagingSource { page -> getItemsUseCase(page) } // UseCase returns Resource<List<Item>>
-}.flow.cachedIn(viewModelScope)
-```
-3. **Collect in UI**: Use `collectAsLazyPagingItems()` in the Composable.
+4. **Collect in UI**: Use `collectAsLazyPagingItems()` in the Composable, and `collectAsPreviewLazyPagingItems()` in previews.

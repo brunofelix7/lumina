@@ -37,7 +37,7 @@ When adding new data components, follow this exact package structure inside `:co
 
 ## 2. Remote Data Sources & API Calls
 
-Always extend `BaseRemoteDataSource<T>` when creating a new remote data source implementation. It provides `safeApiCall` to automatically handle try/catch, IO dispatching, and error mapping.
+Always extend `BaseRemoteDataSource<T>` when creating a new remote data source implementation. It provides `safeApiCall` / `safeFlowApiCall` to automatically handle try/catch, IO dispatching, and error mapping to `RemoteException`. If the project doesn't have it yet, copy it and its extensions from `android-base-components`.
 
 ```kotlin
 // Example: ITunesRemoteDataSourceImpl.kt
