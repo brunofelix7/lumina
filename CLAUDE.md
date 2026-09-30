@@ -31,8 +31,8 @@ The architecture standards in `.cursor/rules/` are project-agnostic and always a
 | Key | Value |
 |---|---|
 | App | Lumina |
-| `<basePackage>` | `dev.lumina` (module namespaces: `dev.lumina.<core\|feature>.<name>`) |
-| Application ID / launch activity | `dev.lumina.app` / `dev.lumina.app/.MainActivity` |
+| `<basePackage>` | `dev.brunofelix.lumina` (module namespaces: `dev.brunofelix.lumina.<core\|feature>.<name>`; `:app` uses `dev.brunofelix.lumina`) |
+| Application ID / launch activity | `dev.brunofelix.lumina` / `dev.brunofelix.lumina/.MainActivity` |
 | Theme composable (`AppTheme`) | `LuminaTheme` |
 | Theme mode | Dark only (`DarkColors` in `Theme.kt`) |
 | Font family token (`AppFontFamily`) | `InterFontFamily` (Inter) |
