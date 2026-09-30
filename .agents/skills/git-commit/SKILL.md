@@ -39,6 +39,7 @@ Use the following specific emojis based on the project's established conventions
 - 💥 `refactor`: Breaking changes or major structural changes (e.g., `💥 refactor(multi-module): modularize project`)
 - 🙈 `chore`: Ignoring files, `.gitignore` updates (e.g., `🙈 chore(gitignore): add /release`)
 - 🔧 `chore`: Updating dependencies, build scripts, configuration
+- 🔧 `chore(ai)`: AI agent configuration: `.cursor/`, `.agents/`, `CLAUDE.md`, `GEMINI.md`, `AGENTS.md` (e.g., `🔧 chore(ai): make Android rules always applied`)
 - 🎉 `chore`: Initial project creation or scaffolding (e.g., `🎉 chore(core): initial project setup`)
 - 📝 `docs`: Documentation changes (e.g., `📝 docs(readme): update APK download link`)
 - 📸 `docs`: Visual documentation / screenshots (e.g., `📸 docs(screenshots): update app screenshots`)
@@ -48,7 +49,15 @@ Use the following specific emojis based on the project's established conventions
 
 When asked to commit changes:
 1. Review the changes using `git status` and `git diff`.
-2. Group the modified files logically by feature or architectural layer.
-3. For each group, stage the specific files (`git add <files>`).
-4. Commit using the `git commit -m "<gitmoji> <type>(<scope>): <subject>"` format.
-5. Repeat steps 3-4 until all intended changes are logically committed.
+2. **Scope**: commit only the changes that belong to the user's request (by default, the changes made in the current conversation). If other modified or untracked files exist, list them and ask whether to include them before staging anything.
+3. Group the selected files logically by feature or architectural layer.
+4. For each group, stage the specific files (`git add <files>`). Never use `git add .` or `git add -A`.
+5. Commit using the `git commit -m "<gitmoji> <type>(<scope>): <subject>"` format.
+6. Repeat steps 4-5 until all intended changes are logically committed.
+
+## 5. Safety
+
+Unless the user explicitly asks for it in the current request:
+- Never run `git push` (with or without `--force`).
+- Never rewrite existing commits (`--amend`, `rebase`, `reset`, `commit --fixup`).
+- Never skip hooks (`--no-verify`). If a hook fails, report the error and fix its cause instead of bypassing it.
