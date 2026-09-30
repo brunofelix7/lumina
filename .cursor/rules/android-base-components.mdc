@@ -1,0 +1,45 @@
+---
+alwaysApply: true
+description: Canonical base classes shared by every Android project (Resource, UiState, UiText, BaseRemoteDataSource, BasePagingSource, NavigationViewModel, ...). Their reference implementations live in .cursor/templates/.
+---
+
+# Android Base Components
+
+The other rules rely on a set of base classes and extensions. Their canonical implementations live in `.cursor/templates/`, mirroring the module layout (`core/<module>/<package path>`). In the templates, `<basePackage>` is the project's base package from `CLAUDE.md`.
+
+## Rules
+
+1. **Look before you write**: before using any component below, search the project for it by name.
+2. **Missing → copy the template**: copy the template into the module and package shown in the catalog, replacing `<basePackage>`. Copy its dependencies too. Never write a new variant or a simplified version.
+3. **Different API → ask**: if the project already has its own version with a different API, stop and ask the user whether to migrate to the template or keep the project's version.
+4. **Tests**: copying a template counts as creating the class; write its unit tests in the same task.
+5. **Gradle**: make sure the module declares the required libraries (below) before copying.
+
+## Catalog
+
+Template paths are relative to `.cursor/templates/`. Packages are relative to `<basePackage>`.
+
+| Component | Module → package | Template | Depends on |
+|---|---|---|---|
+| `Resource<T>`, `Resource.fold`, `Result.toResource()` | `:core:domain` → `core.domain.util` | `core/domain/util/Resource.kt` | — |
+| `RemoteException` | `:core:domain` → `core.domain.util.exception` | `core/domain/util/exception/RemoteException.kt` | — |
+| `LocalException` | `:core:domain` → `core.domain.util.exception` | `core/domain/util/exception/LocalException.kt` | — |
+| `BaseRemoteDataSource<T>` (`safeApiCall`, `safeFlowApiCall`) | `:core:data` → `core.data.util` | `core/data/util/BaseRemoteDataSource.kt` | `ResponseExt`, `ThrowableExt` |
+| `Response.mapOrThrow()`, `Response.toResult()` | `:core:data` → `core.data.util.extension` | `core/data/util/extension/ResponseExt.kt` | `ThrowableExt` |
+| `Throwable.toRemoteException()` | `:core:data` → `core.data.util.extension` | `core/data/util/extension/ThrowableExt.kt` | `RemoteException` |
+| `UiState<T>` | `:core:presentation` → `core.presentation.util` | `core/presentation/util/UiState.kt` | `UiText` |
+| `UiText` | `:core:presentation` → `core.presentation.util` | `core/presentation/util/UiText.kt` | — |
+| `ObserveAsEvents` | `:core:presentation` → `core.presentation.util` | `core/presentation/util/ObserveAsEvents.kt` | — |
+| `BasePagingSource<T>` (page-number endpoints only, e.g. `?page=1`) | `:core:presentation` → `core.presentation.util` | `core/presentation/util/BasePagingSource.kt` | `Resource` |
+| `PagingConfig.asPagerFlow()` | `:core:presentation` → `core.presentation.util.extension` | `core/presentation/util/extension/PagingExt.kt` | — |
+| `collectAsPreviewLazyPagingItems()`, `createCombinedLoadStates()` (previews only) | `:core:presentation` → `core.presentation.util.extension` | `core/presentation/util/extension/PagingPreviewExt.kt` | — |
+| `RemoteException.toUiText()`, `LocalException.toUiText()`, `Throwable.toUiText()` | `:core:presentation` → `core.presentation.util.extension` | `core/presentation/util/extension/DataErrorExt.kt` | `UiText`, both exceptions, error strings |
+| Error strings (`error_*`) | `:core:presentation` → `res/values/strings.xml` | `core/presentation/res/values/strings.xml` | — (merge into the existing file) |
+| `Route` (sealed, `NavKey`) | `:core:presentation` → `core.presentation.navigation` | `core/presentation/navigation/Route.kt` | — (add the project's routes) |
+| `NavigationViewModel` | `:core:presentation` → `core.presentation.viewmodel` | `core/presentation/viewmodel/NavigationViewModel.kt` | `Route` |
+
+## Required libraries
+
+- `:core:domain`: Kotlin stdlib only.
+- `:core:data`: Retrofit, Coroutines.
+- `:core:presentation`: Compose, `lifecycle-runtime-compose`, Paging 3 (`paging-runtime-ktx`, `paging-compose`), Navigation3 runtime, Kotlinx Serialization, Hilt.
