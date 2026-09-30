@@ -1,4 +1,4 @@
-package dev.lumina.core.designsystem.theme
+package dev.brunofelix.lumina.core.designsystem.theme
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme

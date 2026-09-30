@@ -1,4 +1,4 @@
-package dev.lumina.feature.auth.presentation.components
+package dev.brunofelix.lumina.feature.auth.presentation.components
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -15,13 +15,13 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
-import dev.lumina.core.designsystem.components.LuminaGlassTextField
-import dev.lumina.core.designsystem.components.LuminaGlassTextFieldStyle
-import dev.lumina.core.designsystem.theme.LuminaTheme
-import dev.lumina.core.designsystem.theme.size20
-import dev.lumina.core.designsystem.theme.spacing16
-import dev.lumina.feature.auth.R
-import dev.lumina.core.designsystem.R as DesignSystemR
+import dev.brunofelix.lumina.core.designsystem.components.LuminaGlassTextField
+import dev.brunofelix.lumina.core.designsystem.components.LuminaGlassTextFieldStyle
+import dev.brunofelix.lumina.core.designsystem.theme.LuminaTheme
+import dev.brunofelix.lumina.core.designsystem.theme.size20
+import dev.brunofelix.lumina.core.designsystem.theme.spacing16
+import dev.brunofelix.lumina.feature.auth.R
+import dev.brunofelix.lumina.core.designsystem.R as DesignSystemR
 
 @Composable
 fun PasswordTextField(

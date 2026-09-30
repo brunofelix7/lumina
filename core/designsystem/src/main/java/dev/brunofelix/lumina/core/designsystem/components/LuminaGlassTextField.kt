@@ -1,4 +1,4 @@
-package dev.lumina.core.designsystem.components
+package dev.brunofelix.lumina.core.designsystem.components
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.FastOutSlowInEasing
@@ -42,23 +42,23 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import dev.lumina.core.designsystem.R
-import dev.lumina.core.designsystem.theme.BorderGlassFrost
-import dev.lumina.core.designsystem.theme.BorderGlassHaze
-import dev.lumina.core.designsystem.theme.FocusGlow
-import dev.lumina.core.designsystem.theme.LuminaTheme
-import dev.lumina.core.designsystem.theme.OnGlass
-import dev.lumina.core.designsystem.theme.SurfaceGlassFrost
-import dev.lumina.core.designsystem.theme.SurfaceGlassHaze
-import dev.lumina.core.designsystem.theme.SurfaceGlassHazeFocused
-import dev.lumina.core.designsystem.theme.shapeRounded16
-import dev.lumina.core.designsystem.theme.size1
-import dev.lumina.core.designsystem.theme.size12
-import dev.lumina.core.designsystem.theme.size20
-import dev.lumina.core.designsystem.theme.size50
-import dev.lumina.core.designsystem.theme.spacing16
-import dev.lumina.core.designsystem.theme.spacing2
-import dev.lumina.core.designsystem.theme.spacing8
+import dev.brunofelix.lumina.core.designsystem.R
+import dev.brunofelix.lumina.core.designsystem.theme.BorderGlassFrost
+import dev.brunofelix.lumina.core.designsystem.theme.BorderGlassHaze
+import dev.brunofelix.lumina.core.designsystem.theme.FocusGlow
+import dev.brunofelix.lumina.core.designsystem.theme.LuminaTheme
+import dev.brunofelix.lumina.core.designsystem.theme.OnGlass
+import dev.brunofelix.lumina.core.designsystem.theme.SurfaceGlassFrost
+import dev.brunofelix.lumina.core.designsystem.theme.SurfaceGlassHaze
+import dev.brunofelix.lumina.core.designsystem.theme.SurfaceGlassHazeFocused
+import dev.brunofelix.lumina.core.designsystem.theme.shapeRounded16
+import dev.brunofelix.lumina.core.designsystem.theme.size1
+import dev.brunofelix.lumina.core.designsystem.theme.size12
+import dev.brunofelix.lumina.core.designsystem.theme.size20
+import dev.brunofelix.lumina.core.designsystem.theme.size50
+import dev.brunofelix.lumina.core.designsystem.theme.spacing16
+import dev.brunofelix.lumina.core.designsystem.theme.spacing2
+import dev.brunofelix.lumina.core.designsystem.theme.spacing8
 
 private const val FOCUS_ANIMATION_MILLIS = 200
 

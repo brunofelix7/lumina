@@ -1,4 +1,4 @@
-package dev.lumina.core.designsystem.components
+package dev.brunofelix.lumina.core.designsystem.components
 
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithCache

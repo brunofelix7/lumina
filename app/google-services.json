@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:123456789012:android:abcdef0123456789",
         "android_client_info": {
-          "package_name": "dev.lumina.app"
+          "package_name": "dev.brunofelix.lumina"
         }
       },
       "oauth_client": [

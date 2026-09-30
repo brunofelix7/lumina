@@ -1,4 +1,4 @@
-package dev.lumina.core.designsystem.theme
+package dev.brunofelix.lumina.core.designsystem.theme
 
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color

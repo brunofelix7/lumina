@@ -1,4 +1,4 @@
-package dev.lumina.feature.auth.presentation.components
+package dev.brunofelix.lumina.feature.auth.presentation.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -12,10 +12,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
-import dev.lumina.core.designsystem.theme.LuminaTheme
-import dev.lumina.core.designsystem.theme.spacing16
-import dev.lumina.core.designsystem.theme.spacing4
-import dev.lumina.feature.auth.R
+import dev.brunofelix.lumina.core.designsystem.theme.LuminaTheme
+import dev.brunofelix.lumina.core.designsystem.theme.spacing16
+import dev.brunofelix.lumina.core.designsystem.theme.spacing4
+import dev.brunofelix.lumina.feature.auth.R
 
 @Composable
 fun SignUpPrompt(

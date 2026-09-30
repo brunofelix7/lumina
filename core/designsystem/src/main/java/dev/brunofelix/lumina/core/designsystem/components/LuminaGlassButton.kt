@@ -1,4 +1,4 @@
-package dev.lumina.core.designsystem.components
+package dev.brunofelix.lumina.core.designsystem.components
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.FastOutSlowInEasing
@@ -37,24 +37,24 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import dev.lumina.core.designsystem.R
-import dev.lumina.core.designsystem.theme.BorderGlassFrost
-import dev.lumina.core.designsystem.theme.LuminaTheme
-import dev.lumina.core.designsystem.theme.OnGlass
-import dev.lumina.core.designsystem.theme.PrimaryEmissionGlow
-import dev.lumina.core.designsystem.theme.PrimaryGlassBorder
-import dev.lumina.core.designsystem.theme.PrimaryGlassFill
-import dev.lumina.core.designsystem.theme.PrimaryGlassGlow
-import dev.lumina.core.designsystem.theme.SurfaceGlassFrost
-import dev.lumina.core.designsystem.theme.shapePill
-import dev.lumina.core.designsystem.theme.size1
-import dev.lumina.core.designsystem.theme.size18
-import dev.lumina.core.designsystem.theme.size20
-import dev.lumina.core.designsystem.theme.size24
-import dev.lumina.core.designsystem.theme.size50
-import dev.lumina.core.designsystem.theme.spacing16
-import dev.lumina.core.designsystem.theme.spacing4
-import dev.lumina.core.designsystem.theme.spacing8
+import dev.brunofelix.lumina.core.designsystem.R
+import dev.brunofelix.lumina.core.designsystem.theme.BorderGlassFrost
+import dev.brunofelix.lumina.core.designsystem.theme.LuminaTheme
+import dev.brunofelix.lumina.core.designsystem.theme.OnGlass
+import dev.brunofelix.lumina.core.designsystem.theme.PrimaryEmissionGlow
+import dev.brunofelix.lumina.core.designsystem.theme.PrimaryGlassBorder
+import dev.brunofelix.lumina.core.designsystem.theme.PrimaryGlassFill
+import dev.brunofelix.lumina.core.designsystem.theme.PrimaryGlassGlow
+import dev.brunofelix.lumina.core.designsystem.theme.SurfaceGlassFrost
+import dev.brunofelix.lumina.core.designsystem.theme.shapePill
+import dev.brunofelix.lumina.core.designsystem.theme.size1
+import dev.brunofelix.lumina.core.designsystem.theme.size18
+import dev.brunofelix.lumina.core.designsystem.theme.size20
+import dev.brunofelix.lumina.core.designsystem.theme.size24
+import dev.brunofelix.lumina.core.designsystem.theme.size50
+import dev.brunofelix.lumina.core.designsystem.theme.spacing16
+import dev.brunofelix.lumina.core.designsystem.theme.spacing4
+import dev.brunofelix.lumina.core.designsystem.theme.spacing8
 
 private const val PRESSED_SCALE = 0.98f
 private const val PRESS_ANIMATION_MILLIS = 150
