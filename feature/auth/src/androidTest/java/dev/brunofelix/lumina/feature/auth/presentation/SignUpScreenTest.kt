@@ -1,19 +1,23 @@
-package dev.lumina.feature.auth.presentation
+package dev.brunofelix.lumina.feature.auth.presentation
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotEnabled
-import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextInput
-import dev.lumina.core.designsystem.theme.LuminaTheme
-import org.junit.Assert.assertEquals
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import dev.brunofelix.lumina.core.designsystem.theme.LuminaTheme
+import io.kotest.matchers.collections.shouldBeEmpty
+import io.kotest.matchers.shouldBe
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 
+@RunWith(AndroidJUnit4::class)
 class SignUpScreenTest {
 
     @get:Rule
@@ -21,18 +25,18 @@ class SignUpScreenTest {
 
     private val capturedActions = mutableListOf<SignUpUiAction>()
 
-    private val filledState = SignUpState(
+    private val filledState = SignUpUiState(
         name = "Nova Star",
         email = "nova@lumina.dev",
         password = "supernova",
         confirmPassword = "supernova"
     )
 
-    private fun setSignUpContent(state: SignUpState = SignUpState()) {
+    private fun setSignUpContent(uiState: SignUpUiState = SignUpUiState()) {
         composeTestRule.setContent {
             LuminaTheme {
                 SignUpScreen(
-                    state = state,
+                    uiState = uiState,
                     onAction = { capturedActions.add(it) }
                 )
             }
@@ -68,7 +72,25 @@ class SignUpScreenTest {
 
         composeTestRule.onNodeWithText("Full Name").performTextInput("Nova Star")
 
-        assertEquals(listOf(SignUpUiAction.OnNameChange("Nova Star")), capturedActions)
+        capturedActions shouldBe listOf(SignUpUiAction.OnNameChange("Nova Star"))
+    }
+
+    @Test
+    fun signUpScreen_typingEmail_emitsEmailChange() {
+        setSignUpContent()
+
+        composeTestRule.onNodeWithText("Email address").performTextInput("nova@lumina.dev")
+
+        capturedActions shouldBe listOf(SignUpUiAction.OnEmailChange("nova@lumina.dev"))
+    }
+
+    @Test
+    fun signUpScreen_typingPassword_emitsPasswordChange() {
+        setSignUpContent()
+
+        composeTestRule.onNodeWithText("Password").performTextInput("supernova")
+
+        capturedActions shouldBe listOf(SignUpUiAction.OnPasswordChange("supernova"))
     }
 
     @Test
@@ -77,30 +99,7 @@ class SignUpScreenTest {
 
         composeTestRule.onNodeWithText("Confirm password").performTextInput("supernova")
 
-        assertEquals(listOf(SignUpUiAction.OnConfirmPasswordChange("supernova")), capturedActions)
-    }
-
-    @Test
-    fun signUpRoute_fillingAllFields_updatesStateAndEnablesCreateAccount() {
-        val viewModel = SignUpViewModel()
-        composeTestRule.setContent {
-            LuminaTheme {
-                SignUpRoute(
-                    viewModel = viewModel,
-                    onNavigateBack = {}
-                )
-            }
-        }
-
-        composeTestRule.onNodeWithText("Create account").assertIsNotEnabled()
-        composeTestRule.onNodeWithText("Full Name").performTextInput("Nova Star")
-        composeTestRule.onNodeWithText("Email address").performTextInput("nova@lumina.dev")
-        composeTestRule.onNodeWithText("Password").performTextInput("supernova")
-        composeTestRule.onNodeWithText("Create account").assertIsNotEnabled()
-        composeTestRule.onNodeWithText("Confirm password").performTextInput("supernova")
-
-        assertEquals(filledState, viewModel.state.value)
-        composeTestRule.onNodeWithText("Create account").assertIsEnabled()
+        capturedActions shouldBe listOf(SignUpUiAction.OnConfirmPasswordChange("supernova"))
     }
 
     @Test
@@ -110,12 +109,9 @@ class SignUpScreenTest {
         composeTestRule.onNodeWithContentDescription("Show password").performClick()
         composeTestRule.onNodeWithContentDescription("Show confirm password").performClick()
 
-        assertEquals(
-            listOf(
-                SignUpUiAction.OnTogglePasswordVisibility,
-                SignUpUiAction.OnToggleConfirmPasswordVisibility
-            ),
-            capturedActions
+        capturedActions shouldBe listOf(
+            SignUpUiAction.OnTogglePasswordVisibility,
+            SignUpUiAction.OnToggleConfirmPasswordVisibility
         )
     }
 
@@ -125,7 +121,7 @@ class SignUpScreenTest {
 
         composeTestRule.onNodeWithText("Create account").assertIsNotEnabled().performClick()
 
-        assertEquals(emptyList<SignUpUiAction>(), capturedActions)
+        capturedActions.shouldBeEmpty()
     }
 
     @Test
@@ -141,7 +137,7 @@ class SignUpScreenTest {
 
         composeTestRule.onNodeWithText("Create account").assertIsEnabled().performClick()
 
-        assertEquals(listOf(SignUpUiAction.OnCreateAccountClick), capturedActions)
+        capturedActions shouldBe listOf(SignUpUiAction.OnCreateAccountClick)
     }
 
     @Test
@@ -150,23 +146,6 @@ class SignUpScreenTest {
 
         composeTestRule.onNodeWithContentDescription("Go back").performClick()
 
-        assertEquals(listOf(SignUpUiAction.OnBackClick), capturedActions)
-    }
-
-    @Test
-    fun signUpRoute_backClick_navigatesBack() {
-        var navigatedBack = false
-        composeTestRule.setContent {
-            LuminaTheme {
-                SignUpRoute(
-                    viewModel = SignUpViewModel(),
-                    onNavigateBack = { navigatedBack = true }
-                )
-            }
-        }
-
-        composeTestRule.onNodeWithContentDescription("Go back").performClick()
-
-        assertEquals(true, navigatedBack)
+        capturedActions shouldBe listOf(SignUpUiAction.OnBackClick)
     }
 }

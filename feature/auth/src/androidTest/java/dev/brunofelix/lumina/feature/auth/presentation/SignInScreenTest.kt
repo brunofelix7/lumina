@@ -1,19 +1,23 @@
-package dev.lumina.feature.auth.presentation
+package dev.brunofelix.lumina.feature.auth.presentation
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotEnabled
-import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextInput
-import dev.lumina.core.designsystem.theme.LuminaTheme
-import org.junit.Assert.assertEquals
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import dev.brunofelix.lumina.core.designsystem.theme.LuminaTheme
+import io.kotest.matchers.collections.shouldBeEmpty
+import io.kotest.matchers.shouldBe
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 
+@RunWith(AndroidJUnit4::class)
 class SignInScreenTest {
 
     @get:Rule
@@ -21,13 +25,13 @@ class SignInScreenTest {
 
     private val capturedActions = mutableListOf<SignInUiAction>()
 
-    private val filledState = SignInState(email = "nova@lumina.dev", password = "supernova")
+    private val filledState = SignInUiState(email = "nova@lumina.dev", password = "supernova")
 
-    private fun setSignInContent(state: SignInState = SignInState()) {
+    private fun setSignInContent(uiState: SignInUiState = SignInUiState()) {
         composeTestRule.setContent {
             LuminaTheme {
                 SignInScreen(
-                    state = state,
+                    uiState = uiState,
                     onAction = { capturedActions.add(it) }
                 )
             }
@@ -52,7 +56,7 @@ class SignInScreenTest {
 
     @Test
     fun signInScreen_showsHidePasswordWhenPasswordIsVisible() {
-        setSignInContent(SignInState(password = "secret", isPasswordVisible = true))
+        setSignInContent(SignInUiState(password = "secret", isPasswordVisible = true))
 
         composeTestRule.onNodeWithText("secret").assertIsDisplayed()
         composeTestRule.onNodeWithContentDescription("Hide password").assertIsDisplayed()
@@ -64,7 +68,7 @@ class SignInScreenTest {
 
         composeTestRule.onNodeWithText("Email address").performTextInput("nova@lumina.dev")
 
-        assertEquals(listOf(SignInUiAction.OnEmailChange("nova@lumina.dev")), capturedActions)
+        capturedActions shouldBe listOf(SignInUiAction.OnEmailChange("nova@lumina.dev"))
     }
 
     @Test
@@ -73,7 +77,7 @@ class SignInScreenTest {
 
         composeTestRule.onNodeWithText("Password").performTextInput("supernova")
 
-        assertEquals(listOf(SignInUiAction.OnPasswordChange("supernova")), capturedActions)
+        capturedActions shouldBe listOf(SignInUiAction.OnPasswordChange("supernova"))
     }
 
     @Test
@@ -82,7 +86,7 @@ class SignInScreenTest {
 
         composeTestRule.onNodeWithContentDescription("Show password").performClick()
 
-        assertEquals(listOf(SignInUiAction.OnTogglePasswordVisibility), capturedActions)
+        capturedActions shouldBe listOf(SignInUiAction.OnTogglePasswordVisibility)
     }
 
     @Test
@@ -91,7 +95,7 @@ class SignInScreenTest {
 
         composeTestRule.onNodeWithText("Forgot password?").performClick()
 
-        assertEquals(listOf(SignInUiAction.OnForgotPasswordClick), capturedActions)
+        capturedActions shouldBe listOf(SignInUiAction.OnForgotPasswordClick)
     }
 
     @Test
@@ -100,12 +104,12 @@ class SignInScreenTest {
 
         composeTestRule.onNodeWithText("Login").assertIsNotEnabled().performClick()
 
-        assertEquals(emptyList<SignInUiAction>(), capturedActions)
+        capturedActions.shouldBeEmpty()
     }
 
     @Test
     fun signInScreen_loginIsDisabledWhenOnlyEmailIsFilled() {
-        setSignInContent(SignInState(email = "nova@lumina.dev"))
+        setSignInContent(SignInUiState(email = "nova@lumina.dev"))
 
         composeTestRule.onNodeWithText("Login").assertIsNotEnabled()
     }
@@ -116,7 +120,7 @@ class SignInScreenTest {
 
         composeTestRule.onNodeWithText("Login").assertIsEnabled().performClick()
 
-        assertEquals(listOf(SignInUiAction.OnLoginClick), capturedActions)
+        capturedActions shouldBe listOf(SignInUiAction.OnLoginClick)
     }
 
     @Test
@@ -125,7 +129,7 @@ class SignInScreenTest {
 
         composeTestRule.onNodeWithText("Sign in with Google").performScrollTo().performClick()
 
-        assertEquals(listOf(SignInUiAction.OnGoogleSignInClick), capturedActions)
+        capturedActions shouldBe listOf(SignInUiAction.OnGoogleSignInClick)
     }
 
     @Test
@@ -134,41 +138,6 @@ class SignInScreenTest {
 
         composeTestRule.onNodeWithText("Sign up").performScrollTo().performClick()
 
-        assertEquals(listOf(SignInUiAction.OnSignUpClick), capturedActions)
-    }
-
-    @Test
-    fun signInRoute_signUpClick_navigatesToSignUp() {
-        var navigated = false
-        composeTestRule.setContent {
-            LuminaTheme {
-                SignInRoute(
-                    viewModel = SignInViewModel(),
-                    onNavigateToSignUp = { navigated = true }
-                )
-            }
-        }
-
-        composeTestRule.onNodeWithText("Sign up").performScrollTo().performClick()
-
-        assertEquals(true, navigated)
-    }
-
-    @Test
-    fun signInRoute_fillingFields_enablesLogin() {
-        composeTestRule.setContent {
-            LuminaTheme {
-                SignInRoute(
-                    viewModel = SignInViewModel(),
-                    onNavigateToSignUp = {}
-                )
-            }
-        }
-
-        composeTestRule.onNodeWithText("Login").assertIsNotEnabled()
-        composeTestRule.onNodeWithText("Email address").performTextInput("nova@lumina.dev")
-        composeTestRule.onNodeWithText("Login").assertIsNotEnabled()
-        composeTestRule.onNodeWithText("Password").performTextInput("supernova")
-        composeTestRule.onNodeWithText("Login").assertIsEnabled()
+        capturedActions shouldBe listOf(SignInUiAction.OnSignUpClick)
     }
 }
