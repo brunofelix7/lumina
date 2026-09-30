@@ -1,13 +1,16 @@
-package dev.lumina.feature.splash.presentation
+package dev.brunofelix.lumina.feature.splash.presentation
 
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
-import dev.lumina.core.designsystem.theme.LuminaTheme
-import org.junit.Assert.assertEquals
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import dev.brunofelix.lumina.core.designsystem.theme.LuminaTheme
+import io.kotest.matchers.shouldBe
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 
+@RunWith(AndroidJUnit4::class)
 class SplashScreenTest {
 
     @get:Rule
@@ -38,11 +41,11 @@ class SplashScreenTest {
         }
 
         composeTestRule.mainClock.advanceTimeBy(500L)
-        assertEquals(0, finishCount)
+        finishCount shouldBe 0
 
         composeTestRule.mainClock.advanceTimeBy(600L)
         composeTestRule.waitForIdle()
-        assertEquals(1, finishCount)
+        finishCount shouldBe 1
     }
 
     @Test
@@ -56,10 +59,10 @@ class SplashScreenTest {
         }
 
         composeTestRule.mainClock.advanceTimeBy(SPLASH_DURATION_MILLIS - 100L)
-        assertEquals(false, finished)
+        finished shouldBe false
 
         composeTestRule.mainClock.advanceTimeBy(200L)
         composeTestRule.waitForIdle()
-        assertEquals(true, finished)
+        finished shouldBe true
     }
 }
