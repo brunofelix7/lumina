@@ -1,4 +1,4 @@
-package dev.lumina.feature.auth.presentation
+package dev.brunofelix.lumina.feature.auth.presentation
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,45 +12,48 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import dev.lumina.core.designsystem.components.LuminaGradientBackground
-import dev.lumina.core.designsystem.theme.LuminaTheme
-import dev.lumina.core.designsystem.theme.size384
-import dev.lumina.core.designsystem.theme.spacing16
-import dev.lumina.core.designsystem.theme.spacing24
-import dev.lumina.feature.auth.R
-import dev.lumina.feature.auth.presentation.components.AuthDivider
-import dev.lumina.feature.auth.presentation.components.GoogleSignInButton
-import dev.lumina.feature.auth.presentation.components.SignInForm
-import dev.lumina.feature.auth.presentation.components.SignInHeader
-import dev.lumina.feature.auth.presentation.components.SignUpPrompt
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import dev.brunofelix.lumina.core.designsystem.components.LuminaGradientBackground
+import dev.brunofelix.lumina.core.designsystem.theme.LuminaTheme
+import dev.brunofelix.lumina.core.designsystem.theme.size384
+import dev.brunofelix.lumina.core.designsystem.theme.spacing16
+import dev.brunofelix.lumina.core.designsystem.theme.spacing24
+import dev.brunofelix.lumina.core.presentation.util.ObserveAsEvents
+import dev.brunofelix.lumina.feature.auth.R
+import dev.brunofelix.lumina.feature.auth.presentation.components.AuthDivider
+import dev.brunofelix.lumina.feature.auth.presentation.components.GoogleSignInButton
+import dev.brunofelix.lumina.feature.auth.presentation.components.SignInForm
+import dev.brunofelix.lumina.feature.auth.presentation.components.SignInHeader
+import dev.brunofelix.lumina.feature.auth.presentation.components.SignUpPrompt
 
 @Composable
-fun SignInRoute(
-    viewModel: SignInViewModel,
-    onNavigateToSignUp: () -> Unit
+internal fun SignInRoute(
+    onNavigateToSignUp: () -> Unit,
+    viewModel: SignInViewModel = hiltViewModel()
 ) {
-    val state by viewModel.state.collectAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    ObserveAsEvents(viewModel.uiEvent) { event ->
+        when (event) {
+            SignInUiEvent.NavigateToSignUp -> onNavigateToSignUp()
+        }
+    }
 
     SignInScreen(
-        state = state,
-        onAction = { action ->
-            when (action) {
-                SignInUiAction.OnSignUpClick -> onNavigateToSignUp()
-                else -> viewModel.onAction(action)
-            }
-        }
+        uiState = uiState,
+        onAction = viewModel::onAction
     )
 }
 
 @Composable
-fun SignInScreen(
-    state: SignInState,
+internal fun SignInScreen(
+    uiState: SignInUiState,
     onAction: (SignInUiAction) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -72,7 +75,7 @@ fun SignInScreen(
             ) {
                 SignInHeader()
                 SignInForm(
-                    state = state,
+                    uiState = uiState,
                     onAction = onAction
                 )
                 AuthDivider(
@@ -98,7 +101,7 @@ fun SignInScreen(
 private fun SignInScreenEmptyPreview() {
     LuminaTheme {
         SignInScreen(
-            state = SignInState(),
+            uiState = SignInUiState(),
             onAction = {}
         )
     }
@@ -109,7 +112,7 @@ private fun SignInScreenEmptyPreview() {
 private fun SignInScreenFilledPreview() {
     LuminaTheme {
         SignInScreen(
-            state = SignInState(
+            uiState = SignInUiState(
                 email = "nova@lumina.dev",
                 password = "supernova"
             ),
@@ -123,7 +126,7 @@ private fun SignInScreenFilledPreview() {
 private fun SignInScreenPasswordVisiblePreview() {
     LuminaTheme {
         SignInScreen(
-            state = SignInState(
+            uiState = SignInUiState(
                 email = "nova@lumina.dev",
                 password = "supernova",
                 isPasswordVisible = true

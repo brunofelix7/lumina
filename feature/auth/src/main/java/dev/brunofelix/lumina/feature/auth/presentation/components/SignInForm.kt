@@ -1,4 +1,4 @@
-package dev.lumina.feature.auth.presentation.components
+package dev.brunofelix.lumina.feature.auth.presentation.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -19,20 +19,20 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
-import dev.lumina.core.designsystem.components.LuminaGlassButton
-import dev.lumina.core.designsystem.components.LuminaGlassTextField
-import dev.lumina.core.designsystem.theme.LuminaTheme
-import dev.lumina.core.designsystem.theme.size18
-import dev.lumina.core.designsystem.theme.spacing16
-import dev.lumina.core.designsystem.theme.spacing4
-import dev.lumina.feature.auth.R
-import dev.lumina.feature.auth.presentation.SignInState
-import dev.lumina.feature.auth.presentation.SignInUiAction
-import dev.lumina.core.designsystem.R as DesignSystemR
+import dev.brunofelix.lumina.core.designsystem.components.LuminaGlassButton
+import dev.brunofelix.lumina.core.designsystem.components.LuminaGlassTextField
+import dev.brunofelix.lumina.core.designsystem.theme.LuminaTheme
+import dev.brunofelix.lumina.core.designsystem.theme.size18
+import dev.brunofelix.lumina.core.designsystem.theme.spacing16
+import dev.brunofelix.lumina.core.designsystem.theme.spacing4
+import dev.brunofelix.lumina.feature.auth.R
+import dev.brunofelix.lumina.feature.auth.presentation.SignInUiAction
+import dev.brunofelix.lumina.feature.auth.presentation.SignInUiState
+import dev.brunofelix.lumina.core.designsystem.R as DesignSystemR
 
 @Composable
 fun SignInForm(
-    state: SignInState,
+    uiState: SignInUiState,
     onAction: (SignInUiAction) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -41,7 +41,7 @@ fun SignInForm(
         verticalArrangement = Arrangement.spacedBy(spacing16)
     ) {
         LuminaGlassTextField(
-            value = state.email,
+            value = uiState.email,
             onValueChange = { onAction(SignInUiAction.OnEmailChange(it)) },
             placeholder = stringResource(R.string.auth_email_placeholder),
             leadingIcon = painterResource(DesignSystemR.drawable.ic_mail),
@@ -51,9 +51,9 @@ fun SignInForm(
             )
         )
         PasswordTextField(
-            value = state.password,
+            value = uiState.password,
             onValueChange = { onAction(SignInUiAction.OnPasswordChange(it)) },
-            isPasswordVisible = state.isPasswordVisible,
+            isPasswordVisible = uiState.isPasswordVisible,
             onToggleVisibility = { onAction(SignInUiAction.OnTogglePasswordVisibility) }
         )
         Row(
@@ -74,7 +74,7 @@ fun SignInForm(
         LuminaGlassButton(
             onClick = { onAction(SignInUiAction.OnLoginClick) },
             modifier = Modifier.padding(top = spacing4),
-            enabled = state.isLoginEnabled,
+            enabled = uiState.isLoginEnabled,
             contentSpacing = spacing4
         ) {
             Text(text = stringResource(R.string.sign_in_login))
@@ -92,7 +92,7 @@ fun SignInForm(
 private fun SignInFormEmptyPreview() {
     LuminaTheme {
         SignInForm(
-            state = SignInState(),
+            uiState = SignInUiState(),
             onAction = {},
             modifier = Modifier.padding(spacing16)
         )
@@ -104,7 +104,7 @@ private fun SignInFormEmptyPreview() {
 private fun SignInFormFilledPreview() {
     LuminaTheme {
         SignInForm(
-            state = SignInState(
+            uiState = SignInUiState(
                 email = "nova@lumina.dev",
                 password = "supernova",
                 isPasswordVisible = true

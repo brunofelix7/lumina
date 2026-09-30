@@ -1,4 +1,4 @@
-package dev.lumina.feature.auth.presentation.components
+package dev.brunofelix.lumina.feature.auth.presentation.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,22 +16,22 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
-import dev.lumina.core.designsystem.components.LuminaGlassButton
-import dev.lumina.core.designsystem.components.LuminaGlassTextField
-import dev.lumina.core.designsystem.components.LuminaGlassTextFieldStyle
-import dev.lumina.core.designsystem.theme.LuminaTheme
-import dev.lumina.core.designsystem.theme.size20
-import dev.lumina.core.designsystem.theme.spacing14
-import dev.lumina.core.designsystem.theme.spacing24
-import dev.lumina.core.designsystem.theme.spacing8
-import dev.lumina.feature.auth.R
-import dev.lumina.feature.auth.presentation.SignUpState
-import dev.lumina.feature.auth.presentation.SignUpUiAction
-import dev.lumina.core.designsystem.R as DesignSystemR
+import dev.brunofelix.lumina.core.designsystem.components.LuminaGlassButton
+import dev.brunofelix.lumina.core.designsystem.components.LuminaGlassTextField
+import dev.brunofelix.lumina.core.designsystem.components.LuminaGlassTextFieldStyle
+import dev.brunofelix.lumina.core.designsystem.theme.LuminaTheme
+import dev.brunofelix.lumina.core.designsystem.theme.size20
+import dev.brunofelix.lumina.core.designsystem.theme.spacing14
+import dev.brunofelix.lumina.core.designsystem.theme.spacing24
+import dev.brunofelix.lumina.core.designsystem.theme.spacing8
+import dev.brunofelix.lumina.feature.auth.R
+import dev.brunofelix.lumina.feature.auth.presentation.SignUpUiAction
+import dev.brunofelix.lumina.feature.auth.presentation.SignUpUiState
+import dev.brunofelix.lumina.core.designsystem.R as DesignSystemR
 
 @Composable
 fun SignUpForm(
-    state: SignUpState,
+    uiState: SignUpUiState,
     onAction: (SignUpUiAction) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -40,7 +40,7 @@ fun SignUpForm(
         verticalArrangement = Arrangement.spacedBy(spacing14)
     ) {
         LuminaGlassTextField(
-            value = state.name,
+            value = uiState.name,
             onValueChange = { onAction(SignUpUiAction.OnNameChange(it)) },
             placeholder = stringResource(R.string.sign_up_name_placeholder),
             leadingIcon = painterResource(DesignSystemR.drawable.ic_person_semibold),
@@ -51,7 +51,7 @@ fun SignUpForm(
             )
         )
         LuminaGlassTextField(
-            value = state.email,
+            value = uiState.email,
             onValueChange = { onAction(SignUpUiAction.OnEmailChange(it)) },
             placeholder = stringResource(R.string.auth_email_placeholder),
             leadingIcon = painterResource(DesignSystemR.drawable.ic_mail_semibold),
@@ -62,17 +62,17 @@ fun SignUpForm(
             )
         )
         PasswordTextField(
-            value = state.password,
+            value = uiState.password,
             onValueChange = { onAction(SignUpUiAction.OnPasswordChange(it)) },
-            isPasswordVisible = state.isPasswordVisible,
+            isPasswordVisible = uiState.isPasswordVisible,
             onToggleVisibility = { onAction(SignUpUiAction.OnTogglePasswordVisibility) },
             style = LuminaGlassTextFieldStyle.Haze,
             imeAction = ImeAction.Next
         )
         PasswordTextField(
-            value = state.confirmPassword,
+            value = uiState.confirmPassword,
             onValueChange = { onAction(SignUpUiAction.OnConfirmPasswordChange(it)) },
-            isPasswordVisible = state.isConfirmPasswordVisible,
+            isPasswordVisible = uiState.isConfirmPasswordVisible,
             onToggleVisibility = { onAction(SignUpUiAction.OnToggleConfirmPasswordVisibility) },
             style = LuminaGlassTextFieldStyle.Haze,
             placeholder = stringResource(R.string.sign_up_confirm_password_placeholder),
@@ -84,7 +84,7 @@ fun SignUpForm(
         LuminaGlassButton(
             onClick = { onAction(SignUpUiAction.OnCreateAccountClick) },
             modifier = Modifier.padding(top = spacing8),
-            enabled = state.isCreateAccountEnabled,
+            enabled = uiState.isCreateAccountEnabled,
             contentSpacing = spacing8
         ) {
             Text(text = stringResource(R.string.sign_up_create_account))
@@ -102,7 +102,7 @@ fun SignUpForm(
 private fun SignUpFormEmptyPreview() {
     LuminaTheme {
         SignUpForm(
-            state = SignUpState(),
+            uiState = SignUpUiState(),
             onAction = {},
             modifier = Modifier.padding(spacing24)
         )
@@ -114,7 +114,7 @@ private fun SignUpFormEmptyPreview() {
 private fun SignUpFormFilledPreview() {
     LuminaTheme {
         SignUpForm(
-            state = SignUpState(
+            uiState = SignUpUiState(
                 name = "Nova Star",
                 email = "nova@lumina.dev",
                 password = "supernova",
