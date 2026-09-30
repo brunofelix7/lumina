@@ -1,8 +1,9 @@
-package dev.lumina.core.presentation.navigation
+package dev.brunofelix.lumina.core.presentation.navigation
 
+import androidx.navigation3.runtime.NavKey
 import kotlinx.serialization.Serializable
 
-sealed interface Route {
+sealed interface Route : NavKey {
     @Serializable
     data object Splash : Route
 
