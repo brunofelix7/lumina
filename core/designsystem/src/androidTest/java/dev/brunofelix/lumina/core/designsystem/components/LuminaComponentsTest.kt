@@ -1,20 +1,23 @@
-package dev.lumina.core.designsystem.components
+package dev.brunofelix.lumina.core.designsystem.components
 
 import androidx.compose.material3.Text
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotEnabled
-import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
-import dev.lumina.core.designsystem.R
-import dev.lumina.core.designsystem.theme.LuminaTheme
-import org.junit.Assert.assertEquals
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import dev.brunofelix.lumina.core.designsystem.R
+import dev.brunofelix.lumina.core.designsystem.theme.LuminaTheme
+import io.kotest.matchers.shouldBe
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 
+@RunWith(AndroidJUnit4::class)
 class LuminaComponentsTest {
 
     @get:Rule
@@ -68,7 +71,7 @@ class LuminaComponentsTest {
         }
 
         composeTestRule.onNodeWithText("Email address").performTextInput("nova@lumina.dev")
-        assertEquals("nova@lumina.dev", textValue)
+        textValue shouldBe "nova@lumina.dev"
     }
 
     @Test
@@ -87,7 +90,7 @@ class LuminaComponentsTest {
         }
 
         composeTestRule.onNodeWithText("Full Name").performTextInput("Nova Star")
-        assertEquals("Nova Star", textValue)
+        textValue shouldBe "Nova Star"
     }
 
     @Test
@@ -102,7 +105,7 @@ class LuminaComponentsTest {
         }
 
         composeTestRule.onNodeWithText("Login").assertIsEnabled().performClick()
-        assertEquals(true, clicked)
+        clicked shouldBe true
     }
 
     @Test
@@ -117,7 +120,7 @@ class LuminaComponentsTest {
         }
 
         composeTestRule.onNodeWithText("Login").assertIsNotEnabled().performClick()
-        assertEquals(false, clicked)
+        clicked shouldBe false
     }
 
     @Test
@@ -135,6 +138,6 @@ class LuminaComponentsTest {
         }
 
         composeTestRule.onNodeWithText("Sign in with Google").performClick()
-        assertEquals(true, clicked)
+        clicked shouldBe true
     }
 }
