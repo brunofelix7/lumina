@@ -54,6 +54,8 @@ dependencies {
     implementation(project(":core:domain"))
     implementation(project(":core:data"))
     implementation(project(":feature:auth"))
+    implementation(project(":feature:home"))
+    implementation(project(":feature:profile"))
     implementation(project(":feature:splash"))
 
     // Jetpack Compose
