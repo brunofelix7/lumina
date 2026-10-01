@@ -38,9 +38,9 @@ The architecture standards in `.cursor/rules/` are project-agnostic and always a
 | Font family token (`AppFontFamily`) | `InterFontFamily` (Inter) |
 | Design source | Google Stitch, project **Lumina App**, ID `12697452454607839578`, via the Stitch MCP (`list_screens` / `get_screen`) |
 | Design tokens doc | `DESIGN.md` ("Lumina Supernova") |
-| Foundational components | `LuminaGlassButton`, `LuminaGlassTextField`, `LuminaGradientBackground`, `Modifier.glowShadow` |
-| Brand tokens without a Material role | `AtmosphericCanvas`, `SurfaceGlass*`, `BorderGlass*`, `PrimaryGlass*`, `FocusGlow`, `PrimaryEmissionGlow` (in `Color.kt`) |
-| Shape tokens | `shapePill`, `shapeRounded16` (in `Shapes.kt`) |
+| Foundational components | `LuminaGlassButton` (`Primary`, `Secondary`, `Danger`), `LuminaGlassTextField`, `LuminaGradientBackground`, `LuminaFloatingActionButton`, `Modifier.glowShadow` |
+| Brand tokens without a Material role | `AtmosphericCanvas`, `SurfaceGlass*`, `BorderGlass*`, `PrimaryGlass*`, `DangerGlass*`, `OnGlass*`, `OutlineSubtle`, `FocusGlow`, `PrimaryEmissionGlow` (in `Color.kt`) |
+| Shape tokens | `shapePill`, `shapeCircle`, `shapeRounded16`, `shapeRounded20` (in `Shapes.kt`) |
 | Project-specific stack | Gemini API (client lives in `:core:data`) |
 
 ## A2. Source of Truth for UI (CRITICAL)
