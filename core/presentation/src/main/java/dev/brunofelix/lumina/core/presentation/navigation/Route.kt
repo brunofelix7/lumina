@@ -12,4 +12,10 @@ sealed interface Route : NavKey {
 
     @Serializable
     data object SignUp : Route
+
+    @Serializable
+    data object Home : Route
+
+    @Serializable
+    data object Profile : Route
 }
