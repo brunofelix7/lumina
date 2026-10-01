@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="profile_title">Profile</string>
+    <string name="profile_go_back">Go back</string>
+    <string name="profile_decks">Decks</string>
+    <string name="profile_cards">Cards</string>
+    <string name="profile_log_out">Log Out</string>
+    <string name="profile_app_name">Lumina</string>
+    <string name="profile_app_version">V%1$s</string>
+</resources>
