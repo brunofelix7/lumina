@@ -2,6 +2,7 @@ package dev.brunofelix.lumina.feature.auth.presentation
 
 import io.kotest.assertions.withClue
 import io.kotest.core.spec.style.DescribeSpec
+import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -120,6 +121,20 @@ class SignUpViewModelTest : DescribeSpec({
                 filled.onAction(SignUpUiAction.OnCreateAccountClick)
 
                 filled.uiState.value shouldBe stateBefore
+            }
+        }
+
+        it("should not change state or emit events on OnGoogleSignUpClick action") {
+            runTest(testDispatcher) {
+                val events = mutableListOf<SignUpUiEvent>()
+                val eventJob = backgroundScope.launch { viewModel.uiEvent.collect { events.add(it) } }
+                val stateBefore = viewModel.uiState.value
+
+                viewModel.onAction(SignUpUiAction.OnGoogleSignUpClick)
+
+                viewModel.uiState.value shouldBe stateBefore
+                events.shouldBeEmpty()
+                eventJob.cancel()
             }
         }
     }

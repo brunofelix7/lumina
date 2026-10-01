@@ -56,6 +56,8 @@ class SignUpScreenTest {
         composeTestRule.onNodeWithText("Confirm password").performScrollTo().assertIsDisplayed()
         composeTestRule.onNodeWithContentDescription("Show confirm password").performScrollTo().assertIsDisplayed()
         composeTestRule.onNodeWithText("Create account").performScrollTo().assertIsDisplayed()
+        composeTestRule.onNodeWithText("OR").performScrollTo().assertIsDisplayed()
+        composeTestRule.onNodeWithText("Sign up with Google").performScrollTo().assertIsDisplayed()
     }
 
     @Test
@@ -138,6 +140,15 @@ class SignUpScreenTest {
         composeTestRule.onNodeWithText("Create account").assertIsEnabled().performClick()
 
         capturedActions shouldBe listOf(SignUpUiAction.OnCreateAccountClick)
+    }
+
+    @Test
+    fun signUpScreen_googleClick_emitsGoogleSignUpAction() {
+        setSignUpContent()
+
+        composeTestRule.onNodeWithText("Sign up with Google").performScrollTo().performClick()
+
+        capturedActions shouldBe listOf(SignUpUiAction.OnGoogleSignUpClick)
     }
 
     @Test
