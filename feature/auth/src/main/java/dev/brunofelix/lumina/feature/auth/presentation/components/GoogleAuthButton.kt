@@ -1,5 +1,7 @@
 package dev.brunofelix.lumina.feature.auth.presentation.components
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
@@ -20,7 +22,8 @@ import dev.brunofelix.lumina.feature.auth.R
 import dev.brunofelix.lumina.core.designsystem.R as DesignSystemR
 
 @Composable
-fun GoogleSignInButton(
+fun GoogleAuthButton(
+    text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -36,17 +39,26 @@ fun GoogleSignInButton(
             tint = Color.Unspecified,
             modifier = Modifier.size(size20)
         )
-        Text(text = stringResource(R.string.sign_in_with_google))
+        Text(text = text)
     }
 }
 
 @Preview(showBackground = true, backgroundColor = 0xFF00152D)
 @Composable
-private fun GoogleSignInButtonPreview() {
+private fun GoogleAuthButtonPreview() {
     LuminaTheme {
-        GoogleSignInButton(
-            onClick = {},
-            modifier = Modifier.padding(spacing16)
-        )
+        Column(
+            modifier = Modifier.padding(spacing16),
+            verticalArrangement = Arrangement.spacedBy(spacing16)
+        ) {
+            GoogleAuthButton(
+                text = stringResource(R.string.sign_in_with_google),
+                onClick = {}
+            )
+            GoogleAuthButton(
+                text = stringResource(R.string.sign_up_with_google),
+                onClick = {}
+            )
+        }
     }
 }

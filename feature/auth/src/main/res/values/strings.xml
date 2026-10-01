@@ -20,4 +20,6 @@
     <string name="sign_up_show_confirm_password">Show confirm password</string>
     <string name="sign_up_hide_confirm_password">Hide confirm password</string>
     <string name="sign_up_create_account">Create account</string>
+    <string name="sign_up_or">Or</string>
+    <string name="sign_up_with_google">Sign up with Google</string>
 </resources>

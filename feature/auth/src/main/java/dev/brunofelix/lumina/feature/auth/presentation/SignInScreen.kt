@@ -27,7 +27,7 @@ import dev.brunofelix.lumina.core.designsystem.theme.spacing24
 import dev.brunofelix.lumina.core.presentation.util.ObserveAsEvents
 import dev.brunofelix.lumina.feature.auth.R
 import dev.brunofelix.lumina.feature.auth.presentation.components.AuthDivider
-import dev.brunofelix.lumina.feature.auth.presentation.components.GoogleSignInButton
+import dev.brunofelix.lumina.feature.auth.presentation.components.GoogleAuthButton
 import dev.brunofelix.lumina.feature.auth.presentation.components.SignInForm
 import dev.brunofelix.lumina.feature.auth.presentation.components.SignInHeader
 import dev.brunofelix.lumina.feature.auth.presentation.components.SignUpPrompt
@@ -84,7 +84,8 @@ internal fun SignInScreen(
                         .fillMaxWidth()
                         .padding(vertical = spacing24)
                 )
-                GoogleSignInButton(
+                GoogleAuthButton(
+                    text = stringResource(R.string.sign_in_with_google),
                     onClick = { onAction(SignInUiAction.OnGoogleSignInClick) }
                 )
                 SignUpPrompt(

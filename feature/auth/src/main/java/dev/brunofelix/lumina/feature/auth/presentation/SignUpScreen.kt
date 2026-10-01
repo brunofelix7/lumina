@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -23,6 +24,9 @@ import dev.brunofelix.lumina.core.designsystem.theme.size384
 import dev.brunofelix.lumina.core.designsystem.theme.spacing16
 import dev.brunofelix.lumina.core.designsystem.theme.spacing24
 import dev.brunofelix.lumina.core.presentation.util.ObserveAsEvents
+import dev.brunofelix.lumina.feature.auth.R
+import dev.brunofelix.lumina.feature.auth.presentation.components.AuthDivider
+import dev.brunofelix.lumina.feature.auth.presentation.components.GoogleAuthButton
 import dev.brunofelix.lumina.feature.auth.presentation.components.SignUpForm
 import dev.brunofelix.lumina.feature.auth.presentation.components.SignUpHeader
 
@@ -69,6 +73,16 @@ internal fun SignUpScreen(
                 SignUpForm(
                     uiState = uiState,
                     onAction = onAction
+                )
+                AuthDivider(
+                    text = stringResource(R.string.sign_up_or),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = spacing16)
+                )
+                GoogleAuthButton(
+                    text = stringResource(R.string.sign_up_with_google),
+                    onClick = { onAction(SignUpUiAction.OnGoogleSignUpClick) }
                 )
             }
         }

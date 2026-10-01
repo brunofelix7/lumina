@@ -8,5 +8,6 @@ sealed interface SignUpUiAction {
     data object OnTogglePasswordVisibility : SignUpUiAction
     data object OnToggleConfirmPasswordVisibility : SignUpUiAction
     data object OnCreateAccountClick : SignUpUiAction
+    data object OnGoogleSignUpClick : SignUpUiAction
     data object OnBackClick : SignUpUiAction
 }

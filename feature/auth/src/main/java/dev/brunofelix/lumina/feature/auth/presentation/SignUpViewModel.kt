@@ -39,8 +39,9 @@ class SignUpViewModel @Inject constructor() : ViewModel() {
             SignUpUiAction.OnBackClick -> viewModelScope.launch {
                 _uiEvent.send(SignUpUiEvent.NavigateBack)
             }
-            // Account creation is not wired yet.
-            SignUpUiAction.OnCreateAccountClick -> Unit
+            // Sign-up flows are not wired yet.
+            SignUpUiAction.OnCreateAccountClick,
+            SignUpUiAction.OnGoogleSignUpClick -> Unit
         }
     }
 }
