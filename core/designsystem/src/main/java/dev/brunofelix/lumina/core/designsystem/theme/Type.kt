@@ -146,3 +146,28 @@ val TitleLargeBold = Typography.titleLarge.copy(
     fontWeight = FontWeight.Bold,
     letterSpacing = (-0.025).em
 )
+
+val HeadlineMediumBold = Typography.headlineMedium.copy(
+    fontWeight = FontWeight.Bold,
+    letterSpacing = (-0.025).em
+)
+
+val HeadlineLargeMobileBold = TextStyle(
+    fontFamily = InterFontFamily,
+    fontSize = 28.sp,
+    fontWeight = FontWeight.Bold,
+    lineHeight = 35.sp,
+    letterSpacing = (-0.025).em,
+    lineHeightStyle = CenteredLineHeightStyle
+)
+
+val SubtitleMedium = TextStyle(
+    fontFamily = InterFontFamily,
+    fontSize = 15.sp,
+    fontWeight = FontWeight.Medium,
+    lineHeight = 18.75.sp,
+    letterSpacing = 0.em,
+    lineHeightStyle = CenteredLineHeightStyle
+)
+
+val BodyMediumRelaxed = Typography.bodyMedium.copy(lineHeight = 22.75.sp)
