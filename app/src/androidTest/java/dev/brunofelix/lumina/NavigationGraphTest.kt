@@ -74,6 +74,17 @@ class NavigationGraphTest {
     }
 
     @Test
+    fun shouldReplaceSignInWithHomeWhenLoginIsClicked() {
+        setNavigationGraph(listOf(Route.SignIn))
+
+        composeTestRule.onNodeWithText("Login").performScrollTo().performClick()
+        composeTestRule.waitUntil(timeoutMillis = NAVIGATION_TIMEOUT_MILLIS) { replacedRoutes.isNotEmpty() }
+
+        replacedRoutes.toList() shouldBe listOf(Route.Home)
+        navigatedRoutes.toList() shouldBe emptyList()
+    }
+
+    @Test
     fun shouldRenderSignUpScreenWhenRouteIsSignUp() {
         setNavigationGraph(listOf(Route.SignIn, Route.SignUp))
 
@@ -83,6 +94,42 @@ class NavigationGraphTest {
     @Test
     fun shouldNavigateBackWhenSignUpBackIsClicked() {
         setNavigationGraph(listOf(Route.SignIn, Route.SignUp))
+
+        composeTestRule.onNodeWithContentDescription("Go back").performClick()
+        composeTestRule.waitUntil(timeoutMillis = NAVIGATION_TIMEOUT_MILLIS) { backCount.get() > 0 }
+
+        backCount.get() shouldBe 1
+    }
+
+    @Test
+    fun shouldRenderHomeScreenWhenRouteIsHome() {
+        setNavigationGraph(listOf(Route.Home))
+
+        composeTestRule.onNodeWithText("Hello,").assertIsDisplayed()
+        composeTestRule.onNodeWithContentDescription("Create New Deck").assertIsDisplayed()
+    }
+
+    @Test
+    fun shouldNavigateToProfileWhenHomeProfileButtonIsClicked() {
+        setNavigationGraph(listOf(Route.Home))
+
+        composeTestRule.onNodeWithContentDescription("User Profile").performClick()
+        composeTestRule.waitUntil(timeoutMillis = NAVIGATION_TIMEOUT_MILLIS) { navigatedRoutes.isNotEmpty() }
+
+        navigatedRoutes.toList() shouldBe listOf(Route.Profile)
+    }
+
+    @Test
+    fun shouldRenderProfileScreenWhenRouteIsProfile() {
+        setNavigationGraph(listOf(Route.Home, Route.Profile))
+
+        composeTestRule.onNodeWithText("Profile").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Log Out").performScrollTo().assertIsDisplayed()
+    }
+
+    @Test
+    fun shouldNavigateBackWhenProfileBackIsClicked() {
+        setNavigationGraph(listOf(Route.Home, Route.Profile))
 
         composeTestRule.onNodeWithContentDescription("Go back").performClick()
         composeTestRule.waitUntil(timeoutMillis = NAVIGATION_TIMEOUT_MILLIS) { backCount.get() > 0 }
