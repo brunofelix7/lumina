@@ -1,6 +1,8 @@
 package dev.brunofelix.lumina.feature.auth.presentation
 
+import dev.brunofelix.lumina.core.presentation.mock.FakeUser
 import io.kotest.core.spec.style.DescribeSpec
+import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -29,16 +31,19 @@ class SignInViewModelTest : DescribeSpec({
     }
 
     describe("initial state") {
-        it("should start with empty fields and hidden password") {
+        it("should start pre-filled with the fake user credentials and hidden password") {
             runTest(testDispatcher) {
-                viewModel.uiState.value shouldBe SignInUiState()
-                viewModel.uiState.value.isPasswordVisible shouldBe false
+                viewModel.uiState.value shouldBe SignInUiState(
+                    email = FakeUser.EMAIL,
+                    password = FakeUser.PASSWORD,
+                    isPasswordVisible = false
+                )
             }
         }
 
-        it("should start with login disabled") {
+        it("should start with login enabled") {
             runTest(testDispatcher) {
-                viewModel.uiState.value.isLoginEnabled shouldBe false
+                viewModel.uiState.value.isLoginEnabled shouldBe true
             }
         }
     }
@@ -82,16 +87,43 @@ class SignInViewModelTest : DescribeSpec({
             }
         }
 
-        it("should not change state on click actions that are not wired yet") {
+        it("should emit NavigateToHome event on OnLoginClick action when the form is filled") {
             runTest(testDispatcher) {
-                viewModel.onAction(SignInUiAction.OnEmailChange("test@example.com"))
+                val events = mutableListOf<SignInUiEvent>()
+                val eventJob = backgroundScope.launch { viewModel.uiEvent.collect { events.add(it) } }
+
+                viewModel.onAction(SignInUiAction.OnLoginClick)
+
+                events shouldBe listOf(SignInUiEvent.NavigateToHome)
+                eventJob.cancel()
+            }
+        }
+
+        it("should not emit any event on OnLoginClick action when the form is incomplete") {
+            runTest(testDispatcher) {
+                val events = mutableListOf<SignInUiEvent>()
+                val eventJob = backgroundScope.launch { viewModel.uiEvent.collect { events.add(it) } }
+
+                viewModel.onAction(SignInUiAction.OnPasswordChange(""))
+                viewModel.onAction(SignInUiAction.OnLoginClick)
+
+                events.shouldBeEmpty()
+                eventJob.cancel()
+            }
+        }
+
+        it("should not change state or emit events on click actions that are not wired yet") {
+            runTest(testDispatcher) {
+                val events = mutableListOf<SignInUiEvent>()
+                val eventJob = backgroundScope.launch { viewModel.uiEvent.collect { events.add(it) } }
                 val stateBefore = viewModel.uiState.value
 
                 viewModel.onAction(SignInUiAction.OnForgotPasswordClick)
-                viewModel.onAction(SignInUiAction.OnLoginClick)
                 viewModel.onAction(SignInUiAction.OnGoogleSignInClick)
 
                 viewModel.uiState.value shouldBe stateBefore
+                events.shouldBeEmpty()
+                eventJob.cancel()
             }
         }
     }
@@ -99,7 +131,7 @@ class SignInViewModelTest : DescribeSpec({
     describe("isLoginEnabled") {
         it("should be false when only email is filled") {
             runTest(testDispatcher) {
-                viewModel.onAction(SignInUiAction.OnEmailChange("test@example.com"))
+                viewModel.onAction(SignInUiAction.OnPasswordChange(""))
 
                 viewModel.uiState.value.isLoginEnabled shouldBe false
             }
@@ -107,7 +139,7 @@ class SignInViewModelTest : DescribeSpec({
 
         it("should be false when only password is filled") {
             runTest(testDispatcher) {
-                viewModel.onAction(SignInUiAction.OnPasswordChange("password123"))
+                viewModel.onAction(SignInUiAction.OnEmailChange(""))
 
                 viewModel.uiState.value.isLoginEnabled shouldBe false
             }
