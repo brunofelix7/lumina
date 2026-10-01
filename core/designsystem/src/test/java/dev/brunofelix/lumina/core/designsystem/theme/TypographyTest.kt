@@ -23,7 +23,13 @@ class TypographyTest : DescribeSpec({
             "bodySmall" to bodySmall,
             "labelLarge" to labelLarge,
             "labelMedium" to labelMedium,
-            "labelSmall" to labelSmall
+            "labelSmall" to labelSmall,
+            "LabelSmallWide" to LabelSmallWide,
+            "TitleLargeBold" to TitleLargeBold,
+            "HeadlineMediumBold" to HeadlineMediumBold,
+            "HeadlineLargeMobileBold" to HeadlineLargeMobileBold,
+            "SubtitleMedium" to SubtitleMedium,
+            "BodyMediumRelaxed" to BodyMediumRelaxed
         )
     }
 
@@ -43,6 +49,14 @@ class TypographyTest : DescribeSpec({
                 }
                 withClue("$name lineHeight must be sp, was ${style.lineHeight}") {
                     style.lineHeight.isSp shouldBe true
+                }
+            }
+        }
+
+        it("should use the Inter font family in every style") {
+            allStyles.forEach { (name, style) ->
+                withClue("$name fontFamily must be InterFontFamily, was ${style.fontFamily}") {
+                    style.fontFamily shouldBe InterFontFamily
                 }
             }
         }

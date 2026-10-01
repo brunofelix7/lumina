@@ -6,6 +6,7 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.junit4.v2.createComposeRule
+import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
@@ -139,5 +140,74 @@ class LuminaComponentsTest {
 
         composeTestRule.onNodeWithText("Sign in with Google").performClick()
         clicked shouldBe true
+    }
+
+    @Test
+    fun luminaGlassButton_danger_clicksCorrectly() {
+        var clicked = false
+        composeTestRule.setContent {
+            LuminaTheme {
+                LuminaGlassButton(
+                    onClick = { clicked = true },
+                    style = LuminaGlassButtonStyle.Danger
+                ) {
+                    Text(text = "Log Out")
+                }
+            }
+        }
+
+        composeTestRule.onNodeWithText("Log Out").assertIsEnabled().performClick()
+        clicked shouldBe true
+    }
+
+    @Test
+    fun luminaGlassButton_dangerDisabled_ignoresClicks() {
+        var clicked = false
+        composeTestRule.setContent {
+            LuminaTheme {
+                LuminaGlassButton(
+                    onClick = { clicked = true },
+                    style = LuminaGlassButtonStyle.Danger,
+                    enabled = false
+                ) {
+                    Text(text = "Log Out")
+                }
+            }
+        }
+
+        composeTestRule.onNodeWithText("Log Out").assertIsNotEnabled().performClick()
+        clicked shouldBe false
+    }
+
+    @Test
+    fun luminaFloatingActionButton_exposesContentDescription() {
+        composeTestRule.setContent {
+            LuminaTheme {
+                LuminaFloatingActionButton(
+                    onClick = {},
+                    icon = painterResource(R.drawable.ic_add_medium),
+                    contentDescription = "Create New Deck"
+                )
+            }
+        }
+
+        composeTestRule.onNodeWithContentDescription("Create New Deck").assertIsDisplayed()
+    }
+
+    @Test
+    fun luminaFloatingActionButton_clicksCorrectly() {
+        var clicks = 0
+        composeTestRule.setContent {
+            LuminaTheme {
+                LuminaFloatingActionButton(
+                    onClick = { clicks++ },
+                    icon = painterResource(R.drawable.ic_add_medium),
+                    contentDescription = "Create New Deck"
+                )
+            }
+        }
+
+        composeTestRule.onNodeWithContentDescription("Create New Deck").performClick()
+        clicks shouldBe 1
     }
 }
