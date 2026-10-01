@@ -21,3 +21,5 @@ core/domain/build/
 core/presentation/build/
 feature/splash/build/
 feature/auth/build/
+feature/home/build/
+feature/profile/build/
