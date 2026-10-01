@@ -6,10 +6,14 @@ import dev.brunofelix.lumina.core.presentation.navigation.Route
 
 fun EntryProviderScope<NavKey>.authNavEntry(
     onNavigateToSignUp: () -> Unit,
+    onNavigateToHome: () -> Unit,
     onBack: () -> Unit
 ) {
     entry<Route.SignIn> {
-        SignInRoute(onNavigateToSignUp = onNavigateToSignUp)
+        SignInRoute(
+            onNavigateToSignUp = onNavigateToSignUp,
+            onNavigateToHome = onNavigateToHome
+        )
     }
 
     entry<Route.SignUp> {

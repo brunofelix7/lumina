@@ -3,6 +3,7 @@ package dev.brunofelix.lumina.feature.auth.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.brunofelix.lumina.core.presentation.mock.FakeUser
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,7 +17,12 @@ import javax.inject.Inject
 @HiltViewModel
 class SignInViewModel @Inject constructor() : ViewModel() {
 
-    private val _uiState = MutableStateFlow(SignInUiState())
+    private val _uiState = MutableStateFlow(
+        SignInUiState(
+            email = FakeUser.EMAIL,
+            password = FakeUser.PASSWORD
+        )
+    )
     val uiState: StateFlow<SignInUiState> = _uiState.asStateFlow()
 
     private val _uiEvent = Channel<SignInUiEvent>()
@@ -32,9 +38,13 @@ class SignInViewModel @Inject constructor() : ViewModel() {
             SignInUiAction.OnSignUpClick -> viewModelScope.launch {
                 _uiEvent.send(SignInUiEvent.NavigateToSignUp)
             }
-            // Sign-in flows are not wired yet.
+            // No real authentication yet: any filled form signs in.
+            SignInUiAction.OnLoginClick -> {
+                if (!_uiState.value.isLoginEnabled) return
+                viewModelScope.launch { _uiEvent.send(SignInUiEvent.NavigateToHome) }
+            }
+            // Password recovery and Google sign-in are not wired yet.
             SignInUiAction.OnForgotPasswordClick,
-            SignInUiAction.OnLoginClick,
             SignInUiAction.OnGoogleSignInClick -> Unit
         }
     }

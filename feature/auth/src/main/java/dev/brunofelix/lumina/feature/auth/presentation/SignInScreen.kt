@@ -35,6 +35,7 @@ import dev.brunofelix.lumina.feature.auth.presentation.components.SignUpPrompt
 @Composable
 internal fun SignInRoute(
     onNavigateToSignUp: () -> Unit,
+    onNavigateToHome: () -> Unit,
     viewModel: SignInViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -42,6 +43,7 @@ internal fun SignInRoute(
     ObserveAsEvents(viewModel.uiEvent) { event ->
         when (event) {
             SignInUiEvent.NavigateToSignUp -> onNavigateToSignUp()
+            SignInUiEvent.NavigateToHome -> onNavigateToHome()
         }
     }
 
