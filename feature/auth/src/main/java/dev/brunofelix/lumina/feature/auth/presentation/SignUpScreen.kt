@@ -61,7 +61,7 @@ internal fun SignUpScreen(
         ) {
             Column(
                 modifier = Modifier
-                    .padding(horizontal = spacing24, vertical = spacing16)
+                    .padding(start = spacing24, end = spacing24, bottom = spacing16)
                     .widthIn(max = size384)
                     .fillMaxWidth()
             ) {

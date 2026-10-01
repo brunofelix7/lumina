@@ -23,6 +23,7 @@ import dev.brunofelix.lumina.core.designsystem.theme.spacing12
 import dev.brunofelix.lumina.core.designsystem.theme.spacing20
 import dev.brunofelix.lumina.core.designsystem.theme.spacing24
 import dev.brunofelix.lumina.core.designsystem.theme.spacing4
+import dev.brunofelix.lumina.core.designsystem.theme.spacing8
 import dev.brunofelix.lumina.feature.auth.R
 import dev.brunofelix.lumina.core.designsystem.R as DesignSystemR
 
@@ -35,7 +36,7 @@ fun SignUpHeader(
         modifier = modifier
             .fillMaxWidth()
             .offset(x = -spacing12)
-            .padding(top = spacing12, bottom = spacing20),
+            .padding(top = spacing8, bottom = spacing20),
         horizontalArrangement = Arrangement.spacedBy(spacing4),
         verticalAlignment = Alignment.CenterVertically
     ) {
