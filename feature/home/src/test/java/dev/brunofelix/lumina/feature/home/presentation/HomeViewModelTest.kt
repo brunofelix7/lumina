@@ -1,11 +1,17 @@
 package dev.brunofelix.lumina.feature.home.presentation
 
+import dev.brunofelix.lumina.core.domain.model.Deck
+import dev.brunofelix.lumina.core.domain.use_case.ObserveDecksUseCase
 import dev.brunofelix.lumina.core.presentation.mock.FakeUser
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.shouldBe
+import io.mockk.clearAllMocks
+import io.mockk.every
+import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
@@ -16,6 +22,8 @@ import kotlinx.coroutines.test.setMain
 class HomeViewModelTest : DescribeSpec({
 
     val testDispatcher = UnconfinedTestDispatcher()
+    val observeDecksUseCase = mockk<ObserveDecksUseCase>()
+    lateinit var decks: MutableStateFlow<List<Deck>>
     lateinit var viewModel: HomeViewModel
 
     beforeSpec {
@@ -27,7 +35,10 @@ class HomeViewModelTest : DescribeSpec({
     }
 
     beforeTest {
-        viewModel = HomeViewModel()
+        clearAllMocks()
+        decks = MutableStateFlow(emptyList())
+        every { observeDecksUseCase() } returns decks
+        viewModel = HomeViewModel(observeDecksUseCase)
     }
 
     describe("initial state") {
@@ -35,6 +46,17 @@ class HomeViewModelTest : DescribeSpec({
             runTest(testDispatcher) {
                 viewModel.uiState.value shouldBe HomeUiState(userName = FakeUser.firstName, deckCount = 0)
                 viewModel.uiState.value.hasDecks shouldBe false
+            }
+        }
+    }
+
+    describe("deck count") {
+        it("should follow the decks emitted by the use case") {
+            runTest(testDispatcher) {
+                decks.value = listOf(Deck(id = "1", name = "German B2"), Deck(id = "2", name = "Medical Terms"))
+
+                viewModel.uiState.value.deckCount shouldBe 2
+                viewModel.uiState.value.hasDecks shouldBe true
             }
         }
     }
@@ -52,6 +74,18 @@ class HomeViewModelTest : DescribeSpec({
             }
         }
 
+        it("should emit NavigateToCreateDeck event on OnCreateDeckClick action") {
+            runTest(testDispatcher) {
+                val events = mutableListOf<HomeUiEvent>()
+                val eventJob = backgroundScope.launch { viewModel.uiEvent.collect { events.add(it) } }
+
+                viewModel.onAction(HomeUiAction.OnCreateDeckClick)
+
+                events shouldBe listOf(HomeUiEvent.NavigateToCreateDeck)
+                eventJob.cancel()
+            }
+        }
+
         it("should not change state or emit events on OnSearchClick action") {
             runTest(testDispatcher) {
                 val events = mutableListOf<HomeUiEvent>()
@@ -59,20 +93,6 @@ class HomeViewModelTest : DescribeSpec({
                 val stateBefore = viewModel.uiState.value
 
                 viewModel.onAction(HomeUiAction.OnSearchClick)
-
-                viewModel.uiState.value shouldBe stateBefore
-                events.shouldBeEmpty()
-                eventJob.cancel()
-            }
-        }
-
-        it("should not change state or emit events on OnCreateDeckClick action") {
-            runTest(testDispatcher) {
-                val events = mutableListOf<HomeUiEvent>()
-                val eventJob = backgroundScope.launch { viewModel.uiEvent.collect { events.add(it) } }
-                val stateBefore = viewModel.uiState.value
-
-                viewModel.onAction(HomeUiAction.OnCreateDeckClick)
 
                 viewModel.uiState.value shouldBe stateBefore
                 events.shouldBeEmpty()
