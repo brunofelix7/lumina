@@ -26,8 +26,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import dev.brunofelix.lumina.core.designsystem.theme.BorderGlassFrost
 import dev.brunofelix.lumina.core.designsystem.theme.HeadlineLargeMobileBold
 import dev.brunofelix.lumina.core.designsystem.theme.LuminaTheme
-import dev.brunofelix.lumina.core.designsystem.theme.OnGlassMuted
-import dev.brunofelix.lumina.core.designsystem.theme.SubtitleMedium
 import dev.brunofelix.lumina.core.designsystem.theme.SurfaceGlassHaze
 import dev.brunofelix.lumina.core.designsystem.theme.size1
 import dev.brunofelix.lumina.core.designsystem.theme.size20
@@ -54,11 +52,6 @@ fun HomeTopBar(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column(modifier = Modifier.weight(1f, fill = false)) {
-            Text(
-                text = stringResource(R.string.home_greeting),
-                style = SubtitleMedium,
-                color = OnGlassMuted
-            )
             Text(
                 text = userName,
                 style = HeadlineLargeMobileBold,

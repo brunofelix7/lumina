@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="home_greeting">Hello,</string>
     <plurals name="home_deck_count">
         <item quantity="one">%d Deck</item>
         <item quantity="other">%d Decks</item>
