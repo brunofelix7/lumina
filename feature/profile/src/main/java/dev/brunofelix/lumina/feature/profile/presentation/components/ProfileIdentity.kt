@@ -17,10 +17,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import dev.brunofelix.lumina.core.designsystem.theme.BorderGlass
+import dev.brunofelix.lumina.core.designsystem.theme.BorderGlassFrost
 import dev.brunofelix.lumina.core.designsystem.theme.HeadlineMediumBold
 import dev.brunofelix.lumina.core.designsystem.theme.LuminaTheme
-import dev.brunofelix.lumina.core.designsystem.theme.SurfaceGlassNight
+import dev.brunofelix.lumina.core.designsystem.theme.SurfaceGlassFrost
 import dev.brunofelix.lumina.core.designsystem.theme.shapeCircle
 import dev.brunofelix.lumina.core.designsystem.theme.size1
 import dev.brunofelix.lumina.core.designsystem.theme.size48
@@ -45,8 +45,8 @@ fun ProfileIdentity(
                 .padding(bottom = spacing12)
                 .size(size96)
                 .clip(shapeCircle)
-                .background(SurfaceGlassNight)
-                .border(width = size1, color = BorderGlass, shape = shapeCircle),
+                .background(SurfaceGlassFrost)
+                .border(width = size1, color = BorderGlassFrost, shape = shapeCircle),
             contentAlignment = Alignment.Center
         ) {
             Icon(

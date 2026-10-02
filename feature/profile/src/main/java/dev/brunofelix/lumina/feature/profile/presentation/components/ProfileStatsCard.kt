@@ -21,9 +21,9 @@ import dev.brunofelix.lumina.core.designsystem.theme.BorderGlass
 import dev.brunofelix.lumina.core.designsystem.theme.BorderGlassDivider
 import dev.brunofelix.lumina.core.designsystem.theme.LabelSmallWide
 import dev.brunofelix.lumina.core.designsystem.theme.LuminaTheme
-import dev.brunofelix.lumina.core.designsystem.theme.SurfaceGlassNight
+import dev.brunofelix.lumina.core.designsystem.theme.SurfaceGlassFrost
 import dev.brunofelix.lumina.core.designsystem.theme.TitleLargeBold
-import dev.brunofelix.lumina.core.designsystem.theme.shapeRounded20
+import dev.brunofelix.lumina.core.designsystem.theme.shapeRounded16
 import dev.brunofelix.lumina.core.designsystem.theme.size1
 import dev.brunofelix.lumina.core.designsystem.theme.spacing16
 import dev.brunofelix.lumina.core.designsystem.theme.spacing24
@@ -39,9 +39,9 @@ fun ProfileStatsCard(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .clip(shapeRounded20)
-            .background(SurfaceGlassNight)
-            .border(width = size1, color = BorderGlass, shape = shapeRounded20)
+            .clip(shapeRounded16)
+            .background(SurfaceGlassFrost)
+            .border(width = size1, color = BorderGlass, shape = shapeRounded16)
             .padding(spacing16)
             .height(IntrinsicSize.Min)
     ) {

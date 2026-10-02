@@ -1,13 +1,14 @@
 package dev.brunofelix.lumina.feature.profile.presentation
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
@@ -22,7 +23,9 @@ import dev.brunofelix.lumina.core.designsystem.theme.LuminaTheme
 import dev.brunofelix.lumina.core.designsystem.theme.size384
 import dev.brunofelix.lumina.core.designsystem.theme.spacing16
 import dev.brunofelix.lumina.core.designsystem.theme.spacing24
-import dev.brunofelix.lumina.core.designsystem.theme.spacing32
+import dev.brunofelix.lumina.core.designsystem.theme.spacing4
+import dev.brunofelix.lumina.core.designsystem.theme.spacing40
+import dev.brunofelix.lumina.core.designsystem.theme.spacing8
 import dev.brunofelix.lumina.core.presentation.util.ObserveAsEvents
 import dev.brunofelix.lumina.feature.profile.presentation.components.LogOutButton
 import dev.brunofelix.lumina.feature.profile.presentation.components.ProfileAppInfo
@@ -56,37 +59,38 @@ internal fun ProfileScreen(
     modifier: Modifier = Modifier
 ) {
     LuminaGradientBackground(modifier = modifier) {
+        // fillMaxSize before verticalScroll keeps the viewport as the minimum height, so the
+        // weighted Spacer can pin the app info to the bottom while long content still scrolls.
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .windowInsetsPadding(WindowInsets.safeDrawing)
-                .verticalScroll(rememberScrollState()),
+                .verticalScroll(rememberScrollState())
+                .wrapContentWidth()
+                .widthIn(max = size384)
+                .padding(horizontal = spacing16),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Column(
-                modifier = Modifier
-                    .padding(start = spacing24, end = spacing24, bottom = spacing32)
-                    .widthIn(max = size384)
-                    .fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                ProfileTopBar(onBackClick = { onAction(ProfileUiAction.OnBackClick) })
-                ProfileIdentity(
-                    name = uiState.name,
-                    email = uiState.email,
-                    modifier = Modifier.padding(bottom = spacing24)
-                )
-                ProfileStatsCard(
-                    deckCount = uiState.deckCount,
-                    cardCount = uiState.cardCount,
-                    modifier = Modifier.padding(bottom = spacing24)
-                )
-                LogOutButton(onClick = { onAction(ProfileUiAction.OnLogOutClick) })
-                ProfileAppInfo(
-                    appVersion = uiState.appVersion,
-                    modifier = Modifier.padding(top = spacing16)
-                )
-            }
+            ProfileTopBar(onBackClick = { onAction(ProfileUiAction.OnBackClick) })
+            ProfileIdentity(
+                name = uiState.name,
+                email = uiState.email,
+                modifier = Modifier.padding(top = spacing8, bottom = spacing24)
+            )
+            ProfileStatsCard(
+                deckCount = uiState.deckCount,
+                cardCount = uiState.cardCount,
+                modifier = Modifier.padding(bottom = spacing24)
+            )
+            LogOutButton(
+                onClick = { onAction(ProfileUiAction.OnLogOutClick) },
+                modifier = Modifier.padding(top = spacing4)
+            )
+            Spacer(modifier = Modifier.weight(1f))
+            ProfileAppInfo(
+                appVersion = uiState.appVersion,
+                modifier = Modifier.padding(top = spacing24, bottom = spacing40)
+            )
         }
     }
 }
