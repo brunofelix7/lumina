@@ -1,11 +1,13 @@
 package dev.brunofelix.lumina
 
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.hasSetTextAction
 import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
+import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import dev.brunofelix.lumina.core.designsystem.theme.LuminaTheme
 import dev.brunofelix.lumina.core.presentation.navigation.Route
@@ -130,6 +132,45 @@ class NavigationGraphTest {
     @Test
     fun shouldNavigateBackWhenProfileBackIsClicked() {
         setNavigationGraph(listOf(Route.Home, Route.Profile))
+
+        composeTestRule.onNodeWithContentDescription("Go back").performClick()
+        composeTestRule.waitUntil(timeoutMillis = NAVIGATION_TIMEOUT_MILLIS) { backCount.get() > 0 }
+
+        backCount.get() shouldBe 1
+    }
+
+    @Test
+    fun shouldNavigateToCreateDeckWhenHomeFabIsClicked() {
+        setNavigationGraph(listOf(Route.Home))
+
+        composeTestRule.onNodeWithContentDescription("Create New Deck").performClick()
+        composeTestRule.waitUntil(timeoutMillis = NAVIGATION_TIMEOUT_MILLIS) { navigatedRoutes.isNotEmpty() }
+
+        navigatedRoutes.toList() shouldBe listOf(Route.CreateDeck)
+    }
+
+    @Test
+    fun shouldRenderCreateDeckScreenWhenRouteIsCreateDeck() {
+        setNavigationGraph(listOf(Route.Home, Route.CreateDeck))
+
+        composeTestRule.onNodeWithText("Create Deck").assertIsDisplayed()
+        composeTestRule.onNodeWithContentDescription("Save deck").assertIsDisplayed()
+    }
+
+    @Test
+    fun shouldNavigateBackWhenDeckIsSaved() {
+        setNavigationGraph(listOf(Route.Home, Route.CreateDeck))
+
+        composeTestRule.onNode(hasSetTextAction()).performTextInput("Spanish Travel")
+        composeTestRule.onNodeWithContentDescription("Save deck").performClick()
+        composeTestRule.waitUntil(timeoutMillis = NAVIGATION_TIMEOUT_MILLIS) { backCount.get() > 0 }
+
+        backCount.get() shouldBe 1
+    }
+
+    @Test
+    fun shouldNavigateBackWhenCreateDeckBackIsClicked() {
+        setNavigationGraph(listOf(Route.Home, Route.CreateDeck))
 
         composeTestRule.onNodeWithContentDescription("Go back").performClick()
         composeTestRule.waitUntil(timeoutMillis = NAVIGATION_TIMEOUT_MILLIS) { backCount.get() > 0 }
