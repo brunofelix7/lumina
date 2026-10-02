@@ -1,6 +1,7 @@
 package dev.brunofelix.lumina.feature.profile.presentation
 
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertLeftPositionInRootIsEqualTo
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
@@ -8,6 +9,7 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import dev.brunofelix.lumina.core.designsystem.theme.LuminaTheme
+import dev.brunofelix.lumina.core.designsystem.theme.spacing16
 import io.kotest.matchers.shouldBe
 import org.junit.Rule
 import org.junit.Test
@@ -64,6 +66,15 @@ class ProfileScreenTest {
         composeTestRule.onNodeWithContentDescription("Go back").performClick()
 
         capturedActions shouldBe listOf(ProfileUiAction.OnBackClick)
+    }
+
+    @Test
+    fun profileScreen_alignsBackArrowWithScreenPadding() {
+        setProfileContent()
+
+        composeTestRule
+            .onNodeWithContentDescription("Go back", useUnmergedTree = true)
+            .assertLeftPositionInRootIsEqualTo(spacing16)
     }
 
     @Test
