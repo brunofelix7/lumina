@@ -30,6 +30,7 @@ import dev.brunofelix.lumina.core.designsystem.R as DesignSystemR
 @Composable
 internal fun HomeRoute(
     onNavigateToProfile: () -> Unit,
+    onNavigateToCreateDeck: () -> Unit,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -37,6 +38,7 @@ internal fun HomeRoute(
     ObserveAsEvents(viewModel.uiEvent) { event ->
         when (event) {
             HomeUiEvent.NavigateToProfile -> onNavigateToProfile()
+            HomeUiEvent.NavigateToCreateDeck -> onNavigateToCreateDeck()
         }
     }
 

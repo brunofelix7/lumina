@@ -5,9 +5,13 @@ import androidx.navigation3.runtime.NavKey
 import dev.brunofelix.lumina.core.presentation.navigation.Route
 
 fun EntryProviderScope<NavKey>.homeNavEntry(
-    onNavigateToProfile: () -> Unit
+    onNavigateToProfile: () -> Unit,
+    onNavigateToCreateDeck: () -> Unit
 ) {
     entry<Route.Home> {
-        HomeRoute(onNavigateToProfile = onNavigateToProfile)
+        HomeRoute(
+            onNavigateToProfile = onNavigateToProfile,
+            onNavigateToCreateDeck = onNavigateToCreateDeck
+        )
     }
 }

@@ -31,7 +31,8 @@ fun NavigationGraph(
             onBack = onBack
         )
         homeNavEntry(
-            onNavigateToProfile = { onNavigate(Route.Profile) }
+            onNavigateToProfile = { onNavigate(Route.Profile) },
+            onNavigateToCreateDeck = { onNavigate(Route.CreateDeck) }
         )
         profileNavEntry(
             onBack = onBack
