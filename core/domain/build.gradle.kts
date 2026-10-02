@@ -16,6 +16,9 @@ tasks.withType<Test> {
 }
 
 dependencies {
+    // Coroutines
+    api(libs.kotlinx.coroutines.core)
+
     // Unit tests
     testImplementation(libs.kotest.runner.junit5)
     testImplementation(libs.kotest.assertions.core)
