@@ -67,7 +67,6 @@ val DangerContent = Color(0xFFEF4444) // rgb(239, 68, 68)
 val OutlineSubtle = Color(0x998A919F) // rgba(138, 145, 159, 0.6)
 val PureWhite = Color(0xFFFFFFFF)
 val OnGlass = PureWhite
-val OnGlassMuted = Color(0xA6FFFFFF) // rgba(255, 255, 255, 0.65)
 val OnGlassSubtle = Color(0x99FFFFFF) // rgba(255, 255, 255, 0.6)
 
 val AtmosphericCanvas = Brush.verticalGradient(

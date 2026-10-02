@@ -36,9 +36,7 @@ val size384 = 384.dp
 val size480 = 480.dp
 
 val radius16 = 16.dp
-val radius20 = 20.dp
 
 val shapeRounded16 = RoundedCornerShape(radius16)
-val shapeRounded20 = RoundedCornerShape(radius20)
 val shapePill = RoundedCornerShape(percent = 50)
 val shapeCircle = CircleShape

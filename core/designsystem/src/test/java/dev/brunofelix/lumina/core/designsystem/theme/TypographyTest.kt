@@ -28,7 +28,6 @@ class TypographyTest : DescribeSpec({
             "TitleLargeBold" to TitleLargeBold,
             "HeadlineMediumBold" to HeadlineMediumBold,
             "HeadlineLargeMobileBold" to HeadlineLargeMobileBold,
-            "SubtitleMedium" to SubtitleMedium,
             "BodyMediumRelaxed" to BodyMediumRelaxed
         )
     }
