@@ -36,6 +36,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.takeOrElse
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -107,6 +108,7 @@ fun LuminaGlassTextField(
     leadingIcon: Painter,
     modifier: Modifier = Modifier,
     style: LuminaGlassTextFieldStyle = LuminaGlassTextFieldStyle.Frost,
+    leadingIconTint: Color = Color.Unspecified,
     trailingContent: (@Composable () -> Unit)? = null,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
@@ -158,7 +160,7 @@ fun LuminaGlassTextField(
                     Icon(
                         painter = leadingIcon,
                         contentDescription = null,
-                        tint = visuals.iconColor,
+                        tint = leadingIconTint.takeOrElse { visuals.iconColor },
                         modifier = Modifier.size(size20)
                     )
                     Spacer(modifier = Modifier.width(spacing8))
