@@ -63,9 +63,7 @@ val PrimaryGlassDropGlow = Color(0x4D0091FF) // rgba(0, 145, 255, 0.3)
 val PrimaryGlassAura = Color(0x470091FF) // rgba(0, 145, 255, 0.28)
 val PrimaryGlassShadow = Color(0x260091FF) // rgba(0, 145, 255, 0.15)
 val PrimaryEmissionGlow = Color(0x800091FF) // rgba(0, 145, 255, 0.5)
-val DangerGlassStart = Color(0x59EF4444) // rgba(239, 68, 68, 0.35)
-val DangerGlassEnd = Color(0x73B91C1C) // rgba(185, 28, 28, 0.45)
-val DangerGlassGlow = Color(0x40DC2626) // rgba(220, 38, 38, 0.25)
+val DangerContent = Color(0xFFEF4444) // rgb(239, 68, 68)
 val OutlineSubtle = Color(0x998A919F) // rgba(138, 145, 159, 0.6)
 val PureWhite = Color(0xFFFFFFFF)
 val OnGlass = PureWhite
@@ -74,8 +72,4 @@ val OnGlassSubtle = Color(0x99FFFFFF) // rgba(255, 255, 255, 0.6)
 
 val AtmosphericCanvas = Brush.verticalGradient(
     colors = listOf(SpaceDeep, SpaceVoid)
-)
-
-val DangerGlassGradient = Brush.linearGradient(
-    colors = listOf(DangerGlassStart, DangerGlassEnd)
 )

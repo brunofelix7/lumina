@@ -30,9 +30,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
@@ -41,8 +39,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import dev.brunofelix.lumina.core.designsystem.R
 import dev.brunofelix.lumina.core.designsystem.theme.BorderGlassFrost
-import dev.brunofelix.lumina.core.designsystem.theme.DangerGlassGlow
-import dev.brunofelix.lumina.core.designsystem.theme.DangerGlassGradient
+import dev.brunofelix.lumina.core.designsystem.theme.DangerContent
 import dev.brunofelix.lumina.core.designsystem.theme.LuminaTheme
 import dev.brunofelix.lumina.core.designsystem.theme.OnGlass
 import dev.brunofelix.lumina.core.designsystem.theme.PrimaryEmissionGlow
@@ -52,7 +49,6 @@ import dev.brunofelix.lumina.core.designsystem.theme.PrimaryGlassGlow
 import dev.brunofelix.lumina.core.designsystem.theme.SurfaceGlassFrost
 import dev.brunofelix.lumina.core.designsystem.theme.shapePill
 import dev.brunofelix.lumina.core.designsystem.theme.size1
-import dev.brunofelix.lumina.core.designsystem.theme.size16
 import dev.brunofelix.lumina.core.designsystem.theme.size18
 import dev.brunofelix.lumina.core.designsystem.theme.size20
 import dev.brunofelix.lumina.core.designsystem.theme.size24
@@ -78,8 +74,7 @@ private data class GlassButtonVisuals(
     val contentColor: Color,
     val glowColor: Color,
     val glowBlurRadius: Dp,
-    val glowOffsetY: Dp,
-    val containerBrush: Brush? = null
+    val glowOffsetY: Dp
 )
 
 @Composable
@@ -115,12 +110,11 @@ private fun LuminaGlassButtonStyle.visuals(enabled: Boolean): GlassButtonVisuals
     )
     LuminaGlassButtonStyle.Danger -> GlassButtonVisuals(
         containerColor = Color.Transparent,
-        containerBrush = DangerGlassGradient,
         borderColor = Color.Transparent,
-        contentColor = if (enabled) OnGlass else OnGlass.copy(alpha = DISABLED_CONTENT_ALPHA),
-        glowColor = if (enabled) DangerGlassGlow else Color.Transparent,
-        glowBlurRadius = size16,
-        glowOffsetY = spacing4
+        contentColor = if (enabled) DangerContent else DangerContent.copy(alpha = DISABLED_CONTENT_ALPHA),
+        glowColor = Color.Transparent,
+        glowBlurRadius = 0.dp,
+        glowOffsetY = 0.dp
     )
 }
 
@@ -166,7 +160,7 @@ fun LuminaGlassButton(
                 offsetY = glowOffsetY
             )
             .clip(shapePill)
-            .background(visuals.containerBrush ?: SolidColor(containerColor))
+            .background(containerColor)
             .border(width = size1, color = borderColor, shape = shapePill)
             .clickable(
                 interactionSource = interactionSource,
