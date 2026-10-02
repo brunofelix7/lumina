@@ -19,16 +19,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.brunofelix.lumina.core.designsystem.components.LuminaGradientBackground
+import dev.brunofelix.lumina.core.designsystem.components.LuminaTopBar
 import dev.brunofelix.lumina.core.designsystem.theme.LuminaTheme
 import dev.brunofelix.lumina.core.designsystem.theme.size384
 import dev.brunofelix.lumina.core.designsystem.theme.spacing16
+import dev.brunofelix.lumina.core.designsystem.theme.spacing20
 import dev.brunofelix.lumina.core.designsystem.theme.spacing24
 import dev.brunofelix.lumina.core.presentation.util.ObserveAsEvents
 import dev.brunofelix.lumina.feature.auth.R
 import dev.brunofelix.lumina.feature.auth.presentation.components.AuthDivider
 import dev.brunofelix.lumina.feature.auth.presentation.components.GoogleAuthButton
 import dev.brunofelix.lumina.feature.auth.presentation.components.SignUpForm
-import dev.brunofelix.lumina.feature.auth.presentation.components.SignUpHeader
 
 @Composable
 internal fun SignUpRoute(
@@ -69,7 +70,12 @@ internal fun SignUpScreen(
                     .widthIn(max = size384)
                     .fillMaxWidth()
             ) {
-                SignUpHeader(onBackClick = { onAction(SignUpUiAction.OnBackClick) })
+                LuminaTopBar(
+                    title = stringResource(R.string.sign_up_title),
+                    onBackClick = { onAction(SignUpUiAction.OnBackClick) },
+                    backContentDescription = stringResource(R.string.sign_up_go_back),
+                    modifier = Modifier.padding(bottom = spacing20)
+                )
                 SignUpForm(
                     uiState = uiState,
                     onAction = onAction
