@@ -15,10 +15,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dev.brunofelix.lumina.core.designsystem.components.LuminaGradientBackground
+import dev.brunofelix.lumina.core.designsystem.components.LuminaTopBar
 import dev.brunofelix.lumina.core.designsystem.theme.LuminaTheme
 import dev.brunofelix.lumina.core.designsystem.theme.size384
 import dev.brunofelix.lumina.core.designsystem.theme.spacing16
@@ -27,11 +29,11 @@ import dev.brunofelix.lumina.core.designsystem.theme.spacing4
 import dev.brunofelix.lumina.core.designsystem.theme.spacing40
 import dev.brunofelix.lumina.core.designsystem.theme.spacing8
 import dev.brunofelix.lumina.core.presentation.util.ObserveAsEvents
+import dev.brunofelix.lumina.feature.profile.R
 import dev.brunofelix.lumina.feature.profile.presentation.components.LogOutButton
 import dev.brunofelix.lumina.feature.profile.presentation.components.ProfileAppInfo
 import dev.brunofelix.lumina.feature.profile.presentation.components.ProfileIdentity
 import dev.brunofelix.lumina.feature.profile.presentation.components.ProfileStatsCard
-import dev.brunofelix.lumina.feature.profile.presentation.components.ProfileTopBar
 
 @Composable
 internal fun ProfileRoute(
@@ -66,12 +68,17 @@ internal fun ProfileScreen(
                 .fillMaxSize()
                 .windowInsetsPadding(WindowInsets.safeDrawing)
                 .verticalScroll(rememberScrollState())
+                .padding(horizontal = spacing16)
                 .wrapContentWidth()
-                .widthIn(max = size384)
-                .padding(horizontal = spacing16),
+                .widthIn(max = size384),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            ProfileTopBar(onBackClick = { onAction(ProfileUiAction.OnBackClick) })
+            LuminaTopBar(
+                title = stringResource(R.string.profile_title),
+                onBackClick = { onAction(ProfileUiAction.OnBackClick) },
+                backContentDescription = stringResource(R.string.profile_go_back),
+                modifier = Modifier.padding(bottom = spacing16)
+            )
             ProfileIdentity(
                 name = uiState.name,
                 email = uiState.email,
