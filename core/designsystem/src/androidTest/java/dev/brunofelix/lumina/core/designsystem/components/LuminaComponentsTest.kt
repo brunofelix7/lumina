@@ -5,11 +5,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotEnabled
+import androidx.compose.ui.test.assertLeftPositionInRootIsEqualTo
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
+import androidx.compose.ui.unit.dp
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import dev.brunofelix.lumina.core.designsystem.R
 import dev.brunofelix.lumina.core.designsystem.theme.LuminaTheme
@@ -209,5 +211,56 @@ class LuminaComponentsTest {
 
         composeTestRule.onNodeWithContentDescription("Create New Deck").performClick()
         clicks shouldBe 1
+    }
+
+    @Test
+    fun luminaTopBar_showsBackButtonAndTitle() {
+        composeTestRule.setContent {
+            LuminaTheme {
+                LuminaTopBar(
+                    title = "Profile",
+                    onBackClick = {},
+                    backContentDescription = "Go back"
+                )
+            }
+        }
+
+        composeTestRule.onNodeWithContentDescription("Go back").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Profile").assertIsDisplayed()
+    }
+
+    @Test
+    fun luminaTopBar_backClick_invokesCallback() {
+        var clicks = 0
+        composeTestRule.setContent {
+            LuminaTheme {
+                LuminaTopBar(
+                    title = "Profile",
+                    onBackClick = { clicks++ },
+                    backContentDescription = "Go back"
+                )
+            }
+        }
+
+        composeTestRule.onNodeWithContentDescription("Go back").performClick()
+
+        clicks shouldBe 1
+    }
+
+    @Test
+    fun luminaTopBar_alignsBackArrowWithContentStartEdge() {
+        composeTestRule.setContent {
+            LuminaTheme {
+                LuminaTopBar(
+                    title = "Profile",
+                    onBackClick = {},
+                    backContentDescription = "Go back"
+                )
+            }
+        }
+
+        composeTestRule
+            .onNodeWithContentDescription("Go back", useUnmergedTree = true)
+            .assertLeftPositionInRootIsEqualTo(0.dp)
     }
 }
