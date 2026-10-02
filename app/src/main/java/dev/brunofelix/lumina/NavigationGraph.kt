@@ -8,6 +8,7 @@ import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import dev.brunofelix.lumina.core.presentation.navigation.Route
 import dev.brunofelix.lumina.feature.auth.presentation.authNavEntry
+import dev.brunofelix.lumina.feature.deck.presentation.deckNavEntry
 import dev.brunofelix.lumina.feature.home.presentation.homeNavEntry
 import dev.brunofelix.lumina.feature.profile.presentation.profileNavEntry
 import dev.brunofelix.lumina.feature.splash.presentation.splashNavEntry
@@ -33,6 +34,9 @@ fun NavigationGraph(
             onNavigateToProfile = { onNavigate(Route.Profile) }
         )
         profileNavEntry(
+            onBack = onBack
+        )
+        deckNavEntry(
             onBack = onBack
         )
     }
