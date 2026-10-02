@@ -105,7 +105,7 @@ class NavigationGraphTest {
     fun shouldRenderHomeScreenWhenRouteIsHome() {
         setNavigationGraph(listOf(Route.Home))
 
-        composeTestRule.onNodeWithText("Hello,").assertIsDisplayed()
+        composeTestRule.onNodeWithContentDescription("AI Search").assertIsDisplayed()
         composeTestRule.onNodeWithContentDescription("Create New Deck").assertIsDisplayed()
     }
 
