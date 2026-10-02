@@ -1,20 +1,29 @@
 package dev.brunofelix.lumina.core.designsystem.components
 
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.assertLeftPositionInRootIsEqualTo
+import androidx.compose.ui.test.getUnclippedBoundsInRoot
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.width
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import dev.brunofelix.lumina.core.designsystem.R
 import dev.brunofelix.lumina.core.designsystem.theme.LuminaTheme
+import dev.brunofelix.lumina.core.designsystem.theme.OnGlass
+import dev.brunofelix.lumina.core.designsystem.theme.size24
 import io.kotest.matchers.shouldBe
 import org.junit.Rule
 import org.junit.Test
@@ -262,5 +271,64 @@ class LuminaComponentsTest {
         composeTestRule
             .onNodeWithContentDescription("Go back", useUnmergedTree = true)
             .assertLeftPositionInRootIsEqualTo(0.dp)
+    }
+
+    @Test
+    fun luminaTopBar_actionClick_invokesCallback() {
+        var clicks = 0
+        setTopBarWithSaveAction(onSaveClick = { clicks++ })
+
+        composeTestRule.onNodeWithContentDescription("Save deck").performClick()
+
+        clicks shouldBe 1
+    }
+
+    @Test
+    fun luminaTopBar_alignsActionGlyphWithContentEndEdge() {
+        setTopBarWithSaveAction(onSaveClick = {})
+
+        val rootWidth = composeTestRule.onRoot().getUnclippedBoundsInRoot().width
+        composeTestRule
+            .onNodeWithContentDescription("Save deck", useUnmergedTree = true)
+            .assertLeftPositionInRootIsEqualTo(rootWidth - size24)
+    }
+
+    @Test
+    fun luminaGlassTextField_customLeadingIconTint_rendersPlaceholder() {
+        composeTestRule.setContent {
+            LuminaTheme {
+                LuminaGlassTextField(
+                    value = "",
+                    onValueChange = {},
+                    placeholder = "Deck name",
+                    leadingIcon = painterResource(R.drawable.ic_style),
+                    style = LuminaGlassTextFieldStyle.Haze,
+                    leadingIconTint = OnGlass
+                )
+            }
+        }
+
+        composeTestRule.onNodeWithText("Deck name").assertIsDisplayed()
+    }
+
+    private fun setTopBarWithSaveAction(onSaveClick: () -> Unit) {
+        composeTestRule.setContent {
+            LuminaTheme {
+                LuminaTopBar(
+                    title = "Create Deck",
+                    onBackClick = {},
+                    backContentDescription = "Go back",
+                    actions = {
+                        IconButton(onClick = onSaveClick) {
+                            Icon(
+                                painter = painterResource(R.drawable.ic_check),
+                                contentDescription = "Save deck",
+                                modifier = Modifier.size(size24)
+                            )
+                        }
+                    }
+                )
+            }
+        }
     }
 }
