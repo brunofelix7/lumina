@@ -37,7 +37,6 @@ class HomeScreenTest {
     fun homeScreen_showsTopBarAndCreateDeckButton() {
         setHomeContent(emptyState.copy(deckCount = 6))
 
-        composeTestRule.onNodeWithText("Hello,").assertIsDisplayed()
         composeTestRule.onNodeWithText("Bruno").assertIsDisplayed()
         composeTestRule.onNodeWithText("6 Decks").assertIsDisplayed()
         composeTestRule.onNodeWithContentDescription("AI Search").assertIsDisplayed()

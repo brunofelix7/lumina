@@ -35,10 +35,9 @@ class HomeTopBarTest {
     }
 
     @Test
-    fun homeTopBar_showsGreetingNameAndDeckCount() {
+    fun homeTopBar_showsNameAndDeckCount() {
         setTopBarContent()
 
-        composeTestRule.onNodeWithText("Hello,").assertIsDisplayed()
         composeTestRule.onNodeWithText("Bruno").assertIsDisplayed()
         composeTestRule.onNodeWithText("6 Decks").assertIsDisplayed()
     }
