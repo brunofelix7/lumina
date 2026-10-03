@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="error_title">Oops!</string>
+    <string name="error_local_database">Your data could not be loaded</string>
+    <string name="error_local_permission_denied">Permission denied</string>
+    <string name="error_local_disk_full">Not enough storage space</string>
+    <string name="error_network_unauthorized">Unauthorized access</string>
+    <string name="error_network_not_found">Content not found</string>
+    <string name="error_network_server">Server error. Please try again later</string>
+    <string name="error_network_no_internet">No internet connection</string>
+    <string name="error_unknown">An unknown error occurred. Please try again later</string>
+
+    <string name="error_auth_empty_name">Please enter your name</string>
+    <string name="error_auth_invalid_email">Please enter a valid email address</string>
+    <string name="error_auth_weak_password">Password must be at least %1$d characters</string>
+    <string name="error_auth_empty_password">Please enter your password</string>
+    <string name="error_auth_password_mismatch">Passwords don\'t match</string>
+    <string name="error_auth_email_already_in_use">An account with this email already exists</string>
+    <string name="error_auth_invalid_credentials">Invalid email or password</string>
+    <string name="error_auth_google_account_not_found">No Google account found on this device</string>
+    <string name="error_auth_google_sign_in_cancelled">Google sign-in was cancelled</string>
+    <string name="error_auth_too_many_requests">Too many attempts. Please try again later</string>
+</resources>

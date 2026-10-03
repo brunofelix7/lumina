@@ -29,6 +29,14 @@ class NavigationViewModel @Inject constructor() : ViewModel() {
     }
 
     /**
+     * Clear the back stack and make the given route the only one in it.
+     * @param route The route that becomes the new root.
+     */
+    fun resetTo(route: Route) {
+        _backStack.update { listOf(route) }
+    }
+
+    /**
      * Navigate to a specific route.
      * @param route The route to navigate to.
      */
