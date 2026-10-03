@@ -1,31 +1,44 @@
 {
   "project_info": {
-    "project_number": "123456789012",
-    "project_id": "lumina-mock",
-    "storage_bucket": "lumina-mock.appspot.com"
+    "project_number": "1066747169262",
+    "project_id": "lumina-android-ac21c",
+    "storage_bucket": "lumina-android-ac21c.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:123456789012:android:abcdef0123456789",
+        "mobilesdk_app_id": "1:1066747169262:android:6d2ff79a85ee0d8cf8a6ff",
         "android_client_info": {
           "package_name": "dev.brunofelix.lumina"
         }
       },
       "oauth_client": [
         {
-          "client_id": "123456789012-mockclientid.apps.googleusercontent.com",
+          "client_id": "1066747169262-ru9igm6o364f9pcnvgqtprp4in7qmoio.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "dev.brunofelix.lumina",
+            "certificate_hash": "aa600a3fe06a5c21187ec5bdd0c2b7036bbea464"
+          }
+        },
+        {
+          "client_id": "1066747169262-sgtbjo0b9bp662u0m85bvd70m17ctsij.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "MOCK_API_KEY_FOR_TESTING"
+          "current_key": "AIzaSyCUMTzCZCKsyyDk3bfKUAlOTCf2wWoavXg"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1066747169262-sgtbjo0b9bp662u0m85bvd70m17ctsij.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
