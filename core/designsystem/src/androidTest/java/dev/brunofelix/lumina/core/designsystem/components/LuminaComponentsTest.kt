@@ -3,7 +3,10 @@ package dev.brunofelix.lumina.core.designsystem.components
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.test.assertIsDisplayed
@@ -188,6 +191,58 @@ class LuminaComponentsTest {
 
         composeTestRule.onNodeWithText("Log Out").assertIsNotEnabled().performClick()
         clicked shouldBe false
+    }
+
+    @Test
+    fun luminaGlassButton_loading_showsSpinnerAndIgnoresClicks() {
+        var clicked = false
+        composeTestRule.setContent {
+            LuminaTheme {
+                LuminaGlassButton(
+                    onClick = { clicked = true },
+                    isLoading = true,
+                    loadingContentDescription = "Logging in"
+                ) {
+                    Text(text = "Login")
+                }
+            }
+        }
+
+        composeTestRule.onNodeWithText("Login").assertDoesNotExist()
+        composeTestRule.onNodeWithContentDescription("Logging in")
+            .assertIsDisplayed()
+            .assertIsNotEnabled()
+            .performClick()
+        clicked shouldBe false
+    }
+
+    @Test
+    fun luminaSnackbar_showsMessage() {
+        composeTestRule.setContent {
+            LuminaTheme {
+                LuminaSnackbar(message = "No internet connection")
+            }
+        }
+
+        composeTestRule.onNodeWithText("No internet connection").assertIsDisplayed()
+    }
+
+    @Test
+    fun luminaSnackbarHost_showsMessagesFromHostState() {
+        val hostState = SnackbarHostState()
+        composeTestRule.setContent {
+            LuminaTheme {
+                LuminaSnackbarHost(hostState = hostState)
+                LaunchedEffect(Unit) {
+                    hostState.showSnackbar(
+                        message = "An account with this email already exists",
+                        duration = SnackbarDuration.Indefinite
+                    )
+                }
+            }
+        }
+
+        composeTestRule.onNodeWithText("An account with this email already exists").assertIsDisplayed()
     }
 
     @Test
