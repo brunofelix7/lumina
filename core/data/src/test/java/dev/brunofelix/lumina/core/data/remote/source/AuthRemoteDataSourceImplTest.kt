@@ -159,6 +159,21 @@ class AuthRemoteDataSourceImplTest : DescribeSpec({
         }
     }
 
+    describe("getCurrentUserId") {
+        it("should return the uid of the signed-in user") {
+            val user = firebaseUser()
+            every { firebaseAuth.currentUser } returns user
+
+            dataSource.getCurrentUserId() shouldBe "uid-1"
+        }
+
+        it("should return null when nobody is signed in") {
+            every { firebaseAuth.currentUser } returns null
+
+            dataSource.getCurrentUserId() shouldBe null
+        }
+    }
+
     describe("signInWithGoogle") {
         it("should sign in with the Google credential and return the user") {
             runTest {
