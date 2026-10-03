@@ -74,6 +74,19 @@ class NavigationViewModelTest : DescribeSpec({
         }
     }
 
+    describe("resetTo") {
+        it("should replace the whole backStack with the new route") {
+            runTest(testDispatcher) {
+                viewModel.replaceCurrent(Route.SignIn)
+                viewModel.navigateTo(Route.SignUp)
+
+                viewModel.resetTo(Route.Home)
+
+                viewModel.backStack.value shouldBe listOf(Route.Home)
+            }
+        }
+    }
+
     describe("popBackStack") {
         it("should remove top route when backStack has more than 1 route") {
             runTest(testDispatcher) {
