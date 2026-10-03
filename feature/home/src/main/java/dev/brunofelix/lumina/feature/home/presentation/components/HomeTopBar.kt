@@ -19,7 +19,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -33,6 +32,7 @@ import dev.brunofelix.lumina.core.designsystem.theme.size24
 import dev.brunofelix.lumina.core.designsystem.theme.spacing16
 import dev.brunofelix.lumina.core.designsystem.theme.spacing2
 import dev.brunofelix.lumina.core.designsystem.theme.spacing4
+import dev.brunofelix.lumina.core.presentation.util.pluralStringResourceWithZero
 import dev.brunofelix.lumina.feature.home.R
 import dev.brunofelix.lumina.core.designsystem.R as DesignSystemR
 
@@ -60,7 +60,11 @@ fun HomeTopBar(
                 overflow = TextOverflow.Ellipsis
             )
             Text(
-                text = pluralStringResource(R.plurals.home_deck_count, deckCount, deckCount),
+                text = pluralStringResourceWithZero(
+                    id = R.plurals.home_deck_count,
+                    zeroResId = R.string.home_deck_count_zero,
+                    count = deckCount
+                ),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.padding(top = spacing2)

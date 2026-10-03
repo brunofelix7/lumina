@@ -38,7 +38,7 @@ class HomeViewModel @Inject constructor(
             .onEach { user -> _uiState.update { it.copy(userName = user.firstName) } }
             .launchIn(viewModelScope)
         observeDecksUseCase()
-            .onEach { decks -> _uiState.update { it.copy(deckCount = decks.size) } }
+            .onEach { decks -> _uiState.update { it.copy(decks = decks, isLoadingDecks = false) } }
             .launchIn(viewModelScope)
     }
 
@@ -50,8 +50,9 @@ class HomeViewModel @Inject constructor(
             HomeUiAction.OnCreateDeckClick -> viewModelScope.launch {
                 _uiEvent.send(HomeUiEvent.NavigateToCreateDeck)
             }
-            // AI search is not wired yet.
-            HomeUiAction.OnSearchClick -> Unit
+            // AI search and the deck details screen are not wired yet.
+            HomeUiAction.OnSearchClick,
+            is HomeUiAction.OnDeckClick -> Unit
         }
     }
 }

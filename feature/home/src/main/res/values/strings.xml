@@ -4,10 +4,17 @@
         <item quantity="one">%d Deck</item>
         <item quantity="other">%d Decks</item>
     </plurals>
+    <string name="home_deck_count_zero">0 Decks</string>
     <string name="home_ai_search">AI Search</string>
     <string name="home_user_profile">User Profile</string>
     <string name="home_create_deck">Create New Deck</string>
 
     <string name="home_empty_title">No decks yet</string>
     <string name="home_empty_description">Create your first deck to start learning and memorizing words with Lumina.</string>
+
+    <plurals name="home_deck_card_count">
+        <item quantity="one">%d card</item>
+        <item quantity="other">%d cards</item>
+    </plurals>
+    <string name="home_deck_card_count_zero">0 cards</string>
 </resources>

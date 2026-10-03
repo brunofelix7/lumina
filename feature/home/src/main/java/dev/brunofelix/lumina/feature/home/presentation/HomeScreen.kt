@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -21,10 +23,14 @@ import dev.brunofelix.lumina.core.designsystem.components.LuminaGradientBackgrou
 import dev.brunofelix.lumina.core.designsystem.theme.LuminaTheme
 import dev.brunofelix.lumina.core.designsystem.theme.spacing16
 import dev.brunofelix.lumina.core.designsystem.theme.spacing24
+import dev.brunofelix.lumina.core.designsystem.theme.spacing8
+import dev.brunofelix.lumina.core.designsystem.theme.spacing80
 import dev.brunofelix.lumina.core.presentation.util.ObserveAsEvents
 import dev.brunofelix.lumina.feature.home.R
+import dev.brunofelix.lumina.feature.home.presentation.components.DeckList
 import dev.brunofelix.lumina.feature.home.presentation.components.HomeEmptyState
 import dev.brunofelix.lumina.feature.home.presentation.components.HomeTopBar
+import dev.brunofelix.lumina.feature.home.presentation.components.previewDecks
 import dev.brunofelix.lumina.core.designsystem.R as DesignSystemR
 
 @Composable
@@ -63,7 +69,8 @@ internal fun HomeScreen(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(horizontal = spacing16)
+                    .verticalScroll(rememberScrollState())
+                    .padding(start = spacing16, top = spacing16, end = spacing16, bottom = spacing80)
             ) {
                 HomeTopBar(
                     userName = uiState.userName,
@@ -71,8 +78,13 @@ internal fun HomeScreen(
                     onSearchClick = { onAction(HomeUiAction.OnSearchClick) },
                     onProfileClick = { onAction(HomeUiAction.OnProfileClick) }
                 )
-                if (!uiState.hasDecks) {
-                    HomeEmptyState()
+                when {
+                    uiState.hasDecks -> DeckList(
+                        decks = uiState.decks,
+                        onDeckClick = { deck -> onAction(HomeUiAction.OnDeckClick(deck.id)) },
+                        modifier = Modifier.padding(top = spacing8)
+                    )
+                    uiState.shouldShowEmptyState -> HomeEmptyState()
                 }
             }
             LuminaFloatingActionButton(
@@ -87,12 +99,23 @@ internal fun HomeScreen(
     }
 }
 
+@Preview(name = "Home - Loading", widthDp = 390, heightDp = 848)
+@Composable
+private fun HomeScreenLoadingPreview() {
+    LuminaTheme {
+        HomeScreen(
+            uiState = HomeUiState(userName = "Bruno"),
+            onAction = {}
+        )
+    }
+}
+
 @Preview(name = "Home - Empty", widthDp = 390, heightDp = 848)
 @Composable
 private fun HomeScreenEmptyPreview() {
     LuminaTheme {
         HomeScreen(
-            uiState = HomeUiState(userName = "Bruno", deckCount = 0),
+            uiState = HomeUiState(userName = "Bruno", isLoadingDecks = false),
             onAction = {}
         )
     }
@@ -103,7 +126,7 @@ private fun HomeScreenEmptyPreview() {
 private fun HomeScreenWithDecksPreview() {
     LuminaTheme {
         HomeScreen(
-            uiState = HomeUiState(userName = "Bruno", deckCount = 6),
+            uiState = HomeUiState(userName = "Bruno", decks = previewDecks, isLoadingDecks = false),
             onAction = {}
         )
     }
