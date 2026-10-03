@@ -60,4 +60,9 @@ sealed class AuthException(
      * The auth provider blocked the request after too many attempts.
      */
     class TooManyRequests(cause: Throwable? = null) : AuthException(cause = cause)
+
+    /**
+     * The operation needs a signed-in user, but there is no active session.
+     */
+    class SignedOut : AuthException()
 }
