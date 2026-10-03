@@ -25,12 +25,17 @@ import dev.brunofelix.lumina.core.designsystem.R as DesignSystemR
 fun GoogleAuthButton(
     text: String,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    isLoading: Boolean = false
 ) {
     LuminaGlassButton(
         onClick = onClick,
         modifier = modifier,
         style = LuminaGlassButtonStyle.Secondary,
+        enabled = enabled,
+        isLoading = isLoading,
+        loadingContentDescription = stringResource(R.string.auth_google_loading),
         contentSpacing = spacing8
     ) {
         Icon(
@@ -58,6 +63,16 @@ private fun GoogleAuthButtonPreview() {
             GoogleAuthButton(
                 text = stringResource(R.string.sign_up_with_google),
                 onClick = {}
+            )
+            GoogleAuthButton(
+                text = stringResource(R.string.sign_up_with_google),
+                onClick = {},
+                enabled = false
+            )
+            GoogleAuthButton(
+                text = stringResource(R.string.sign_up_with_google),
+                onClick = {},
+                isLoading = true
             )
         }
     }

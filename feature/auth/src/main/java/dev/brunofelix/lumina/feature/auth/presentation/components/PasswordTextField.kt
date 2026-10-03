@@ -2,6 +2,7 @@ package dev.brunofelix.lumina.feature.auth.presentation.components
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -37,7 +38,8 @@ fun PasswordTextField(
     ),
     showPasswordDescription: String = stringResource(R.string.auth_show_password),
     hidePasswordDescription: String = stringResource(R.string.auth_hide_password),
-    imeAction: ImeAction = ImeAction.Done
+    imeAction: ImeAction = ImeAction.Done,
+    keyboardActions: KeyboardActions = KeyboardActions.Default
 ) {
     val isHaze = style == LuminaGlassTextFieldStyle.Haze
     val visibilityIcon = when {
@@ -63,6 +65,7 @@ fun PasswordTextField(
             keyboardType = KeyboardType.Password,
             imeAction = imeAction
         ),
+        keyboardActions = keyboardActions,
         trailingContent = {
             IconButton(onClick = onToggleVisibility) {
                 Icon(
