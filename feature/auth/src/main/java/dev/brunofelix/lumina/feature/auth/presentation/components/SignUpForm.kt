@@ -5,11 +5,13 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -35,6 +37,12 @@ fun SignUpForm(
     onAction: (SignUpUiAction) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val focusManager = LocalFocusManager.current
+    val createAccount = {
+        focusManager.clearFocus()
+        onAction(SignUpUiAction.OnCreateAccountClick)
+    }
+
     Column(
         modifier = modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(spacing14)
@@ -79,12 +87,15 @@ fun SignUpForm(
             leadingIcon = painterResource(DesignSystemR.drawable.ic_verified_user_semibold),
             showPasswordDescription = stringResource(R.string.sign_up_show_confirm_password),
             hidePasswordDescription = stringResource(R.string.sign_up_hide_confirm_password),
-            imeAction = ImeAction.Done
+            imeAction = ImeAction.Done,
+            keyboardActions = KeyboardActions(onDone = { createAccount() })
         )
         LuminaGlassButton(
-            onClick = { onAction(SignUpUiAction.OnCreateAccountClick) },
+            onClick = createAccount,
             modifier = Modifier.padding(top = spacing8),
             enabled = uiState.isCreateAccountEnabled,
+            isLoading = uiState.isEmailLoading,
+            loadingContentDescription = stringResource(R.string.sign_up_creating_account),
             contentSpacing = spacing8
         ) {
             Text(text = stringResource(R.string.sign_up_create_account))
@@ -120,6 +131,24 @@ private fun SignUpFormFilledPreview() {
                 password = "supernova",
                 confirmPassword = "supernova",
                 isPasswordVisible = true
+            ),
+            onAction = {},
+            modifier = Modifier.padding(spacing24)
+        )
+    }
+}
+
+@Preview(showBackground = true, backgroundColor = 0xFF00152D)
+@Composable
+private fun SignUpFormLoadingPreview() {
+    LuminaTheme {
+        SignUpForm(
+            uiState = SignUpUiState(
+                name = "Nova Star",
+                email = "nova@lumina.dev",
+                password = "supernova",
+                confirmPassword = "supernova",
+                isEmailLoading = true
             ),
             onAction = {},
             modifier = Modifier.padding(spacing24)

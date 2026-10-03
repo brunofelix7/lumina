@@ -9,5 +9,7 @@ sealed interface SignUpUiAction {
     data object OnToggleConfirmPasswordVisibility : SignUpUiAction
     data object OnCreateAccountClick : SignUpUiAction
     data object OnGoogleSignUpClick : SignUpUiAction
+    data class OnGoogleIdTokenReceived(val idToken: String) : SignUpUiAction
+    data class OnGoogleSignInFailed(val error: Throwable) : SignUpUiAction
     data object OnBackClick : SignUpUiAction
 }
