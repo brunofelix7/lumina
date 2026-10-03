@@ -5,9 +5,13 @@ import androidx.navigation3.runtime.NavKey
 import dev.brunofelix.lumina.core.presentation.navigation.Route
 
 fun EntryProviderScope<NavKey>.splashNavEntry(
-    onSplashFinished: () -> Unit
+    onNavigateToHome: () -> Unit,
+    onNavigateToSignIn: () -> Unit
 ) {
     entry<Route.Splash> {
-        SplashRoute(onSplashFinished = onSplashFinished)
+        SplashRoute(
+            onNavigateToHome = onNavigateToHome,
+            onNavigateToSignIn = onNavigateToSignIn
+        )
     }
 }

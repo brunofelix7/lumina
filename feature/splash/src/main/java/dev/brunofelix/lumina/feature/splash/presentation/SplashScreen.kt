@@ -5,33 +5,30 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import dev.brunofelix.lumina.core.designsystem.components.LuminaGradientBackground
 import dev.brunofelix.lumina.core.designsystem.theme.LuminaTheme
 import dev.brunofelix.lumina.core.designsystem.theme.size224
+import dev.brunofelix.lumina.core.presentation.util.ObserveAsEvents
 import dev.brunofelix.lumina.feature.splash.R
-import kotlinx.coroutines.delay
 import dev.brunofelix.lumina.core.designsystem.R as DesignSystemR
-
-internal const val SPLASH_DURATION_MILLIS = 1_500L
 
 @Composable
 internal fun SplashRoute(
-    onSplashFinished: () -> Unit,
-    durationMillis: Long = SPLASH_DURATION_MILLIS
+    onNavigateToHome: () -> Unit,
+    onNavigateToSignIn: () -> Unit,
+    viewModel: SplashViewModel = hiltViewModel()
 ) {
-    val currentOnSplashFinished by rememberUpdatedState(onSplashFinished)
-
-    LaunchedEffect(Unit) {
-        delay(durationMillis)
-        currentOnSplashFinished()
+    ObserveAsEvents(viewModel.uiEvent) { event ->
+        when (event) {
+            SplashUiEvent.NavigateToHome -> onNavigateToHome()
+            SplashUiEvent.NavigateToSignIn -> onNavigateToSignIn()
+        }
     }
 
     SplashScreen()

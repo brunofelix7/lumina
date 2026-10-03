@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.hilt.android)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -33,6 +35,7 @@ kotlin {
 
 dependencies {
     // Modules
+    implementation(project(":core:domain"))
     implementation(project(":core:designsystem"))
     implementation(project(":core:presentation"))
 
@@ -52,9 +55,16 @@ dependencies {
     // Navigation
     implementation(libs.androidx.navigation3.runtime)
 
+    // Hilt
+    implementation(libs.hilt.android)
+    implementation(libs.androidx.hilt.lifecycle.viewmodel.compose)
+    ksp(libs.hilt.android.compiler)
+
     // Unit tests
     testImplementation(libs.kotest.runner.junit5)
     testImplementation(libs.kotest.assertions.core)
+    testImplementation(libs.mockk)
+    testImplementation(libs.kotlinx.coroutines.test)
 
     // Instrumentation tests
     androidTestImplementation(libs.androidx.junit)
