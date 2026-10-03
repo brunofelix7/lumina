@@ -5,8 +5,10 @@ import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import dev.brunofelix.lumina.core.designsystem.theme.LuminaTheme
+import dev.brunofelix.lumina.core.domain.model.Deck
 import io.kotest.matchers.shouldBe
 import org.junit.Rule
 import org.junit.Test
@@ -20,7 +22,14 @@ class HomeScreenTest {
 
     private val capturedActions = mutableListOf<HomeUiAction>()
 
-    private val emptyState = HomeUiState(userName = "Bruno", deckCount = 0)
+    private val decks = listOf(
+        Deck(id = "1", name = "Advanced GRE Vocab", cardCount = 148),
+        Deck(id = "2", name = "German B2 Goethe", cardCount = 1),
+        Deck(id = "3", name = "Spanish Travel")
+    )
+
+    private val emptyState = HomeUiState(userName = "Bruno", isLoadingDecks = false)
+    private val decksState = emptyState.copy(decks = decks)
 
     private fun setHomeContent(uiState: HomeUiState = emptyState) {
         composeTestRule.setContent {
@@ -35,26 +44,41 @@ class HomeScreenTest {
 
     @Test
     fun homeScreen_showsTopBarAndCreateDeckButton() {
-        setHomeContent(emptyState.copy(deckCount = 6))
+        setHomeContent(decksState)
 
         composeTestRule.onNodeWithText("Bruno").assertIsDisplayed()
-        composeTestRule.onNodeWithText("6 Decks").assertIsDisplayed()
+        composeTestRule.onNodeWithText("3 Decks").assertIsDisplayed()
         composeTestRule.onNodeWithContentDescription("AI Search").assertIsDisplayed()
         composeTestRule.onNodeWithContentDescription("User Profile").assertIsDisplayed()
         composeTestRule.onNodeWithContentDescription("Create New Deck").assertIsDisplayed()
     }
 
     @Test
-    fun homeScreen_showsSingularDeckLabelForOneDeck() {
-        setHomeContent(emptyState.copy(deckCount = 1))
+    fun homeScreen_showsEveryDeckWithItsCardCount() {
+        setHomeContent(decksState)
 
-        composeTestRule.onNodeWithText("1 Deck").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Advanced GRE Vocab").performScrollTo().assertIsDisplayed()
+        composeTestRule.onNodeWithText("148 cards").performScrollTo().assertIsDisplayed()
+        composeTestRule.onNodeWithText("German B2 Goethe").performScrollTo().assertIsDisplayed()
+        composeTestRule.onNodeWithText("1 card").performScrollTo().assertIsDisplayed()
+        composeTestRule.onNodeWithText("Spanish Travel").performScrollTo().assertIsDisplayed()
+        composeTestRule.onNodeWithText("0 cards").performScrollTo().assertIsDisplayed()
+    }
+
+    @Test
+    fun homeScreen_deckClick_emitsDeckClickWithItsId() {
+        setHomeContent(decksState)
+
+        composeTestRule.onNodeWithText("German B2 Goethe").performScrollTo().performClick()
+
+        capturedActions shouldBe listOf(HomeUiAction.OnDeckClick("2"))
     }
 
     @Test
     fun homeScreen_showsEmptyStateWhenThereAreNoDecks() {
         setHomeContent()
 
+        composeTestRule.onNodeWithText("0 Decks").assertIsDisplayed()
         composeTestRule.onNodeWithText("No decks yet").assertIsDisplayed()
         composeTestRule
             .onNodeWithText("Create your first deck to start learning and memorizing words with Lumina.")
@@ -63,9 +87,18 @@ class HomeScreenTest {
 
     @Test
     fun homeScreen_hidesEmptyStateWhenThereAreDecks() {
-        setHomeContent(emptyState.copy(deckCount = 6))
+        setHomeContent(decksState)
 
         composeTestRule.onNodeWithText("No decks yet").assertDoesNotExist()
+    }
+
+    @Test
+    fun homeScreen_hidesEmptyStateAndDecksWhileLoading() {
+        setHomeContent(HomeUiState(userName = "Bruno"))
+
+        composeTestRule.onNodeWithText("No decks yet").assertDoesNotExist()
+        composeTestRule.onNodeWithText("Advanced GRE Vocab").assertDoesNotExist()
+        composeTestRule.onNodeWithContentDescription("Create New Deck").assertIsDisplayed()
     }
 
     @Test

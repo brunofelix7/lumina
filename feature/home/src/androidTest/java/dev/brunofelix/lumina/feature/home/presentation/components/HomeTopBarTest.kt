@@ -58,6 +58,13 @@ class HomeTopBarTest {
     }
 
     @Test
+    fun homeTopBar_usesPluralLabelForZeroDecks() {
+        setTopBarContent(deckCount = 0)
+
+        composeTestRule.onNodeWithText("0 Decks").assertIsDisplayed()
+    }
+
+    @Test
     fun homeTopBar_searchClick_invokesOnlySearchCallback() {
         setTopBarContent()
 
