@@ -1,12 +1,19 @@
 package dev.brunofelix.lumina.feature.auth.presentation
 
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsEnabled
+import androidx.compose.ui.test.assertIsFocused
 import androidx.compose.ui.test.assertIsNotEnabled
+import androidx.compose.ui.test.assertIsNotFocused
+import androidx.compose.ui.test.hasSetTextAction
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performImeAction
 import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -121,6 +128,85 @@ class SignInScreenTest {
         composeTestRule.onNodeWithText("Login").assertIsEnabled().performClick()
 
         capturedActions shouldBe listOf(SignInUiAction.OnLoginClick)
+    }
+
+    @Test
+    fun signInScreen_loginClick_clearsFocusToHideTheKeyboard() {
+        setSignInContent(filledState)
+        val emailField = composeTestRule.onNodeWithText("nova@lumina.dev")
+
+        emailField.performClick().assertIsFocused()
+        composeTestRule.onNodeWithText("Login").performClick()
+
+        emailField.assertIsNotFocused()
+        capturedActions shouldBe listOf(SignInUiAction.OnLoginClick)
+    }
+
+    @Test
+    fun signInScreen_doneOnPassword_clearsFocusAndEmitsLoginAction() {
+        setSignInContent(filledState)
+        val passwordField = composeTestRule.onAllNodes(hasSetTextAction())[1]
+
+        passwordField.performImeAction()
+
+        passwordField.assertIsNotFocused()
+        capturedActions shouldBe listOf(SignInUiAction.OnLoginClick)
+    }
+
+    @Test
+    fun signInScreen_emailLoading_showsSpinnerAndDisablesBothButtons() {
+        setSignInContent(filledState.copy(isEmailLoading = true))
+
+        composeTestRule.onNodeWithText("Login").assertDoesNotExist()
+        composeTestRule.onNodeWithContentDescription("Signing in")
+            .performScrollTo()
+            .assertIsNotEnabled()
+            .performClick()
+        composeTestRule.onNodeWithText("Sign in with Google")
+            .performScrollTo()
+            .assertIsNotEnabled()
+            .performClick()
+
+        capturedActions.shouldBeEmpty()
+    }
+
+    @Test
+    fun signInScreen_googleLoading_showsSpinnerAndDisablesBothButtons() {
+        setSignInContent(filledState.copy(isGoogleLoading = true))
+
+        composeTestRule.onNodeWithText("Sign in with Google").assertDoesNotExist()
+        composeTestRule.onNodeWithContentDescription("Connecting to Google")
+            .performScrollTo()
+            .assertIsNotEnabled()
+            .performClick()
+        composeTestRule.onNodeWithText("Login")
+            .performScrollTo()
+            .assertIsNotEnabled()
+            .performClick()
+
+        capturedActions.shouldBeEmpty()
+    }
+
+    @Test
+    fun signInScreen_showsSnackbarMessages() {
+        val snackbarHostState = SnackbarHostState()
+        composeTestRule.setContent {
+            LuminaTheme {
+                SignInScreen(
+                    uiState = SignInUiState(),
+                    onAction = {},
+                    snackbarHostState = snackbarHostState
+                )
+                LaunchedEffect(Unit) {
+                    snackbarHostState.showSnackbar(
+                        message = "Invalid email or password",
+                        duration = SnackbarDuration.Indefinite
+                    )
+                }
+            }
+        }
+
+        composeTestRule.onNodeWithText("Invalid email or password").assertIsDisplayed()
     }
 
     @Test

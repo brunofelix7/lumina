@@ -1,12 +1,19 @@
 package dev.brunofelix.lumina.feature.auth.presentation
 
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsEnabled
+import androidx.compose.ui.test.assertIsFocused
 import androidx.compose.ui.test.assertIsNotEnabled
+import androidx.compose.ui.test.assertIsNotFocused
+import androidx.compose.ui.test.hasSetTextAction
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performImeAction
 import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -143,12 +150,91 @@ class SignUpScreenTest {
     }
 
     @Test
+    fun signUpScreen_createAccountClick_clearsFocusToHideTheKeyboard() {
+        setSignUpContent(filledState)
+        val emailField = composeTestRule.onNodeWithText("nova@lumina.dev")
+
+        emailField.performClick().assertIsFocused()
+        composeTestRule.onNodeWithText("Create account").performClick()
+
+        emailField.assertIsNotFocused()
+        capturedActions shouldBe listOf(SignUpUiAction.OnCreateAccountClick)
+    }
+
+    @Test
+    fun signUpScreen_doneOnConfirmPassword_clearsFocusAndEmitsCreateAccountAction() {
+        setSignUpContent(filledState)
+        val confirmPasswordField = composeTestRule.onAllNodes(hasSetTextAction())[3]
+
+        confirmPasswordField.performImeAction()
+
+        confirmPasswordField.assertIsNotFocused()
+        capturedActions shouldBe listOf(SignUpUiAction.OnCreateAccountClick)
+    }
+
+    @Test
     fun signUpScreen_googleClick_emitsGoogleSignUpAction() {
         setSignUpContent()
 
         composeTestRule.onNodeWithText("Sign up with Google").performScrollTo().performClick()
 
         capturedActions shouldBe listOf(SignUpUiAction.OnGoogleSignUpClick)
+    }
+
+    @Test
+    fun signUpScreen_emailLoading_showsSpinnerAndDisablesBothButtons() {
+        setSignUpContent(filledState.copy(isEmailLoading = true))
+
+        composeTestRule.onNodeWithText("Create account").assertDoesNotExist()
+        composeTestRule.onNodeWithContentDescription("Creating account")
+            .performScrollTo()
+            .assertIsNotEnabled()
+            .performClick()
+        composeTestRule.onNodeWithText("Sign up with Google")
+            .performScrollTo()
+            .assertIsNotEnabled()
+            .performClick()
+
+        capturedActions.shouldBeEmpty()
+    }
+
+    @Test
+    fun signUpScreen_googleLoading_showsSpinnerAndDisablesBothButtons() {
+        setSignUpContent(filledState.copy(isGoogleLoading = true))
+
+        composeTestRule.onNodeWithText("Sign up with Google").assertDoesNotExist()
+        composeTestRule.onNodeWithContentDescription("Connecting to Google")
+            .performScrollTo()
+            .assertIsNotEnabled()
+            .performClick()
+        composeTestRule.onNodeWithText("Create account")
+            .performScrollTo()
+            .assertIsNotEnabled()
+            .performClick()
+
+        capturedActions.shouldBeEmpty()
+    }
+
+    @Test
+    fun signUpScreen_showsSnackbarMessages() {
+        val snackbarHostState = SnackbarHostState()
+        composeTestRule.setContent {
+            LuminaTheme {
+                SignUpScreen(
+                    uiState = SignUpUiState(),
+                    onAction = {},
+                    snackbarHostState = snackbarHostState
+                )
+                LaunchedEffect(Unit) {
+                    snackbarHostState.showSnackbar(
+                        message = "An account with this email already exists",
+                        duration = SnackbarDuration.Indefinite
+                    )
+                }
+            }
+        }
+
+        composeTestRule.onNodeWithText("An account with this email already exists").assertIsDisplayed()
     }
 
     @Test
