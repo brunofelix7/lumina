@@ -38,6 +38,7 @@ import dev.brunofelix.lumina.feature.profile.presentation.components.ProfileStat
 @Composable
 internal fun ProfileRoute(
     onBack: () -> Unit,
+    onLoggedOut: () -> Unit,
     viewModel: ProfileViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -45,6 +46,7 @@ internal fun ProfileRoute(
     ObserveAsEvents(viewModel.uiEvent) { event ->
         when (event) {
             ProfileUiEvent.NavigateBack -> onBack()
+            ProfileUiEvent.NavigateToSignIn -> onLoggedOut()
         }
     }
 

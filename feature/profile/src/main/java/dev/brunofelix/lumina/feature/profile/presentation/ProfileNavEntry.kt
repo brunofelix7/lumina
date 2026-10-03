@@ -5,9 +5,13 @@ import androidx.navigation3.runtime.NavKey
 import dev.brunofelix.lumina.core.presentation.navigation.Route
 
 fun EntryProviderScope<NavKey>.profileNavEntry(
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    onLoggedOut: () -> Unit
 ) {
     entry<Route.Profile> {
-        ProfileRoute(onBack = onBack)
+        ProfileRoute(
+            onBack = onBack,
+            onLoggedOut = onLoggedOut
+        )
     }
 }
