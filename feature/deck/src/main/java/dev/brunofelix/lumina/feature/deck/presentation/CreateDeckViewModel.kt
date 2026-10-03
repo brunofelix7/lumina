@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.brunofelix.lumina.core.domain.use_case.CreateDeckUseCase
 import dev.brunofelix.lumina.core.domain.util.fold
+import dev.brunofelix.lumina.core.presentation.util.extension.toAuthUiText
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -47,7 +48,10 @@ class CreateDeckViewModel @Inject constructor(
         viewModelScope.launch {
             createDeckUseCase(state.name).fold(
                 onSuccess = { _uiEvent.send(CreateDeckUiEvent.NavigateBack) },
-                onFailure = { _uiState.update { it.copy(isSaving = false) } }
+                onFailure = { error ->
+                    _uiState.update { it.copy(isSaving = false) }
+                    _uiEvent.send(CreateDeckUiEvent.ShowError(error.toAuthUiText()))
+                }
             )
         }
     }
