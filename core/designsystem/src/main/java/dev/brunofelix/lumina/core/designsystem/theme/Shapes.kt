@@ -16,6 +16,7 @@ val spacing32 = 32.dp
 val spacing40 = 40.dp
 
 val size1 = 1.dp
+val size2 = 2.dp
 val size12 = 12.dp
 val size16 = 16.dp
 val size18 = 18.dp

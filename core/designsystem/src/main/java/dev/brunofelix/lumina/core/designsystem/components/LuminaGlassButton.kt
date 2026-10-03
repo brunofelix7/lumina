@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalTextStyle
@@ -34,6 +35,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -50,6 +53,7 @@ import dev.brunofelix.lumina.core.designsystem.theme.SurfaceGlassFrost
 import dev.brunofelix.lumina.core.designsystem.theme.shapePill
 import dev.brunofelix.lumina.core.designsystem.theme.size1
 import dev.brunofelix.lumina.core.designsystem.theme.size18
+import dev.brunofelix.lumina.core.designsystem.theme.size2
 import dev.brunofelix.lumina.core.designsystem.theme.size20
 import dev.brunofelix.lumina.core.designsystem.theme.size24
 import dev.brunofelix.lumina.core.designsystem.theme.size50
@@ -118,12 +122,18 @@ private fun LuminaGlassButtonStyle.visuals(enabled: Boolean): GlassButtonVisuals
     )
 }
 
+/**
+ * Pill-shaped glass button. While [isLoading] is true the [content] is replaced by a spinner
+ * described by [loadingContentDescription], and clicks are ignored.
+ */
 @Composable
 fun LuminaGlassButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     style: LuminaGlassButtonStyle = LuminaGlassButtonStyle.Primary,
     enabled: Boolean = true,
+    isLoading: Boolean = false,
+    loadingContentDescription: String? = null,
     contentSpacing: Dp = spacing8,
     content: @Composable RowScope.() -> Unit
 ) {
@@ -162,10 +172,15 @@ fun LuminaGlassButton(
             .clip(shapePill)
             .background(containerColor)
             .border(width = size1, color = borderColor, shape = shapePill)
+            .semantics {
+                if (isLoading && loadingContentDescription != null) {
+                    contentDescription = loadingContentDescription
+                }
+            }
             .clickable(
                 interactionSource = interactionSource,
                 indication = null,
-                enabled = enabled,
+                enabled = enabled && !isLoading,
                 role = Role.Button,
                 onClick = onClick
             )
@@ -177,7 +192,15 @@ fun LuminaGlassButton(
             LocalContentColor provides contentColor,
             LocalTextStyle provides MaterialTheme.typography.labelLarge
         ) {
-            content()
+            if (isLoading) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(size20),
+                    color = contentColor,
+                    strokeWidth = size2
+                )
+            } else {
+                content()
+            }
         }
     }
 }
@@ -205,6 +228,17 @@ private fun LuminaGlassButtonPreview() {
                     contentDescription = null,
                     modifier = Modifier.size(size18)
                 )
+            }
+            LuminaGlassButton(onClick = {}, isLoading = true, loadingContentDescription = "Logging in") {
+                Text(text = "Login")
+            }
+            LuminaGlassButton(
+                onClick = {},
+                style = LuminaGlassButtonStyle.Secondary,
+                isLoading = true,
+                loadingContentDescription = "Signing in with Google"
+            ) {
+                Text(text = "Sign in with Google")
             }
             LuminaGlassButton(onClick = {}, style = LuminaGlassButtonStyle.Secondary) {
                 Icon(
