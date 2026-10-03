@@ -1,8 +1,9 @@
 package dev.brunofelix.lumina.feature.home.presentation
 
 import dev.brunofelix.lumina.core.domain.model.Deck
+import dev.brunofelix.lumina.core.domain.model.User
+import dev.brunofelix.lumina.core.domain.use_case.ObserveCurrentUserUseCase
 import dev.brunofelix.lumina.core.domain.use_case.ObserveDecksUseCase
-import dev.brunofelix.lumina.core.presentation.mock.FakeUser
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.shouldBe
@@ -22,7 +23,9 @@ import kotlinx.coroutines.test.setMain
 class HomeViewModelTest : DescribeSpec({
 
     val testDispatcher = UnconfinedTestDispatcher()
+    val observeCurrentUserUseCase = mockk<ObserveCurrentUserUseCase>()
     val observeDecksUseCase = mockk<ObserveDecksUseCase>()
+    lateinit var currentUser: MutableStateFlow<User?>
     lateinit var decks: MutableStateFlow<List<Deck>>
     lateinit var viewModel: HomeViewModel
 
@@ -36,16 +39,36 @@ class HomeViewModelTest : DescribeSpec({
 
     beforeTest {
         clearAllMocks()
+        currentUser = MutableStateFlow(User(id = "uid-1", name = "Lumina E2E", email = "e2e@lumina.dev"))
         decks = MutableStateFlow(emptyList())
+        every { observeCurrentUserUseCase() } returns currentUser
         every { observeDecksUseCase() } returns decks
-        viewModel = HomeViewModel(observeDecksUseCase)
+        viewModel = HomeViewModel(observeCurrentUserUseCase, observeDecksUseCase)
     }
 
     describe("initial state") {
-        it("should expose the mocked user name with no decks") {
+        it("should expose the signed-in user's first name with no decks") {
             runTest(testDispatcher) {
-                viewModel.uiState.value shouldBe HomeUiState(userName = FakeUser.firstName, deckCount = 0)
+                viewModel.uiState.value shouldBe HomeUiState(userName = "Lumina", deckCount = 0)
                 viewModel.uiState.value.hasDecks shouldBe false
+            }
+        }
+    }
+
+    describe("user name") {
+        it("should follow the signed-in user") {
+            runTest(testDispatcher) {
+                currentUser.value = User(id = "uid-2", name = "Nova Star", email = "nova@lumina.dev")
+
+                viewModel.uiState.value.userName shouldBe "Nova"
+            }
+        }
+
+        it("should keep the last name when the user signs out") {
+            runTest(testDispatcher) {
+                currentUser.value = null
+
+                viewModel.uiState.value.userName shouldBe "Lumina"
             }
         }
     }
