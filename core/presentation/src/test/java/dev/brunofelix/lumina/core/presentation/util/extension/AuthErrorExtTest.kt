@@ -27,6 +27,7 @@ class AuthErrorExtTest : DescribeSpec({
                 UiText.StringResource(R.string.error_auth_google_sign_in_cancelled)
             AuthException.TooManyRequests().toUiText() shouldBe
                 UiText.StringResource(R.string.error_auth_too_many_requests)
+            AuthException.SignedOut().toUiText() shouldBe UiText.StringResource(R.string.error_auth_signed_out)
         }
 
         it("should include the minimum length in the weak password message") {

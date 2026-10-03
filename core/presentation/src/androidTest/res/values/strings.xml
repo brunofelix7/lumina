@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="test_deck_count">
+        <item quantity="one">%d Deck</item>
+        <item quantity="other">%d Decks</item>
+    </plurals>
+    <string name="test_deck_count_zero">0 Decks</string>
+</resources>
