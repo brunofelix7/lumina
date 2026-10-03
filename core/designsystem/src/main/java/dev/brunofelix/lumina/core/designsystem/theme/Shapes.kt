@@ -14,6 +14,7 @@ val spacing20 = 20.dp
 val spacing24 = 24.dp
 val spacing32 = 32.dp
 val spacing40 = 40.dp
+val spacing80 = 80.dp
 
 val size1 = 1.dp
 val size2 = 2.dp
@@ -25,6 +26,7 @@ val size22 = 22.dp
 val size24 = 24.dp
 val size32 = 32.dp
 val size36 = 36.dp
+val size44 = 44.dp
 val size48 = 48.dp
 val size50 = 50.dp
 val size56 = 56.dp
@@ -37,7 +39,9 @@ val size384 = 384.dp
 val size480 = 480.dp
 
 val radius16 = 16.dp
+val radius24 = 24.dp
 
 val shapeRounded16 = RoundedCornerShape(radius16)
+val shapeRounded24 = RoundedCornerShape(radius24)
 val shapePill = RoundedCornerShape(percent = 50)
 val shapeCircle = CircleShape

@@ -50,6 +50,7 @@ val BorderGlassFrost = Color(0x1AFFFFFF) // rgba(255, 255, 255, 0.1)
 val SurfaceGlassHaze = Color(0x0FFFFFFF) // rgba(255, 255, 255, 0.06)
 val SurfaceGlassHazeFocused = Color(0x17FFFFFF) // rgba(255, 255, 255, 0.09)
 val BorderGlassHaze = Color(0x1FFFFFFF) // rgba(255, 255, 255, 0.12)
+val BorderGlassSubtle = Color(0x0FFFFFFF) // rgba(255, 255, 255, 0.06)
 val SurfaceGlassNight = Color(0x73121826) // rgba(18, 24, 38, 0.45)
 val SurfaceGlassNightDense = Color(0xA6121826) // rgba(18, 24, 38, 0.65)
 val BorderGlassDivider = Color(0x99353534) // rgba(53, 53, 52, 0.6)
@@ -68,6 +69,7 @@ val OutlineSubtle = Color(0x998A919F) // rgba(138, 145, 159, 0.6)
 val PureWhite = Color(0xFFFFFFFF)
 val OnGlass = PureWhite
 val OnGlassSubtle = Color(0x99FFFFFF) // rgba(255, 255, 255, 0.6)
+val OnGlassMuted = Color(0xFF777777) // rgb(119, 119, 119)
 
 val AtmosphericCanvas = Brush.verticalGradient(
     colors = listOf(SpaceDeep, SpaceVoid)

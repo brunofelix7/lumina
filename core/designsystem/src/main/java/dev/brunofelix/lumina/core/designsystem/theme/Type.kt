@@ -162,3 +162,21 @@ val HeadlineLargeMobileBold = TextStyle(
 )
 
 val BodyMediumRelaxed = Typography.bodyMedium.copy(lineHeight = 22.75.sp)
+
+val ListItemTitle = TextStyle(
+    fontFamily = InterFontFamily,
+    fontSize = 15.sp,
+    fontWeight = FontWeight.SemiBold,
+    lineHeight = 20.625.sp,
+    letterSpacing = (-0.025).em,
+    lineHeightStyle = CenteredLineHeightStyle
+)
+
+val ListItemSupporting = TextStyle(
+    fontFamily = InterFontFamily,
+    fontSize = 13.sp,
+    fontWeight = FontWeight.Medium,
+    lineHeight = 16.25.sp,
+    letterSpacing = 0.em,
+    lineHeightStyle = CenteredLineHeightStyle
+)
