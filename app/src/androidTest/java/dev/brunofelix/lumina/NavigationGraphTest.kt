@@ -3,6 +3,7 @@ package dev.brunofelix.lumina
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasSetTextAction
 import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
+import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -11,6 +12,7 @@ import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import dev.brunofelix.lumina.core.designsystem.theme.LuminaTheme
 import dev.brunofelix.lumina.core.presentation.navigation.Route
+import io.kotest.matchers.collections.shouldBeIn
 import io.kotest.matchers.shouldBe
 import org.junit.Rule
 import org.junit.Test
@@ -26,6 +28,7 @@ class NavigationGraphTest {
 
     private val navigatedRoutes = CopyOnWriteArrayList<Route>()
     private val replacedRoutes = CopyOnWriteArrayList<Route>()
+    private val resetRoutes = CopyOnWriteArrayList<Route>()
     private val backCount = AtomicInteger(0)
 
     private fun setNavigationGraph(backStack: List<Route>) {
@@ -35,6 +38,7 @@ class NavigationGraphTest {
                     backStack = backStack,
                     onNavigate = { navigatedRoutes.add(it) },
                     onReplace = { replacedRoutes.add(it) },
+                    onReset = { resetRoutes.add(it) },
                     onBack = { backCount.incrementAndGet() }
                 )
             }
@@ -50,12 +54,14 @@ class NavigationGraphTest {
     }
 
     @Test
-    fun shouldReplaceSplashWithSignInWhenSplashFinishes() {
+    fun shouldReplaceSplashWithHomeOrSignInWhenSplashFinishes() {
         setNavigationGraph(listOf(Route.Splash))
 
         composeTestRule.waitUntil(timeoutMillis = NAVIGATION_TIMEOUT_MILLIS) { replacedRoutes.isNotEmpty() }
 
-        replacedRoutes.toList() shouldBe listOf(Route.SignIn)
+        // The destination depends on the Firebase session of the device, so either one is valid here.
+        replacedRoutes.single() shouldBeIn listOf(Route.Home, Route.SignIn)
+        resetRoutes.toList() shouldBe emptyList()
     }
 
     @Test
@@ -76,13 +82,17 @@ class NavigationGraphTest {
     }
 
     @Test
-    fun shouldReplaceSignInWithHomeWhenLoginIsClicked() {
+    fun shouldShowErrorAndStayOnSignInWhenEmailIsInvalid() {
         setNavigationGraph(listOf(Route.SignIn))
 
+        composeTestRule.onNodeWithText("Email address").performTextInput("nova@lumina")
+        composeTestRule.onNodeWithText("Password").performTextInput("supernova")
         composeTestRule.onNodeWithText("Login").performScrollTo().performClick()
-        composeTestRule.waitUntil(timeoutMillis = NAVIGATION_TIMEOUT_MILLIS) { replacedRoutes.isNotEmpty() }
+        composeTestRule.waitUntil(timeoutMillis = NAVIGATION_TIMEOUT_MILLIS) {
+            composeTestRule.onAllNodesWithText("Please enter a valid email address").fetchSemanticsNodes().isNotEmpty()
+        }
 
-        replacedRoutes.toList() shouldBe listOf(Route.Home)
+        resetRoutes.toList() shouldBe emptyList()
         navigatedRoutes.toList() shouldBe emptyList()
     }
 
@@ -91,6 +101,23 @@ class NavigationGraphTest {
         setNavigationGraph(listOf(Route.SignIn, Route.SignUp))
 
         composeTestRule.onNodeWithText("Create account").performScrollTo().assertIsDisplayed()
+        composeTestRule.onNodeWithText("Sign up with Google").performScrollTo().assertIsDisplayed()
+    }
+
+    @Test
+    fun shouldShowErrorAndStayOnSignUpWhenPasswordsDoNotMatch() {
+        setNavigationGraph(listOf(Route.SignIn, Route.SignUp))
+
+        composeTestRule.onNodeWithText("Full Name").performTextInput("Nova Star")
+        composeTestRule.onNodeWithText("Email address").performTextInput("nova@lumina.dev")
+        composeTestRule.onNodeWithText("Password").performTextInput("supernova")
+        composeTestRule.onNodeWithText("Confirm password").performTextInput("supernovx")
+        composeTestRule.onNodeWithText("Create account").performScrollTo().performClick()
+        composeTestRule.waitUntil(timeoutMillis = NAVIGATION_TIMEOUT_MILLIS) {
+            composeTestRule.onAllNodesWithText("Passwords don't match").fetchSemanticsNodes().isNotEmpty()
+        }
+
+        resetRoutes.toList() shouldBe emptyList()
     }
 
     @Test
@@ -137,6 +164,17 @@ class NavigationGraphTest {
         composeTestRule.waitUntil(timeoutMillis = NAVIGATION_TIMEOUT_MILLIS) { backCount.get() > 0 }
 
         backCount.get() shouldBe 1
+    }
+
+    @Test
+    fun shouldResetBackStackToSignInWhenLogOutIsClicked() {
+        setNavigationGraph(listOf(Route.Home, Route.Profile))
+
+        composeTestRule.onNodeWithText("Log Out").performScrollTo().performClick()
+        composeTestRule.waitUntil(timeoutMillis = NAVIGATION_TIMEOUT_MILLIS) { resetRoutes.isNotEmpty() }
+
+        resetRoutes.toList() shouldBe listOf(Route.SignIn)
+        backCount.get() shouldBe 0
     }
 
     @Test
