@@ -23,6 +23,7 @@ fun AuthException.toUiText(): UiText {
         is AuthException.GoogleAccountNotFound -> UiText.StringResource(R.string.error_auth_google_account_not_found)
         is AuthException.GoogleSignInCancelled -> UiText.StringResource(R.string.error_auth_google_sign_in_cancelled)
         is AuthException.TooManyRequests -> UiText.StringResource(R.string.error_auth_too_many_requests)
+        is AuthException.SignedOut -> UiText.StringResource(R.string.error_auth_signed_out)
     }
 }
 
