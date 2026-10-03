@@ -4,6 +4,7 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsFocused
 import androidx.compose.ui.test.assertIsNotEnabled
+import androidx.compose.ui.test.assertIsNotFocused
 import androidx.compose.ui.test.hasSetTextAction
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
@@ -92,28 +93,40 @@ class CreateDeckScreenTest {
     }
 
     @Test
-    fun createDeckScreen_saveIsDisabledWhileSaving() {
+    fun createDeckScreen_replacesSaveWithProgressWhileSaving() {
         setCreateDeckContent(filledState.copy(isSaving = true))
 
-        composeTestRule.onNodeWithContentDescription("Save deck").assertIsNotEnabled()
+        composeTestRule.onNodeWithContentDescription("Save deck").assertDoesNotExist()
+        composeTestRule.onNodeWithContentDescription("Saving deck").assertIsDisplayed()
     }
 
     @Test
-    fun createDeckScreen_saveClickWhenFilled_emitsSaveAction() {
+    fun createDeckScreen_showsSaveWhenNotSaving() {
         setCreateDeckContent(filledState)
+
+        composeTestRule.onNodeWithContentDescription("Saving deck").assertDoesNotExist()
+        composeTestRule.onNodeWithContentDescription("Save deck").assertIsDisplayed()
+    }
+
+    @Test
+    fun createDeckScreen_saveClickWhenFilled_emitsSaveActionAndDismissesKeyboard() {
+        setCreateDeckContent(filledState)
+        composeTestRule.onNode(hasSetTextAction()).assertIsFocused()
 
         composeTestRule.onNodeWithContentDescription("Save deck").assertIsEnabled().performClick()
 
         capturedActions shouldBe listOf(CreateDeckUiAction.OnSaveClick)
+        composeTestRule.onNode(hasSetTextAction()).assertIsNotFocused()
     }
 
     @Test
-    fun createDeckScreen_imeDone_emitsSaveAction() {
+    fun createDeckScreen_imeDone_emitsSaveActionAndDismissesKeyboard() {
         setCreateDeckContent(filledState)
 
         composeTestRule.onNode(hasSetTextAction()).performImeAction()
 
         capturedActions shouldBe listOf(CreateDeckUiAction.OnSaveClick)
+        composeTestRule.onNode(hasSetTextAction()).assertIsNotFocused()
     }
 
     @Test

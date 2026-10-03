@@ -3,6 +3,8 @@ package dev.brunofelix.lumina.feature.deck.presentation
 import dev.brunofelix.lumina.core.domain.model.Deck
 import dev.brunofelix.lumina.core.domain.use_case.CreateDeckUseCase
 import dev.brunofelix.lumina.core.domain.util.Resource
+import dev.brunofelix.lumina.core.domain.util.exception.AuthException
+import dev.brunofelix.lumina.core.presentation.util.UiText
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.shouldBe
@@ -17,6 +19,7 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
+import dev.brunofelix.lumina.core.presentation.R as PresentationR
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class CreateDeckViewModelTest : DescribeSpec({
@@ -122,7 +125,25 @@ class CreateDeckViewModelTest : DescribeSpec({
             }
         }
 
-        it("should stay on the screen and allow saving again when creation fails") {
+        it("should stay on the screen, show the error and allow saving again when creation fails") {
+            runTest(testDispatcher) {
+                coEvery { createDeckUseCase(any()) } returns Resource.Error(AuthException.SignedOut())
+                val events = mutableListOf<CreateDeckUiEvent>()
+                val eventJob = backgroundScope.launch { viewModel.uiEvent.collect { events.add(it) } }
+
+                viewModel.onAction(CreateDeckUiAction.OnNameChange("Spanish Travel"))
+                viewModel.onAction(CreateDeckUiAction.OnSaveClick)
+
+                events shouldBe listOf(
+                    CreateDeckUiEvent.ShowError(UiText.StringResource(PresentationR.string.error_auth_signed_out))
+                )
+                viewModel.uiState.value.isSaving shouldBe false
+                viewModel.uiState.value.isSaveEnabled shouldBe true
+                eventJob.cancel()
+            }
+        }
+
+        it("should show the generic error for unexpected failures") {
             runTest(testDispatcher) {
                 coEvery { createDeckUseCase(any()) } returns Resource.Error(IllegalStateException("boom"))
                 val events = mutableListOf<CreateDeckUiEvent>()
@@ -131,9 +152,9 @@ class CreateDeckViewModelTest : DescribeSpec({
                 viewModel.onAction(CreateDeckUiAction.OnNameChange("Spanish Travel"))
                 viewModel.onAction(CreateDeckUiAction.OnSaveClick)
 
-                events.shouldBeEmpty()
-                viewModel.uiState.value.isSaving shouldBe false
-                viewModel.uiState.value.isSaveEnabled shouldBe true
+                events shouldBe listOf(
+                    CreateDeckUiEvent.ShowError(UiText.StringResource(PresentationR.string.error_unknown))
+                )
                 eventJob.cancel()
             }
         }
