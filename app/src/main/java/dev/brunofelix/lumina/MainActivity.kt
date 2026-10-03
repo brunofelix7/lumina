@@ -39,6 +39,7 @@ class MainActivity : ComponentActivity() {
                     backStack = backStack,
                     onNavigate = navigationViewModel::navigateTo,
                     onReplace = navigationViewModel::replaceCurrent,
+                    onReset = navigationViewModel::resetTo,
                     onBack = navigationViewModel::popBackStack
                 )
             }

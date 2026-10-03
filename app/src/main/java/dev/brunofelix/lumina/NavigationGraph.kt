@@ -2,6 +2,7 @@ package dev.brunofelix.lumina
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
@@ -18,16 +19,21 @@ fun NavigationGraph(
     backStack: List<Route>,
     onNavigate: (Route) -> Unit,
     onReplace: (Route) -> Unit,
+    onReset: (Route) -> Unit,
     onBack: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val googleWebClientId = stringResource(R.string.default_web_client_id)
+
     val entryProvider = entryProvider {
         splashNavEntry(
-            onSplashFinished = { onReplace(Route.SignIn) }
+            onNavigateToHome = { onReplace(Route.Home) },
+            onNavigateToSignIn = { onReplace(Route.SignIn) }
         )
         authNavEntry(
+            googleWebClientId = googleWebClientId,
             onNavigateToSignUp = { onNavigate(Route.SignUp) },
-            onNavigateToHome = { onReplace(Route.Home) },
+            onNavigateToHome = { onReset(Route.Home) },
             onBack = onBack
         )
         homeNavEntry(
@@ -35,7 +41,8 @@ fun NavigationGraph(
             onNavigateToCreateDeck = { onNavigate(Route.CreateDeck) }
         )
         profileNavEntry(
-            onBack = onBack
+            onBack = onBack,
+            onLoggedOut = { onReset(Route.SignIn) }
         )
         deckNavEntry(
             onBack = onBack
