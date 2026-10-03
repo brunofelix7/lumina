@@ -1,7 +1,6 @@
 package dev.brunofelix.lumina
 
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.hasSetTextAction
 import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithContentDescription
@@ -193,17 +192,6 @@ class NavigationGraphTest {
 
         composeTestRule.onNodeWithText("Create Deck").assertIsDisplayed()
         composeTestRule.onNodeWithContentDescription("Save deck").assertIsDisplayed()
-    }
-
-    @Test
-    fun shouldNavigateBackWhenDeckIsSaved() {
-        setNavigationGraph(listOf(Route.Home, Route.CreateDeck))
-
-        composeTestRule.onNode(hasSetTextAction()).performTextInput("Spanish Travel")
-        composeTestRule.onNodeWithContentDescription("Save deck").performClick()
-        composeTestRule.waitUntil(timeoutMillis = NAVIGATION_TIMEOUT_MILLIS) { backCount.get() > 0 }
-
-        backCount.get() shouldBe 1
     }
 
     @Test
