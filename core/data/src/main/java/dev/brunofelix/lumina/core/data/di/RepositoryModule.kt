@@ -5,7 +5,7 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dev.brunofelix.lumina.core.data.repository.AuthRepositoryImpl
-import dev.brunofelix.lumina.core.data.repository.InMemoryDeckRepositoryImpl
+import dev.brunofelix.lumina.core.data.repository.DeckRepositoryImpl
 import dev.brunofelix.lumina.core.domain.repository.AuthRepository
 import dev.brunofelix.lumina.core.domain.repository.DeckRepository
 import javax.inject.Singleton
@@ -17,7 +17,7 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindDeckRepository(
-        impl: InMemoryDeckRepositoryImpl
+        impl: DeckRepositoryImpl
     ): DeckRepository
 
     @Binds

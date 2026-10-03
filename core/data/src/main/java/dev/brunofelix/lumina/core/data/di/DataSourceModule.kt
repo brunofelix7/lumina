@@ -6,6 +6,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dev.brunofelix.lumina.core.data.remote.source.AuthRemoteDataSource
 import dev.brunofelix.lumina.core.data.remote.source.AuthRemoteDataSourceImpl
+import dev.brunofelix.lumina.core.data.remote.source.DeckRemoteDataSource
+import dev.brunofelix.lumina.core.data.remote.source.DeckRemoteDataSourceImpl
 import dev.brunofelix.lumina.core.data.remote.source.UserRemoteDataSource
 import dev.brunofelix.lumina.core.data.remote.source.UserRemoteDataSourceImpl
 import javax.inject.Singleton
@@ -25,4 +27,10 @@ abstract class DataSourceModule {
     abstract fun bindUserRemoteDataSource(
         impl: UserRemoteDataSourceImpl
     ): UserRemoteDataSource
+
+    @Binds
+    @Singleton
+    abstract fun bindDeckRemoteDataSource(
+        impl: DeckRemoteDataSourceImpl
+    ): DeckRemoteDataSource
 }

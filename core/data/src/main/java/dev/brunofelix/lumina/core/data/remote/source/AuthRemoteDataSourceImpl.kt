@@ -43,6 +43,8 @@ class AuthRemoteDataSourceImpl @Inject constructor(
         awaitClose { firebaseAuth.removeAuthStateListener(listener) }
     }.distinctUntilChanged()
 
+    override fun getCurrentUserId(): String? = firebaseAuth.currentUser?.uid
+
     override suspend fun signInWithGoogle(idToken: String): Result<User> {
         return safeFirebaseCall {
             val credential = GoogleAuthProvider.getCredential(idToken, null)

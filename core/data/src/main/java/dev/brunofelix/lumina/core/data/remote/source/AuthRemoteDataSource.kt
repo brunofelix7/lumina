@@ -8,6 +8,7 @@ interface AuthRemoteDataSource {
     suspend fun signIn(email: String, password: String): Result<User>
     suspend fun signInWithGoogle(idToken: String): Result<User>
     fun observeCurrentUser(): Flow<User?>
+    fun getCurrentUserId(): String?
     suspend fun deleteCurrentUser(): Result<Unit>
     fun signOut()
 }
