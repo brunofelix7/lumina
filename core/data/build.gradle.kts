@@ -40,12 +40,11 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)
 
+    // Coroutines
+    implementation(libs.kotlinx.coroutines.play.services)
+
     // Kotlinx Serialization
     implementation(libs.kotlinx.serialization.json)
-
-    // Credential Manager
-    implementation(libs.androidx.credentials)
-    implementation(libs.androidx.credentials.play.services)
 
     // Hilt
     implementation(libs.hilt.android)
