@@ -7,5 +7,7 @@ sealed interface SignInUiAction {
     data object OnForgotPasswordClick : SignInUiAction
     data object OnLoginClick : SignInUiAction
     data object OnGoogleSignInClick : SignInUiAction
+    data class OnGoogleIdTokenReceived(val idToken: String) : SignInUiAction
+    data class OnGoogleSignInFailed(val error: Throwable) : SignInUiAction
     data object OnSignUpClick : SignInUiAction
 }

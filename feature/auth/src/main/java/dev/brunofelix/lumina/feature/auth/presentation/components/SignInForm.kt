@@ -7,12 +7,14 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
@@ -36,6 +38,12 @@ fun SignInForm(
     onAction: (SignInUiAction) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val focusManager = LocalFocusManager.current
+    val login = {
+        focusManager.clearFocus()
+        onAction(SignInUiAction.OnLoginClick)
+    }
+
     Column(
         modifier = modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(spacing16)
@@ -54,7 +62,8 @@ fun SignInForm(
             value = uiState.password,
             onValueChange = { onAction(SignInUiAction.OnPasswordChange(it)) },
             isPasswordVisible = uiState.isPasswordVisible,
-            onToggleVisibility = { onAction(SignInUiAction.OnTogglePasswordVisibility) }
+            onToggleVisibility = { onAction(SignInUiAction.OnTogglePasswordVisibility) },
+            keyboardActions = KeyboardActions(onDone = { login() })
         )
         Row(
             modifier = Modifier
@@ -72,9 +81,11 @@ fun SignInForm(
             )
         }
         LuminaGlassButton(
-            onClick = { onAction(SignInUiAction.OnLoginClick) },
+            onClick = login,
             modifier = Modifier.padding(top = spacing4),
             enabled = uiState.isLoginEnabled,
+            isLoading = uiState.isEmailLoading,
+            loadingContentDescription = stringResource(R.string.sign_in_logging_in),
             contentSpacing = spacing4
         ) {
             Text(text = stringResource(R.string.sign_in_login))
@@ -108,6 +119,22 @@ private fun SignInFormFilledPreview() {
                 email = "nova@lumina.dev",
                 password = "supernova",
                 isPasswordVisible = true
+            ),
+            onAction = {},
+            modifier = Modifier.padding(spacing16)
+        )
+    }
+}
+
+@Preview(showBackground = true, backgroundColor = 0xFF00152D)
+@Composable
+private fun SignInFormLoadingPreview() {
+    LuminaTheme {
+        SignInForm(
+            uiState = SignInUiState(
+                email = "nova@lumina.dev",
+                password = "supernova",
+                isEmailLoading = true
             ),
             onAction = {},
             modifier = Modifier.padding(spacing16)

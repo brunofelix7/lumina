@@ -5,18 +5,24 @@ import androidx.navigation3.runtime.NavKey
 import dev.brunofelix.lumina.core.presentation.navigation.Route
 
 fun EntryProviderScope<NavKey>.authNavEntry(
+    googleWebClientId: String,
     onNavigateToSignUp: () -> Unit,
     onNavigateToHome: () -> Unit,
     onBack: () -> Unit
 ) {
     entry<Route.SignIn> {
         SignInRoute(
+            googleWebClientId = googleWebClientId,
             onNavigateToSignUp = onNavigateToSignUp,
             onNavigateToHome = onNavigateToHome
         )
     }
 
     entry<Route.SignUp> {
-        SignUpRoute(onBack = onBack)
+        SignUpRoute(
+            googleWebClientId = googleWebClientId,
+            onBack = onBack,
+            onNavigateToHome = onNavigateToHome
+        )
     }
 }
