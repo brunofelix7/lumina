@@ -9,8 +9,8 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
-import dev.brunofelix.lumina.core.designsystem.theme.LuminaTheme
-import dev.brunofelix.lumina.core.presentation.viewmodel.NavigationViewModel
+import dev.brunofelix.lumina.designsystem.theme.LuminaTheme
+import dev.brunofelix.lumina.presentation.viewmodel.NavigationViewModel
 
 private const val SYSTEM_SPLASH_FADE_OUT_MILLIS = 400L
 

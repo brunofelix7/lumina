@@ -1,0 +1,6 @@
+package dev.brunofelix.lumina.presentation
+
+sealed interface SplashUiEvent {
+    data object NavigateToHome : SplashUiEvent
+    data object NavigateToSignIn : SplashUiEvent
+}

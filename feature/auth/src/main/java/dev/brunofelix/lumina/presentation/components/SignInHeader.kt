@@ -1,0 +1,38 @@
+package dev.brunofelix.lumina.presentation.components
+
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import dev.brunofelix.lumina.designsystem.theme.LuminaTheme
+import dev.brunofelix.lumina.designsystem.theme.size204
+import dev.brunofelix.lumina.designsystem.theme.spacing16
+import dev.brunofelix.lumina.designsystem.theme.spacing24
+import dev.brunofelix.lumina.feature.auth.R
+import dev.brunofelix.lumina.core.designsystem.R as DesignSystemR
+
+@Composable
+fun SignInHeader(modifier: Modifier = Modifier) {
+    Box(modifier = modifier.padding(top = spacing16, bottom = spacing24)) {
+        Image(
+            painter = painterResource(DesignSystemR.drawable.lumina_logo_glow),
+            contentDescription = stringResource(R.string.sign_in_logo_content_description),
+            modifier = Modifier
+                .padding(bottom = spacing16)
+                .size(size204)
+        )
+    }
+}
+
+@Preview(showBackground = true, backgroundColor = 0xFF00152D)
+@Composable
+private fun SignInHeaderPreview() {
+    LuminaTheme {
+        SignInHeader()
+    }
+}

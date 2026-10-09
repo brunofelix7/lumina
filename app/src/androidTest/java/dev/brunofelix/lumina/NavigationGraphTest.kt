@@ -9,8 +9,8 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import dev.brunofelix.lumina.core.designsystem.theme.LuminaTheme
-import dev.brunofelix.lumina.core.presentation.navigation.Route
+import dev.brunofelix.lumina.designsystem.theme.LuminaTheme
+import dev.brunofelix.lumina.presentation.navigation.Route
 import io.kotest.matchers.collections.shouldBeIn
 import io.kotest.matchers.shouldBe
 import org.junit.Rule

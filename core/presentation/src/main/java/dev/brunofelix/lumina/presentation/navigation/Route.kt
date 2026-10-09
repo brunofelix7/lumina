@@ -1,0 +1,24 @@
+package dev.brunofelix.lumina.presentation.navigation
+
+import androidx.navigation3.runtime.NavKey
+import kotlinx.serialization.Serializable
+
+sealed interface Route : NavKey {
+    @Serializable
+    data object Splash : Route
+
+    @Serializable
+    data object SignIn : Route
+
+    @Serializable
+    data object SignUp : Route
+
+    @Serializable
+    data object Home : Route
+
+    @Serializable
+    data object Profile : Route
+
+    @Serializable
+    data object CreateDeck : Route
+}
