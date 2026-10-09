@@ -29,6 +29,23 @@ Unlike some other architectures, **do not** create `:feature:<name>:domain` or `
 All domain logic goes into `:core:domain` and all data logic goes into `:core:data`. 
 A feature module (e.g., `:feature:album`) is a single module that contains **only** presentation concerns.
 
+### Package Structure
+The Gradle module path already says which module a file belongs to, so packages never repeat it. Every module's source root is `<basePackage>.<layer>`:
+
+| Module | Source root package | Example |
+|---|---|---|
+| `:app` | `<basePackage>` | `<basePackage>.MainActivity`, `<basePackage>.navigation.NavigationGraph` |
+| `:core:domain` | `<basePackage>.domain` | `<basePackage>.domain.use_case.GetAlbumByIdUseCase` |
+| `:core:data` | `<basePackage>.data` | `<basePackage>.data.repository.AlbumRepositoryImpl` |
+| `:core:presentation` | `<basePackage>.presentation` | `<basePackage>.presentation.util.UiState` |
+| `:core:designsystem` | `<basePackage>.designsystem` | `<basePackage>.designsystem.theme.Shapes` |
+| `:feature:<name>` | `<basePackage>.presentation` | `<basePackage>.presentation.AlbumScreen`, `<basePackage>.presentation.detail.AlbumDetailViewModel` |
+
+- **No module segments**: never add `core.<name>` or `feature.<name>` to a package. `feature/album/src/main/java/<basePackage path>/presentation/AlbumScreen.kt` is correct; `<basePackage>.feature.album.presentation` and `<basePackage>.core.data.repository` are wrong. `test` and `androidTest` use the same packages as `main`.
+- **Subpackages by screen**: a feature with several screens may group them (`presentation.home`, `presentation.detail`); shared pieces stay in `presentation.components` / `presentation.model`.
+- **Unique names**: `:core:presentation` and every feature share `<basePackage>.presentation`, and `:app` merges them into one APK. Prefix every class and file of a feature with its name (`AlbumScreen.kt`, `AlbumUiState`, `AlbumDetailViewModel`, `components/AlbumHeader.kt`), never generic names like `HomeScreen.kt` or `DetailUiState`. Two top-level classes (even `private`) or two files with the same name in the same package of different modules fail the `:app` build with duplicate classes.
+- **Namespace is not the package**: the Gradle `namespace` only names the module's generated `R` and `BuildConfig`, and it must be unique per module (a shared namespace generates duplicate `R`/`BuildConfig` classes). It keeps the module path: `<basePackage>.<core|feature>.<name>` (e.g., `namespace = "<basePackage>.feature.album"`); `:app` uses `<basePackage>`. Import resources through it: `import <basePackage>.feature.album.R`, `import <basePackage>.core.designsystem.R as DesignSystemR`, `import <basePackage>.core.data.BuildConfig`.
+
 ---
 
 ## Gradle & Dependency Strategy
@@ -49,7 +66,7 @@ Dependencies and build scripts must be meticulously organized to prevent bloat.
    - `// Hilt`
    - `// Unit tests`
    - `// Instrumentation tests`
-4. **Build Logic**: Keep the `android { ... }` block directly inside each module's `build.gradle.kts` (no heavy `build-logic` convention plugins). Set appropriate namespaces following `<basePackage>.<core|feature>.<name>` (e.g., `namespace = "<basePackage>.feature.auth"`; `<basePackage>` is defined in `CLAUDE.md`).
+4. **Build Logic**: Keep the `android { ... }` block directly inside each module's `build.gradle.kts` (no heavy `build-logic` convention plugins). Set the module `namespace` to `<basePackage>.<core|feature>.<name>` (e.g., `namespace = "<basePackage>.feature.auth"`; `<basePackage>` is defined in `CLAUDE.md`). It only names `R` and `BuildConfig`; source packages follow **Package Structure** above.
 
 ---
 
@@ -90,5 +107,5 @@ Dependencies and build scripts must be meticulously organized to prevent bloat.
 - [ ] Create domain models and Use Case interfaces in `:core:domain`.
 - [ ] Implement the Use Cases and update Repositories in `:core:data`.
 - [ ] Register new dependencies in the Hilt modules inside `:core:data/di/`.
-- [ ] Create the ViewModel, Screen Composable, and NavEntry inside `:feature:<name>/presentation/`.
+- [ ] Create the ViewModel, Screen Composable, and NavEntry inside `:feature:<name>`, in the package `<basePackage>.presentation`, with names prefixed by the feature.
 - [ ] Wire the new feature's NavEntry into the main navigation graph in `:app`.

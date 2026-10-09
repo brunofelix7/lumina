@@ -18,7 +18,7 @@ This project strictly organizes the Data layer within the `:core:data` module. T
 
 ## 1. Package Structure
 
-When adding new data components, follow this exact package structure inside `:core:data/src/main/java/.../`:
+When adding new data components, follow this exact package structure inside `:core:data`, under the package `<basePackage>.data` (never `<basePackage>.core.data`; see **Package Structure** in `android-architecture`):
 
 ```text
 /local

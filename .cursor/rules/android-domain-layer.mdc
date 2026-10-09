@@ -18,7 +18,7 @@ This project strictly isolates all business logic and domain rules inside the `:
 
 ## 1. Package Structure
 
-When adding new domain components, follow this package structure inside `:core:domain/src/main/java/.../`:
+When adding new domain components, follow this package structure inside `:core:domain`, under the package `<basePackage>.domain` (never `<basePackage>.core.domain`; see **Package Structure** in `android-architecture`):
 
 ```text
 /model            ← Pure Kotlin data classes (e.g., Song, Album)
@@ -50,8 +50,8 @@ Use cases represent a single action the user or system can perform.
 
 ```kotlin
 // Example: core/domain/.../use_case/GetAlbumByIdUseCase.kt
-import <basePackage>.core.domain.model.Album
-import <basePackage>.core.domain.util.Resource
+import <basePackage>.domain.model.Album
+import <basePackage>.domain.util.Resource
 
 fun interface GetAlbumByIdUseCase {
     suspend operator fun invoke(id: Long): Resource<Album>
@@ -65,8 +65,8 @@ Repositories declare the contract for data operations.
 
 ```kotlin
 // Example: core/domain/.../repository/SongRepository.kt
-import <basePackage>.core.domain.model.Song
-import <basePackage>.core.domain.util.Resource
+import <basePackage>.domain.model.Song
+import <basePackage>.domain.util.Resource
 import kotlinx.coroutines.flow.Flow
 
 interface SongRepository {

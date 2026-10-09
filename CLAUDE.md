@@ -31,7 +31,7 @@ The architecture standards in `.cursor/rules/` are project-agnostic and always a
 | Key | Value |
 |---|---|
 | App | Lumina |
-| `<basePackage>` | `dev.brunofelix.lumina` (module namespaces: `dev.brunofelix.lumina.<core\|feature>.<name>`; `:app` uses `dev.brunofelix.lumina`) |
+| `<basePackage>` | `dev.brunofelix.lumina`. Source packages: `dev.brunofelix.lumina.<domain\|data\|presentation\|designsystem>`, and every feature uses `dev.brunofelix.lumina.presentation` (see Package Structure in `android-architecture.mdc`). Gradle namespaces, which only name `R` and `BuildConfig`: `dev.brunofelix.lumina.<core\|feature>.<name>`. `:app` uses `dev.brunofelix.lumina` for both. **Pending migration**: the `core` and `feature` modules still use the old roots (`dev.brunofelix.lumina.core.<name>`, `dev.brunofelix.lumina.feature.<name>`). Until the user asks for the migration, new files go in the package their module already uses |
 | Application ID / launch activity | `dev.brunofelix.lumina` / `dev.brunofelix.lumina/.MainActivity` |
 | Theme composable (`AppTheme`) | `LuminaTheme` |
 | Theme mode | Dark only (`DarkColors` in `Theme.kt`) |
