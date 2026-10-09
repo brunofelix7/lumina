@@ -1,8 +1,7 @@
-package dev.brunofelix.lumina.data.use_case
+package dev.brunofelix.lumina.domain.use_case
 
 import dev.brunofelix.lumina.domain.model.User
 import dev.brunofelix.lumina.domain.repository.AuthRepository
-import dev.brunofelix.lumina.domain.use_case.SignUpWithEmailUseCase
 import dev.brunofelix.lumina.domain.use_case.SignUpWithEmailUseCase.Companion.MIN_PASSWORD_LENGTH
 import dev.brunofelix.lumina.domain.util.Resource
 import dev.brunofelix.lumina.domain.util.exception.AuthException
