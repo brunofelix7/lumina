@@ -1,4 +1,4 @@
-package <basePackage>.core.domain.util
+package <basePackage>.domain.util
 
 /**
  * A sealed interface representing a state of a resource that can be either [Success] or [Error].

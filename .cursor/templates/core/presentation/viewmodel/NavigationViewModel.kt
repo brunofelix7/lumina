@@ -1,8 +1,8 @@
-package <basePackage>.core.presentation.viewmodel
+package <basePackage>.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import <basePackage>.core.presentation.navigation.Route
+import <basePackage>.presentation.navigation.Route
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update

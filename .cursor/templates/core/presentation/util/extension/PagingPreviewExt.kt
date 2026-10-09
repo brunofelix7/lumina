@@ -1,4 +1,4 @@
-package <basePackage>.core.presentation.util.extension
+package <basePackage>.presentation.util.extension
 
 import androidx.compose.runtime.Composable
 import androidx.paging.CombinedLoadStates

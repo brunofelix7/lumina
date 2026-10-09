@@ -1,7 +1,7 @@
-package <basePackage>.core.data.util
+package <basePackage>.data.util
 
-import <basePackage>.core.data.util.extension.mapOrThrow
-import <basePackage>.core.data.util.extension.toRemoteException
+import <basePackage>.data.util.extension.mapOrThrow
+import <basePackage>.data.util.extension.toRemoteException
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow

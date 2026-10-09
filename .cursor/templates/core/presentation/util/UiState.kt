@@ -1,4 +1,4 @@
-package <basePackage>.core.presentation.util
+package <basePackage>.presentation.util
 
 sealed interface UiState<out T> {
     data object Initial : UiState<Nothing>

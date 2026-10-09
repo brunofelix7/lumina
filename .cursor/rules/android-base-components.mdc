@@ -5,7 +5,7 @@ description: Canonical base classes shared by every Android project (Resource, U
 
 # Android Base Components
 
-The other rules rely on a set of base classes and extensions. Their canonical implementations live in `.cursor/templates/`, mirroring the module layout (`core/<module>/<package path>`). In the templates, `<basePackage>` is the project's base package from `CLAUDE.md`.
+The other rules rely on a set of base classes and extensions. Their canonical implementations live in `.cursor/templates/`, mirroring the module layout (`core/<module>/<package path>`, where the package path is relative to the module's source root `<basePackage>.<module>`; see **Package Structure** in `android-architecture`). In the templates, `<basePackage>` is the project's base package from `CLAUDE.md`. `R` imports point to the module `namespace` (`<basePackage>.core.presentation.R`), not to the source package.
 
 ## Rules
 
@@ -21,22 +21,22 @@ Template paths are relative to `.cursor/templates/`. Packages are relative to `<
 
 | Component | Module → package | Template | Depends on |
 |---|---|---|---|
-| `Resource<T>`, `Resource.fold`, `Result.toResource()` | `:core:domain` → `core.domain.util` | `core/domain/util/Resource.kt` | — |
-| `RemoteException` | `:core:domain` → `core.domain.util.exception` | `core/domain/util/exception/RemoteException.kt` | — |
-| `LocalException` | `:core:domain` → `core.domain.util.exception` | `core/domain/util/exception/LocalException.kt` | — |
-| `BaseRemoteDataSource<T>` (`safeApiCall`, `safeFlowApiCall`) | `:core:data` → `core.data.util` | `core/data/util/BaseRemoteDataSource.kt` | `ResponseExt`, `ThrowableExt` |
-| `Response.mapOrThrow()`, `Response.toResult()` | `:core:data` → `core.data.util.extension` | `core/data/util/extension/ResponseExt.kt` | `ThrowableExt` |
-| `Throwable.toRemoteException()` | `:core:data` → `core.data.util.extension` | `core/data/util/extension/ThrowableExt.kt` | `RemoteException` |
-| `UiState<T>` | `:core:presentation` → `core.presentation.util` | `core/presentation/util/UiState.kt` | `UiText` |
-| `UiText` | `:core:presentation` → `core.presentation.util` | `core/presentation/util/UiText.kt` | — |
-| `ObserveAsEvents` | `:core:presentation` → `core.presentation.util` | `core/presentation/util/ObserveAsEvents.kt` | — |
-| `BasePagingSource<T>` (page-number endpoints only, e.g. `?page=1`) | `:core:presentation` → `core.presentation.util` | `core/presentation/util/BasePagingSource.kt` | `Resource` |
-| `PagingConfig.asPagerFlow()` | `:core:presentation` → `core.presentation.util.extension` | `core/presentation/util/extension/PagingExt.kt` | — |
-| `collectAsPreviewLazyPagingItems()`, `createCombinedLoadStates()` (previews only) | `:core:presentation` → `core.presentation.util.extension` | `core/presentation/util/extension/PagingPreviewExt.kt` | — |
-| `RemoteException.toUiText()`, `LocalException.toUiText()`, `Throwable.toUiText()` | `:core:presentation` → `core.presentation.util.extension` | `core/presentation/util/extension/DataErrorExt.kt` | `UiText`, both exceptions, error strings |
+| `Resource<T>`, `Resource.fold`, `Result.toResource()` | `:core:domain` → `domain.util` | `core/domain/util/Resource.kt` | — |
+| `RemoteException` | `:core:domain` → `domain.util.exception` | `core/domain/util/exception/RemoteException.kt` | — |
+| `LocalException` | `:core:domain` → `domain.util.exception` | `core/domain/util/exception/LocalException.kt` | — |
+| `BaseRemoteDataSource<T>` (`safeApiCall`, `safeFlowApiCall`) | `:core:data` → `data.util` | `core/data/util/BaseRemoteDataSource.kt` | `ResponseExt`, `ThrowableExt` |
+| `Response.mapOrThrow()`, `Response.toResult()` | `:core:data` → `data.util.extension` | `core/data/util/extension/ResponseExt.kt` | `ThrowableExt` |
+| `Throwable.toRemoteException()` | `:core:data` → `data.util.extension` | `core/data/util/extension/ThrowableExt.kt` | `RemoteException` |
+| `UiState<T>` | `:core:presentation` → `presentation.util` | `core/presentation/util/UiState.kt` | `UiText` |
+| `UiText` | `:core:presentation` → `presentation.util` | `core/presentation/util/UiText.kt` | — |
+| `ObserveAsEvents` | `:core:presentation` → `presentation.util` | `core/presentation/util/ObserveAsEvents.kt` | — |
+| `BasePagingSource<T>` (page-number endpoints only, e.g. `?page=1`) | `:core:presentation` → `presentation.util` | `core/presentation/util/BasePagingSource.kt` | `Resource` |
+| `PagingConfig.asPagerFlow()` | `:core:presentation` → `presentation.util.extension` | `core/presentation/util/extension/PagingExt.kt` | — |
+| `collectAsPreviewLazyPagingItems()`, `createCombinedLoadStates()` (previews only) | `:core:presentation` → `presentation.util.extension` | `core/presentation/util/extension/PagingPreviewExt.kt` | — |
+| `RemoteException.toUiText()`, `LocalException.toUiText()`, `Throwable.toUiText()` | `:core:presentation` → `presentation.util.extension` | `core/presentation/util/extension/DataErrorExt.kt` | `UiText`, both exceptions, error strings |
 | Error strings (`error_*`) | `:core:presentation` → `res/values/strings.xml` | `core/presentation/res/values/strings.xml` | — (merge into the existing file) |
-| `Route` (sealed, `NavKey`) | `:core:presentation` → `core.presentation.navigation` | `core/presentation/navigation/Route.kt` | — (add the project's routes) |
-| `NavigationViewModel` | `:core:presentation` → `core.presentation.viewmodel` | `core/presentation/viewmodel/NavigationViewModel.kt` | `Route` |
+| `Route` (sealed, `NavKey`) | `:core:presentation` → `presentation.navigation` | `core/presentation/navigation/Route.kt` | — (add the project's routes) |
+| `NavigationViewModel` | `:core:presentation` → `presentation.viewmodel` | `core/presentation/viewmodel/NavigationViewModel.kt` | `Route` |
 
 ## Required libraries
 

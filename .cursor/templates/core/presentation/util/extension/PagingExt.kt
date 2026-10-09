@@ -1,4 +1,4 @@
-package <basePackage>.core.presentation.util.extension
+package <basePackage>.presentation.util.extension
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig

@@ -1,9 +1,9 @@
-package <basePackage>.core.presentation.util
+package <basePackage>.presentation.util
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import <basePackage>.core.domain.util.Resource
-import <basePackage>.core.domain.util.fold
+import <basePackage>.domain.util.Resource
+import <basePackage>.domain.util.fold
 
 private const val FIRST_PAGE = 1
 private const val DEFAULT_PAGE_SIZE = 20

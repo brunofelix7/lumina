@@ -1,4 +1,4 @@
-package <basePackage>.core.presentation.navigation
+package <basePackage>.presentation.navigation
 
 import androidx.navigation3.runtime.NavKey
 import kotlinx.serialization.Serializable

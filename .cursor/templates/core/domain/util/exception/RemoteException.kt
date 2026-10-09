@@ -1,4 +1,4 @@
-package <basePackage>.core.domain.util.exception
+package <basePackage>.domain.util.exception
 
 /**
  * Represents errors that occur during remote operations, such as network calls or API responses.

@@ -1,9 +1,9 @@
-package <basePackage>.core.presentation.util.extension
+package <basePackage>.presentation.util.extension
 
-import <basePackage>.core.domain.util.exception.LocalException
-import <basePackage>.core.domain.util.exception.RemoteException
+import <basePackage>.domain.util.exception.LocalException
+import <basePackage>.domain.util.exception.RemoteException
 import <basePackage>.core.presentation.R
-import <basePackage>.core.presentation.util.UiText
+import <basePackage>.presentation.util.UiText
 
 /**
  * Maps a [RemoteException] to a [UiText] for display in the presentation layer.

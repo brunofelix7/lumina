@@ -1,4 +1,4 @@
-package <basePackage>.core.data.util.extension
+package <basePackage>.data.util.extension
 
 import retrofit2.HttpException
 import retrofit2.Response

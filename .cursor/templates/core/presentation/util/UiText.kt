@@ -1,4 +1,4 @@
-package <basePackage>.core.presentation.util
+package <basePackage>.presentation.util
 
 import android.content.Context
 import androidx.annotation.StringRes

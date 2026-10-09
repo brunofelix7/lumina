@@ -1,4 +1,4 @@
-package <basePackage>.core.domain.util.exception
+package <basePackage>.domain.util.exception
 
 /**
  * Represents local errors that can occur during application execution,

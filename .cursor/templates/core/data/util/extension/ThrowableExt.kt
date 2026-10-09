@@ -1,6 +1,6 @@
-package <basePackage>.core.data.util.extension
+package <basePackage>.data.util.extension
 
-import <basePackage>.core.domain.util.exception.RemoteException
+import <basePackage>.domain.util.exception.RemoteException
 import retrofit2.HttpException
 import java.io.IOException
 import java.net.ConnectException
