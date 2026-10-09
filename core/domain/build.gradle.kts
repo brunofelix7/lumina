@@ -19,8 +19,12 @@ dependencies {
     // Coroutines
     api(libs.kotlinx.coroutines.core)
 
+    // Dependency injection (JSR-330 annotations only)
+    implementation(libs.javax.inject)
+
     // Unit tests
     testImplementation(libs.kotest.runner.junit5)
     testImplementation(libs.kotest.assertions.core)
     testImplementation(libs.mockk)
+    testImplementation(libs.kotlinx.coroutines.test)
 }
